@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 設定客戶群組 -->
+  <div id="SetGroup" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">客戶管理作業</li>
+        <li class="breadcrumb-item active" aria-current="page">設定客戶群組</li>
+      </ol>
+    </nav>
+
+    <!-- 設定客戶群組清冊 -->
+    <div id="editList">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">設定客戶群組</h1>
+      </div>
+      <form>
+        <div class="card">
+          <div class="card-body bg-light">
+            <div class="table-responsive">
+              <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+                <thead>
+                  <tr>
+                    <th scope="col" class="hnb__tbhd text-nowrap">編號</th>
+                    <th scope="col" class="hnb__tbhd text-nowrap">客戶名稱</th>
+                    <th scope="col" class="hnb__tbhd text-nowrap">統一編號</th>
+                    <th scope="col" class="hnb__tbhd text-nowrap">所屬分行</th>
+                    <th scope="col" class="hnb__tbhd text-nowrap">審核群組</th>
+                    <th scope="col" class="hnb__tbhd text-nowrap">總額度</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center text-nowrap">1</td>
+                    <td class="text-nowrap">網際股份有限公司</td>
+                    <td class="text-center text-nowrap">12345678</td>
+                    <td class="text-center text-nowrap">高雄分行</td>
+                    <td class="text-end text-nowrap">
+                      <select name="bene" class="reviewGroup form-select form-select-sm">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                      </select>
+                      <span class="reviewString">1</span>
+                    </td>
+                    <td class="text-center text-nowrap">
+                      <input type="text" class="form-control form-control-sm" name="lcNo" value="0">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-center text-nowrap">2</td>
+                    <td class="text-nowrap">優仕股份有限公司</td>
+                    <td class="text-center text-nowrap">12345678</td>
+                    <td class="text-center text-nowrap">高雄分行</td>
+                    <td class="text-end text-nowrap">
+                      <select name="bene" class="reviewGroup form-select form-select-sm">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                      </select>
+                      <span class="reviewString">1</span>
+                    </td>
+                    <td class="text-center text-nowrap">
+                      <input type="text" class="form-control form-control-sm" name="lcNo" value="0">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-center text-nowrap">3</td>
+                    <td class="text-nowrap">實枚股份有限公司</td>
+                    <td class="text-center text-nowrap">12345678</td>
+                    <td class="text-center text-nowrap">高雄分行</td>
+                    <td class="text-end text-nowrap">
+                      <select name="bene" class="reviewGroup form-select form-select-sm">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                      </select>
+                      <span class="reviewString">1</span>
+                    </td>
+                    <td class="text-center text-nowrap">
+                      <input type="text" class="form-control form-control-sm" name="lcNo" value="0">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-center text-nowrap">4</td>
+                    <td class="text-nowrap">春源鋼鐵股份有限公司</td>
+                    <td class="text-center text-nowrap">12345678</td>
+                    <td class="text-center text-nowrap">高雄分行</td>
+                    <td class="text-end text-nowrap">
+                      <select name="bene" class="reviewGroup form-select form-select-sm">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                      </select>
+                      <span class="reviewString">1</span>
+                    </td>
+                    <td class="text-center text-nowrap">
+                      <input type="text" class="form-control form-control-sm" name="lcNo" value="0">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-center text-nowrap">5</td>
+                    <td class="text-nowrap">宏博鋼鐵股份有限公司</td>
+                    <td class="text-center text-nowrap">12345678</td>
+                    <td class="text-center text-nowrap">高雄分行</td>
+                    <td class="text-end text-nowrap">
+                      <select name="bene" class="reviewGroup form-select form-select-sm">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                      </select>
+                      <span class="reviewString">1</span>
+                    </td>
+                    <td class="text-center text-nowrap">
+                      <input type="text" class="form-control form-control-sm" name="lcNo" value="0">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-end my-3">
+            <button type="reset" id="reset" class="me-2 px-3 btn btn-sm hnb__btn--reset">重設</button>
+            <button type="button" id="search" class="px-3 btn btn-sm hnb__btn--default"
+              onclick="setHandler()">確定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 客戶群組清冊 -->
+    <div id="queryList" class="hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">客戶群組清冊</h1>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap">編號</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">客戶名稱</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">統一編號</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">所屬分行</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">審核群組</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">總額度</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">1</td>
+                  <td class="text-nowrap">網際股份有限公司</td>
+                  <td class="text-center text-nowrap">12345678</td>
+                  <td class="text-center text-nowrap">高雄分行</td>
+                  <td class="text-end text-nowrap">1</td>
+                  <td class="text-end text-nowrap">0</td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">2</td>
+                  <td class="text-nowrap">優仕股份有限公司</td>
+                  <td class="text-center text-nowrap">12345678</td>
+                  <td class="text-center text-nowrap">高雄分行</td>
+                  <td class="text-end text-nowrap">1</td>
+                  <td class="text-end text-nowrap">0</td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">3</td>
+                  <td class="text-nowrap">實枚股份有限公司</td>
+                  <td class="text-center text-nowrap">12345678</td>
+                  <td class="text-center text-nowrap">高雄分行</td>
+                  <td class="text-end text-nowrap">1</td>
+                  <td class="text-end text-nowrap">5000000</td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">4</td>
+                  <td class="text-nowrap">春源鋼鐵股份有限公司</td>
+                  <td class="text-center text-nowrap">12345678</td>
+                  <td class="text-center text-nowrap">高雄分行</td>
+                  <td class="text-end text-nowrap">1</td>
+                  <td class="text-end text-nowrap">0</td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">5</td>
+                  <td class="text-nowrap">宏博鋼鐵股份有限公司</td>
+                  <td class="text-center text-nowrap">12345678</td>
+                  <td class="text-center text-nowrap">高雄分行</td>
+                  <td class="text-end text-nowrap">1</td>
+                  <td class="text-end text-nowrap">0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 訊息 視窗 -->
+  <div class="modal fade" id="messageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content hnb__modal">
+        <div class="modal-header py-2 border-bottom-0">
+          <h5 class="modal-title fs-5 fw-bolder text--hnb" id="messageModalLabel">
+            作業訊息
+          </h5>
+          <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div id="msgBody" class="modal-body bg-light"></div>
+        <div id="msgFooter" class="modal-footer justify-content-center border-top-0"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 查詢控制項
+    const editList = document.querySelector('#editList');
+    const queryList = document.querySelector('#queryList');
+
+    const reviewGroupList = document.querySelectorAll('.reviewGroup');
+    const reviewStringList = document.querySelectorAll('.reviewString');
+
+    // 不同權限切換顯示欄位
+    if (authType === 'BH') {
+      reviewGroupList.forEach(item => item.classList.add('hnb__hide'));
+    };
+
+    if (authType === 'BS') {
+      reviewStringList.forEach(item => item.classList.add('hnb__hide'));
+    };
+
+    // 設定客戶群組 setHandler
+    function setHandler() {
+      queryList.classList.remove('hnb__hide');
+      editList.classList.add('hnb__hide');
+    };
+
+    function confirmHandler() {
+      $('#messageModal').modal('hide');
+      setTimeout(() => {
+        messageModalLabel.innerHTML = '作業訊息';
+        msgBody.innerHTML = `<p class="fw-bold hnb__text--green text-center">
+                作業已完成
+              </p>`;
+        msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" data-bs-dismiss="modal">關閉</button>`;
+        $('#messageModal').modal('show');
+      }, 500);
+    };
+
+  </script>
+</body>
+
+</html>

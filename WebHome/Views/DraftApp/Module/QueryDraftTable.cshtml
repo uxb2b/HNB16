@@ -1,0 +1,19 @@
+<table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+    <thead>
+        <tr>
+            <th scope="col" class="hnb__tbhd">信用狀號碼</th>
+            <th scope="col" class="hnb__tbhd">開狀銀行</th>
+            <th scope="col" class="hnb__tbhd">開狀日期</th>
+            <th scope="col" class="hnb__tbhd">總金額</th>
+            <th scope="col" class="hnb__tbhd">可用餘額</th>
+            <th scope="col" class="hnb__tbhd">受益人</th>
+            <th scope="col" class="hnb__tbhd">狀態</th>
+            <th scope="col" class="hnb__tbhd">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            await Html.RenderPartialAsync("~/Views/DraftApp/Module/QueryDraftItems.cshtml");
+        }
+    </tbody>
+</table>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="big5"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="EnegoApply">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="lcNo" type="xs:string" />
+				<xs:element name="issuingDate" type="xs:string" />
+				<xs:element name="invoiceCount" type="xs:int" />
+				<xs:element name="amount" type="xs:decimal" />
+				<xs:element name="applyDate" type="xs:string" />
+				<xs:element name="price">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="price" type="xs:decimal" />
+							<xs:element name="priceChinese" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="productList" type="xs:int" />
+				<xs:element name="expiryDate" type="xs:string" />
+				<xs:element name="applicantId" type="xs:string" />
+				<xs:element name="applicantName" type="xs:string" />
+				<xs:element name="applicantAddr" type="xs:string" />
+				<xs:element name="beneficiaryName" type="xs:string" />
+				<xs:element name="beneficiaryId" type="xs:string" />
+				<xs:element name="beneficiaryAddr" type="xs:string" />
+				<xs:element name="issuingBankName" type="xs:string" />
+				<xs:element name="issuingBranchName" type="xs:string" />
+				<xs:element name="availableAmt" type="xs:decimal" />
+				<xs:element name="incomeAccount" type="xs:string" />
+				<xs:element name="outcomeAccount" type="xs:string" />
+				<xs:element name="deliveryDate" type="xs:string" />
+				<xs:element name="enegoInvoiceDate" type="xs:string" />
+				<xs:element name="enegoExpiryDate" type="xs:string" />
+				<xs:element name="enegoNo" type="xs:string" />
+				<xs:element name="digitalNo" type="xs:string" />
+				<xs:element name="uploadFileNameOrigin" type="xs:string" />
+				<xs:element name="uploadFileName" type="xs:string" />
+				<xs:element name="advisingBankId" type="xs:string" />
+				<xs:element name="issuingBankId" type="xs:string" />
+				<xs:element name="advisingBranchId" type="xs:string" />
+				<xs:element name="issuingBranchId" type="xs:string" />
+				<xs:element name="invoiceFile" type="xs:string" />
+				<xs:element name="invoiceDate" type="xs:string" />
+				<xs:element name="payDayType" type="xs:string" />
+				<xs:element name="afterDay" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

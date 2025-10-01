@@ -1,0 +1,45 @@
+﻿@{
+    var modalID = $"msgModal{DateTime.Now.Ticks}";
+}
+<!-- 訊息 視窗 -->
+<div class="modal fade" id="@modalID" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="@($"{modalID}Label")" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content hnb__modal">
+            <div class="modal-header py-2 border-bottom-0">
+                <h5 class="modal-title fs-5 fw-bolder text--hnb" id="@($"{modalID}Label")">
+                    作業訊息
+                </h5>
+                <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <div id="msgBody" class="modal-body bg-light">
+                @RenderSection("MsgBody")
+            </div>
+            <div id="msgFooter" class="modal-footer justify-content-center border-top-0">
+                @RenderSection("MsgFooter")
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // 顯示訊息視窗
+    $(function(){
+        const modalElmt = document.getElementById('@modalID');
+        const modal = new bootstrap.Modal(modalElmt);
+
+        $(modalElmt).on('hidden.bs.modal', function (e) {
+          // 清空內容
+          document.removeChild(modalElmt);
+        });
+
+        modal.show();
+    });
+    // function showMessageModal(message, footerHtml) {
+    //     const modal = new bootstrap.Modal(document.getElementById('@modalID'));
+    //     document.getElementById('msgBody').innerHTML = message;
+    //     document.getElementById('msgFooter').innerHTML = footerHtml || '<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" data-bs-dismiss="modal">確定</button>';
+    //     modal.show();
+    // }
+</script>

@@ -1,0 +1,18 @@
+﻿<!-- 載入遮罩 -->
+<div id="loadingOverlay" class="loading">
+    <div class="loading-text">
+        <span class="spinner-border" role="status"></span>
+        載入中...
+    </div>
+</div>
+
+<script>
+    // 顯示遮罩
+    function showLoading() {
+        document.getElementById('loadingOverlay').style.display = 'flex';
+    }
+    // 隱藏遮罩
+    function hideLoading() {
+        document.getElementById('loadingOverlay').style.display = 'none';
+    }
+</script>

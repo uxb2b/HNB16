@@ -1,0 +1,29 @@
+﻿<table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+    <thead>
+        <tr>
+            <th scope="col" class="hnb__tbhd">開狀申請書號碼</th>
+            <th scope="col" class="hnb__tbhd">信用狀號碼</th>
+            <th scope="col" class="hnb__tbhd">信用狀別</th>
+            <th scope="col" class="hnb__tbhd">申請人</th>
+            <th scope="col" class="hnb__tbhd">通知銀行</th>
+            <th scope="col" class="hnb__tbhd">申請日期</th>
+            <th scope="col" class="hnb__tbhd">金額</th>
+            <th scope="col" class="hnb__tbhd">受益人</th>
+            <th scope="col" class="hnb__tbhd">狀態</th>
+            <th scope="col" class="hnb__tbhd">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            await Html.RenderPartialAsync("~/Views/LcApp/Module/QueryLcItems.cshtml");
+        }
+    </tbody>
+</table>
+<script>
+
+    $(function() {
+        attachRowData();
+        attachEditHandler();
+    });
+
+</script>

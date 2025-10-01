@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="big5"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://cdslc.uxcds.com/CDSLC#draft" xmlns="http://cdslc.uxcds.com/CDSLC#draft" xmlns:mstns="http://cdslc.uxcds.com/CDSLC#draft" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="Invoices.xsd"/>
+	<xs:element name="CDSLC" >
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="draft" maxOccurs="unbounded" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="lcNo" type="xs:string" />
+							<xs:element name="shipmentDate" type="xs:string" />
+							<xs:element name="dtShipmentDate" type="xs:dateTime" maxOccurs="1" minOccurs="0" nillable="true" />
+							<xs:element name="negoDate" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="dtNegoDate" type="xs:dateTime" maxOccurs="1" minOccurs="0" nillable="true"/>
+							<xs:element name="amount" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+							<xs:element name="amountInChinese" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="applicantName" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="usance" type="xs:int" maxOccurs="1" minOccurs="0" default="0" />
+							<xs:element name="Customer" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="orgSeqNo" type="xs:string" />
+										<xs:element name="batchNo" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="goods" maxOccurs="unbounded" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="itemName" type="xs:string" maxOccurs="1" minOccurs="0" />
+										<xs:element name="quantity" type="xs:decimal" maxOccurs="1" minOccurs="0" nillable="true" />
+										<xs:element name="subTotal" type="xs:decimal" maxOccurs="1" minOccurs="0" nillable="true" />
+										<xs:element name="applicantAddr" type="xs:string" maxOccurs="1" minOccurs="0" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="remark" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="uploadStatus" type="xs:int" maxOccurs="1" minOccurs="0" nillable="true" />
+							<xs:element name="DueDate" type="xs:dateTime" minOccurs="0" nillable="true" />
+							<xs:element ref="invoices" maxOccurs="1" minOccurs="0"></xs:element>
+						</xs:sequence>
+						<xs:attribute name="No" type="xs:string" use="required" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

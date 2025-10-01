@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="./assets/images/favicon.ico" type="image/x-icon">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="./assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="./assets/css/custom.css">
+</head>
+
+<body>
+  <div class="px-0 hnb__signin-wrapper">
+    <main class="hnb__signin--form">
+      <form>
+        <div class="text-center pb-2">
+          <img class="mb-1 logo" src="./assets/images/logo-hncb.png" alt="HNB logo">
+          <div class="align-text-top fs-4 fw-bold custom-element" style="color: #2a91bc;">
+            國內信用狀系統
+          </div>
+        </div>
+
+        <div class="my-2 form-floating">
+          <select class="form-select form-select-sm" id="auth">
+            <option value="BH" selected>經辦</option>
+            <option value="BS">主管</option>
+            <option value="SM">系統管理員</option>
+            <option value="MB">總行</option>
+            <option value="BM">分行管理員</option>
+          </select>
+          <label for="auth">權限</label>
+        </div>
+        <div class="form-floating">
+          <input type="text" class="form-control form-control-sm" id="account" placeholder="帳號">
+          <label for="account">帳號</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control form-control-sm" id="password" autocomplete="false"
+            placeholder="密碼">
+          <label for="password">密碼</label>
+        </div>
+
+        <button id="signIn" class="w-100 btn btn-lg login" type="submit">進入</button>
+      </form>
+    </main>
+  </div>
+  <!-- JS Plugin -->
+  <script>
+    const signIn = document.querySelector('#signIn');
+    const auth = document.querySelector('#auth');
+    signIn.addEventListener('click', (e) => {
+      //console.log('auth:', auth.value);
+      e.preventDefault();
+      document.cookie = 'username=hnb';
+      window.location.href = `./index.html?auth=${auth.value}`;
+    });
+  </script>
+  <script src="./assets/js/bootstrap.bundle.min.js"></script>
+  <script src="./assets/js/jquery-3.7.1.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 主管審核異常 -->
+  <div id="QuerySar" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">查詢作業</li>
+        <li class="breadcrumb-item active" aria-current="page">主管審核異常</li>
+      </ol>
+    </nav>
+
+    <!-- 查詢主管審核異常 -->
+    <div id="queryForm">
+      <form>
+        <h1 class="py-2 fs-4 fw-bolder">查詢主管審核異常</h1>
+        <div class="mb-2 card">
+          <div class="card-body bg-light">
+            <div class="row py-2">
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="row">
+                  <label for="appDate" class="col-2 col-md-3 col-form-label text-end text-nowrap">申請日期</label>
+                  <div class="col-10 col-md-9">
+                    <div class="d-flex align-items-center">
+                      <div class="input-group flex-nowrap">
+                        <input type="datetime-local" id="startDate" placeholder="請點選起日"
+                          class="form-control form-control-sm hnb__calendar">
+                        <label class="input-group-text py-1" for="startDate">
+                          <span class="mdi mdi-calendar-month"></span>
+                        </label>
+                      </div>
+                      <span class="px-2">~</span>
+                      <div class="input-group flex-nowrap">
+                        <input type="datetime-local" id="endDate" placeholder="請點選訖日"
+                          class="form-control form-control-sm hnb__calendar">
+                        <label class="input-group-text py-1" for="endDate">
+                          <span class="mdi mdi-calendar-month"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="pt-1 text-danger text-end text-nowrap">
+                      <span class="text-danger dateAlert pe-2 d-none pe-1">
+                        <span class="mdi mdi-close-thick"></span>
+                        結束日期須晚於開始日期
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row py-2">
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-2 row">
+                  <label for="branchNo" class="col-2 col-md-3 col-form-label text-end text-nowrap">作業</label>
+                  <div class="col-10 col-md-9">
+                    <select id="branchNo" class="form-select form-select-sm">
+                      <option selected>= 請選擇 =</option>
+                      <option>開狀審核</option>
+                      <option>修狀審核</option>
+                      <option>匯票審核</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="mb-2 row">
+                  <label for="beneInNo" class="col-2 col-md-3 col-form-label text-end text-nowrap">交易序號</label>
+                  <div class="col-10 col-md-9">
+                    <input type="text" class="form-control form-control-sm" id="beneInNo">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-end py-1">
+                <button type="reset" id="reset" class="me-2 px-3 btn btn-sm hnb__btn--reset">重設</button>
+                <button type="button" id="search" class="px-3 btn btn-sm hnb__btn--default"
+                  onclick="searchHandler()">確定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 主管審核異常清冊 -->
+    <div id="queryList" class="hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">主管審核異常清冊</h1>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap">交易日期</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">交易序號</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">作業</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">主管核準時間</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">異常代碼</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">異常訊息</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center">
+                    2025/06/05
+                  </td>
+                  <td class="text-center text-nowrap">0000001</td>
+                  <td class="text-center text-nowrap">開狀申請書</td>
+                  <td class="text-center text-nowrap">
+                    2025/06/05 15:26:30
+                  </td>
+                  <td class="text-center text-nowrap">rnid999</td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center">
+                    <button type="button" class="editItem my-1 px-3 btn btn-sm hnb__btn--default text-nowrap"
+                      onclick="reviewResult()">
+                      查詢結果
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <nav class="mt-3 d-flex align-items-center justify-content-between">
+        <div class="d-flex text-nowrap">
+          <ul class="pagination pagination-sm">
+            <li class="page--item hnb__page--item disabled">
+              <a class="page-link">第一頁</a>
+            </li>
+            <li class="page--item hnb__page--item disabled">
+              <a class="page-link">
+                <span class="mdi mdi-chevron-left"></span>
+              </a>
+            </li>
+            <li class="page--item hnb__page--item active"><a class="page-link" href="#">1</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">2</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">3</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">4</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">5</a></li>
+            <li class="page--item hnb__page--item">
+              <a class="page-link" href="#">
+                <span class="mdi mdi-chevron-right"></span>
+              </a>
+            </li>
+            <li class="page--item hnb__page--item">
+              <a class="page-link" href="#">最後一頁</a>
+            </li>
+          </ul>
+          <div class="input-group input-group-sm ms-2 mb-3 text-nowrap page-width">
+            <span class="input-group-text" id="inputGroup-sizing-sm">第</span>
+            <input type="text" class="form-control" value="">
+            <span class="input-group-text" id="inputGroup-sizing-sm">頁</span>
+            <button class="btn hnb__btn--default" type="button" id="button-addon2">前往</button>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="text-end">
+            <span class="hnb__text--red">總筆數：</span>2
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- 訊息 視窗 -->
+  <div class="modal fade" id="messageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <form id="accountManagerForm">
+        <div class="modal-content hnb__modal">
+          <div class="modal-header py-2 border-bottom-0">
+            <h5 class="modal-title fs-5 fw-bolder text--hnb" id="messageModalLabel">
+              作業訊息
+            </h5>
+            <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal"
+              aria-label="Close">
+              <span class="mdi mdi-close"></span>
+            </button>
+          </div>
+          <div id="msgBody" class="modal-body bg-light"></div>
+          <div id="msgFooter" class="modal-footer justify-content-center border-top-0"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 選擇訊息 視窗 -->
+  <div class="modal fade" id="promptModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="promptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <form id="accountManagerForm">
+        <div class="modal-content hnb__modal">
+          <div class="modal-header py-2 border-bottom-0">
+            <h5 class="modal-title fs-5 fw-bolder text--hnb" id="promptModalLabel">
+              作業訊息
+            </h5>
+            <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal"
+              aria-label="Close">
+              <span class="mdi mdi-close"></span>
+            </button>
+          </div>
+          <div class="modal-body bg-light">
+            <p class="fw-bold hnb__text--green text-center">
+              離開不會儲存此筆資料，您確認要離開嗎？
+            </p>
+          </div>
+          <div class="modal-footer justify-content-center border-top-0">
+            <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+            <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default"
+              onclick="location.href = 'LcApp.html';">確定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 查詢控制項
+    const queryForm = document.querySelector('#queryForm');
+    const queryList = document.querySelector('#queryList');
+    const lcForCdsAppList = document.querySelector('#lcForCdsAppList');
+    const lcAppList = document.querySelector('#lcAppList');
+    const lcforOtherAppList = document.querySelector('#lcforOtherAppList');
+
+
+    // 查詢信用狀 searchHandler
+    function searchHandler() {
+      queryList.classList.remove('hnb__hide');
+    };
+
+    // 編輯信用狀 editHandler
+    function editHandler() {
+      queryForm.classList.add('hnb__hide');
+      queryList.classList.add('hnb__hide');
+      console.log('currentEditType', currentEditType);
+      if (currentEditType === 'fpc') {
+        lcAppList.classList.remove('hnb__hide');
+      }
+      if (currentEditType === 'other') {
+        lcforOtherAppList.classList.remove('hnb__hide');
+      }
+    };
+
+    // 信用狀類別變更(即期 / 遠期) changeLcType
+    function changeLcType(type) {
+      const lcType = document.querySelector('#lcType');
+      const lcTypeDate = document.querySelector('#lcTypeDate');
+      lcType.textContent = type;
+      if (type === '遠期') {
+        lcTypeDate.textContent = '以「定日付款」方式填寫到期日，期到期日為自匯票發票日起不超過 120 天。';
+      } else {
+        lcTypeDate.textContent = '見票即付。';
+      };
+    };
+
+    // 開啟訊息視窗 openMessageModal
+    const messageModalLabel = document.querySelector('#messageModalLabel');
+    const msgBody = document.querySelector('#msgBody');
+    const msgFooter = document.querySelector('#msgFooter');
+
+    // 查詢結果 reviewResult
+    function reviewResult() {
+      // const messageModal = document.querySelector('#messageModal .modal-dialog');
+      // messageModal.classList.add('modal-lg');
+      messageModalLabel.textContent = '作業訊息';
+      msgBody.innerHTML = `<p class="fw-bold hnb__text--green text-center">處理結果：核准成功</p>`;
+      msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">關閉</button>`;
+      $('#messageModal').modal('show');
+    };
+
+    // 月曆
+    const dateAlert = document.querySelector(".dateAlert");
+    const currentTime = new Date()
+    const config = {
+      locale: 'zh_tw',
+      //enableTime: true, //可選時與分
+      dateFormat: "Y/m/d", //時間格式
+      time_24hr: true, //24 時制
+      minuteIncrement: 15, //分鐘每次選擇間隔單位
+      allowInput: true, //可輸入控制
+      //minDate: "today", //可選最小時間，可直接接受 'today' 字串
+      //maxDate: currentTime.setMonth(currentTime.getMonth() + 1), //可選最大時間，從今天起一個月
+      onChange: function (selectedDates, dateStr, instance) {
+        console.log(`你現在點選的是 ${instance.input.id}，時間為 ${selectedDates} / ${dateStr}`);
+        checkDateTime(dateStr, instance.input.id);
+      }
+    };
+    flatpickr('#startDate, #endDate', config);
+
+    let startDateValue = null
+    let endDateValue = null
+
+    // 辨別結束日期須晚於開始日期
+    function checkDateTime(dateStr, id) {
+      if (id === "startDate") {
+        startDateValue = dateStr
+      }
+
+      if (id === "endDate") {
+        endDateValue = dateStr
+      }
+
+      if (startDateValue > endDateValue) {
+        dateAlert.classList.remove("d-none");
+      } else {
+        dateAlert.classList.add("d-none");
+      }
+    };
+
+    // 日期選擇器 - 有效期限 / 最後交貨日期 / 限定押匯日期
+    flatpickr('#expDate, #deliveryDate, #draftDate', config);
+
+  </script>
+</body>
+
+</html>

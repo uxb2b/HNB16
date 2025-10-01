@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Debug Step by Step",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/TestConsole/bin/Debug/net9.0/TestConsole.dll",
+            "args": [
+                "F:\\Project\\AppDev\\HNB\\Reference\\hncb_enid_data_csv",
+                "(null)",
+                "NULL",
+                ".csv"
+            ],
+            "cwd": "${workspaceFolder}/TestConsole",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}

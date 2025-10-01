@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<xs:schema id="IFX" targetNamespace="http://www.ifxforum.org" xmlns:mstns="http://www.ifxforum.org" xmlns="http://www.ifxforum.org" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:element name="IFX"   >
+    <xs:complexType>
+      <xs:sequence >
+        <xs:element name="EAIHeader">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TxnID" type="xs:string"  />
+              <xs:element name="RecID" type="xs:string"  />
+              <xs:element name="SrcSystemID" type="xs:string"  />
+              <xs:element name="DomID" type="xs:string"  />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="LogTxn">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TxnID" type="xs:string"  />
+              <xs:element name="PrcDt" type="xs:string"  />
+              <xs:element name="PmtID" type="xs:string"  />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="EAIBody">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MsgRq"  >
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Header"  >
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="TxnId" type="xs:string"  />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SvcRq"  >
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="REMDAY" type="xs:string"  />
+                          <xs:element name="RCVBK" type="xs:string"  />
+                          <xs:element name="REMTYPE" type="xs:string"  />
+                          <xs:element name="CHIMSG" type="xs:string"  />
+                          <xs:element name="ENGMSG" type="xs:string"  />
+                          <xs:element name="MSG1" type="xs:string"  />
+                          <xs:element name="MSG2" type="xs:string"  />
+                          <xs:element name="MSG3" type="xs:string"  />
+                          <xs:element name="RECVER" type="xs:string"  />
+                          <xs:element name="SENDER" type="xs:string"  />
+                          <xs:element name="PRECD" type="xs:string"  />
+                          <xs:element name="SLIPNO" type="xs:string"  />
+                          <xs:element name="FEDICD" type="xs:string"  />
+                          <xs:element name="FROMSVR" type="xs:string"  />
+                          <xs:element name="BHNO" type="xs:string"  />
+                          <xs:element name="BHSEQ" type="xs:string"  />
+                          <xs:element name="BHCD" type="xs:string"  />
+                          <xs:element name="EMPNOT" type="xs:string"  />
+                          <xs:element name="AUTOTRF" type="xs:string"  />
+                          <xs:element name="ENTDAY" type="xs:string"  />
+                          <xs:element name="RELEASE" type="xs:string"  />
+                          <xs:element name="SUPNO1" type="xs:string"  />
+                          <xs:element name="RLSDAY" type="xs:string"  />
+                          <xs:element name="R12TIM" type="xs:string"  />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

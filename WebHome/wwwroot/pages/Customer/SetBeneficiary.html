@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 受益人資料 -->
+  <div id="SetBeneficiary" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">客戶管理作業</li>
+        <li class="breadcrumb-item active" aria-current="page">受益人資料</li>
+      </ol>
+    </nav>
+
+    <!-- 查詢受益人資料 -->
+    <div id="queryForm">
+      <form>
+        <h1 class="py-2 fs-4 fw-bolder">查詢受益人資料</h1>
+        <div class="mb-2 card">
+          <div class="card-body bg-light">
+            <div class="row">
+              <div class="py-1 col-12 d-flex">
+                <div class="pt-2 form-check" style="width:120px;">
+                  <input class="form-check-input" type="radio" name="formGroup" id="check1" value="fpc">
+                  <label class="d-flex align-items-center" for="check1">
+                    <span class="text-nowrap">台塑 e 化集團</span>
+                  </label>
+                </div>
+              </div>
+              <div class="py-1 col-12 d-flex">
+                <div class="pt-2 form-check" style="width:120px;">
+                  <input class="form-check-input" type="radio" name="formGroup" id="check2" value="cds">
+                  <label class="d-flex align-items-center" for="check2">
+                    <span class="text-nowrap">CDS 客戶受益人</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-end py-1">
+                <button type="reset" id="resetBtn" class="me-2 px-3 btn btn-sm hnb__btn--reset">重設</button>
+                <button type="button" id="searchBtn" class="px-3 btn btn-sm hnb__btn--default disabled"
+                  onclick="searchHandler()">確定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 受益人資料清冊 -->
+    <div id="queryList1" class="queryList hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">受益人資料清冊</h1>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap">編號</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">公司統編</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">公司名稱</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">負責人姓名</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">負責人職稱</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">登記地址</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">連絡電話</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">電子信箱</th>
+                  <th scope="col" class="fpcCell hnb__tbhd text-nowrap" style="min-width: 200px;">受益人事業部</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">審核狀態</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">1</td>
+                  <td class="text-nowrap">75708007</td>
+                  <td class="text-nowrap">台灣塑膠工業股份有限公司</td>
+                  <td class="text-center text-nowrap">李志村</td>
+                  <td class="text-center text-nowrap">董事長</td>
+                  <td class="text-nowrap">高雄市中山三路39號</td>
+                  <td class="text-center text-nowrap">07-12345678</td>
+                  <td class="text-nowrap">li.chih.chun@fpg.com.tw</td>
+                  <td class="fpcCell" style="min-width: 200px;">
+                    1.塑膠部，2.台麗郎部，4.電石部，5.化學部，6.塑膠原料部，7.塑膠製品部
+                  </td>
+                  <td class="text-center text-nowrap">啟用</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <nav class="mt-3 d-flex align-items-center justify-content-between">
+        <div class="d-flex text-nowrap">
+          <ul class="pagination pagination-sm">
+            <li class="page--item hnb__page--item disabled">
+              <a class="page-link">第一頁</a>
+            </li>
+            <li class="page--item hnb__page--item disabled">
+              <a class="page-link">
+                <span class="mdi mdi-chevron-left"></span>
+              </a>
+            </li>
+            <li class="page--item hnb__page--item active"><a class="page-link" href="#">1</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">2</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">3</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">4</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">5</a></li>
+            <li class="page--item hnb__page--item">
+              <a class="page-link" href="#">
+                <span class="mdi mdi-chevron-right"></span>
+              </a>
+            </li>
+            <li class="page--item hnb__page--item">
+              <a class="page-link" href="#">最後一頁</a>
+            </li>
+          </ul>
+          <div class="input-group input-group-sm ms-2 mb-3 text-nowrap page-width">
+            <span class="input-group-text" id="inputGroup-sizing-sm">第</span>
+            <input type="text" class="form-control" value="">
+            <span class="input-group-text" id="inputGroup-sizing-sm">頁</span>
+            <button class="btn hnb__btn--default" type="button" id="button-addon2">前往</button>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 查詢控制項
+    const queryForm = document.querySelector('#queryForm');
+    const queryList1 = document.querySelector('#queryList1');
+    const searchBtn = document.querySelector('#searchBtn');
+    const fpcCellArray = document.querySelectorAll('.fpcCell');
+
+    // 查詢查詢會計帳務分錄 searchHandler
+    let selectedValue = '';
+
+    // 監聽查詢類型選擇 - 點選'科目彙總查詢'時查詢按鈕可操作
+    const radioButtons = document.getElementsByName('formGroup');
+    for (const radioButton of radioButtons) {
+      radioButton.addEventListener('change', (event) => {
+        const elValue = event.target.value;
+        selectedValue = elValue;
+        if (radioButton.checked) {
+          if (elValue !== '') {
+            searchBtn.classList.remove('disabled');
+          };
+        }
+      });
+    };
+
+    function searchHandler() {
+      if (selectedValue) {
+        queryList1.classList.remove('hnb__hide');
+        if (selectedValue === 'fpc') {
+          if (fpcCellArray.length > 0) {
+            fpcCellArray.forEach(item => {
+              item.classList.remove('hnb__hide');
+            });
+          };
+        };
+        if (selectedValue === 'cds') {
+          if (fpcCellArray.length > 0) {
+            fpcCellArray.forEach(item => {
+              item.classList.add('hnb__hide');
+            });
+          };
+        };
+      };
+    };
+
+    // 月曆
+    const currentTime = new Date()
+    const config = {
+      locale: 'zh_tw',
+      //enableTime: true, //可選時與分
+      dateFormat: "Y/m/d", //時間格式
+      time_24hr: true, //24 時制
+      minuteIncrement: 15, //分鐘每次選擇間隔單位
+      allowInput: true, //可輸入控制
+      //minDate: "today", //可選最小時間，可直接接受 'today' 字串
+      //maxDate: currentTime.setMonth(currentTime.getMonth() + 1), //可選最大時間，從今天起一個月
+      onChange: function (selectedDates, dateStr, instance) {
+        console.log(`你現在點選的是 ${instance.input.id}，時間為 ${selectedDates} / ${dateStr}`);
+        //checkDateTime(dateStr, instance.input.id);
+      }
+    };
+
+    // 日期選擇器 - 有效期限 / 最後交貨日期 / 限定押匯日期
+    flatpickr('#date1, #date2', config);
+
+  </script>
+</body>
+
+</html>

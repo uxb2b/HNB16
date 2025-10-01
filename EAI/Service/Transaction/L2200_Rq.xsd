@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:tw.org.ba="http://www.ba.org.tw" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.ifxforum.org" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="IFX">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="EAIHeader">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TxnID" type="xs:string" />
+              <xs:element name="RecID" type="xs:string" />
+              <xs:element name="SrcSystemID" type="xs:string" />
+              <xs:element name="DomID" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="LogTxn">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TxnID" type="xs:string" />
+              <xs:element name="PrcDt" type="xs:string" />
+              <xs:element name="PmtID" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="EAIBody">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MsgRq">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Header">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="TxnId" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SvcRq">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="KINBR" />
+                          <xs:element type="xs:string" name="ACTNO" />
+                          <xs:element type="xs:string" name="ACFLG" />
+                          <xs:element type="xs:string" name="HCODE" />
+                          <xs:element type="xs:string" name="ECKIN" />
+                          <xs:element type="xs:string" name="ECTRM" />
+                          <xs:element type="xs:string" name="ECTNO" />
+                          <xs:element type="xs:string" name="CIFKEY" />
+                          <xs:element type="xs:string" name="CIFERR" />
+                          <xs:element type="xs:string" name="RBRNO" />
+                          <xs:element type="xs:string" name="ACBRNO" />
+                          <xs:element type="xs:string" name="TXAMT" />
+                          <xs:element type="xs:string" name="PRIAMT" />
+                          <xs:element type="xs:string" name="INTFLG" />
+                          <xs:element type="xs:string" name="VLDATE" />
+                          <xs:element type="xs:string" name="SINTAMT" />
+                          <xs:element type="xs:string" name="RSINTAMT" />
+                          <xs:element type="xs:string" name="CREAMT" />
+                          <xs:element type="xs:string" name="REFAMT" />
+                          <xs:element type="xs:string" name="RREFAMT" />
+                          <xs:element type="xs:string" name="DFCD" />
+                          <xs:element type="xs:string" name="DFAMT" />
+                          <xs:element type="xs:string" name="INTAMT" />
+                          <xs:element type="xs:string" name="RINTAMT" />
+                          <xs:element type="xs:string" name="NSINTAMT" />
+                          <xs:element type="xs:string" name="EAMT" />
+                          <xs:element type="xs:string" name="TXTYPE" />
+                          <xs:element type="xs:string" name="PAYACTNO" />
+                          <xs:element type="xs:string" name="CKAMT" />
+                          <xs:element type="xs:string" name="CKNO" />
+                          <xs:element type="xs:string" name="CKBKNO" />
+                          <xs:element type="xs:string" name="CKACTNO" />
+                          <xs:element type="xs:string" name="LTYFLG" />
+                          <xs:element type="xs:string" name="EAMTCD" />
+                          <xs:element type="xs:string" name="LNSDFAMT" />
+                          <xs:element type="xs:string" name="BLRECFG" />
+                          <xs:element type="xs:string" name="IDATE" />
+                          <xs:element type="xs:string" name="REASON1" />
+                          <xs:element type="xs:string" name="REASON2" />
+                          <xs:element type="xs:string" name="REASON3" />
+                          <xs:element type="xs:string" name="UCIFKEY" />
+                          <xs:element type="xs:string" name="REPYCD" />
+                          <xs:element type="xs:string" name="REPYCDX" />
+                          <xs:element type="xs:string" name="RVSNO" />
+                          <xs:element type="xs:string" name="TDLINT" />
+                          <xs:element type="xs:string" name="DLCD" />
+                          <xs:element type="xs:string" name="ADLINT" />
+                          <xs:element type="xs:string" name="PASWD" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

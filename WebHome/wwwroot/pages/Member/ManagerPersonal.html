@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 個人設定 -->
+  <div id="ManagerPersonal" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">會員管理作業</li>
+        <li class="breadcrumb-item active" aria-current="page">個人設定</li>
+      </ol>
+    </nav>
+
+    <!-- 個人設定 -->
+    <div id="editList">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">個人設定</h1>
+      </div>
+      <div class="my-1 hnb__text--green">註：密碼如無修改請空白</div>
+      <form>
+        <div class="card">
+          <div class="card-body bg-light">
+            <div class="row">
+              <div class="my-2 col-4 col-md-2 text-end text-nowrap fw-bold">角色選擇</div>
+              <div class="my-2 col-8 col-md-10">分行管理員</div>
+              <div class="my-2 col-4 col-md-2 text-end text-nowrap fw-bold">所屬分行</div>
+              <div class="my-2 col-8 col-md-10">高雄分行</div>
+              <div class="my-2 col-4 col-md-2 text-end text-nowrap fw-bold">用戶帳號</div>
+              <div class="my-2 col-8 col-md-10 col-md-1">hn7007</div>
+              <label for="name" class="my-1 col-4 col-md-2 col-form-label text-end text-nowrap fw-bold">用戶姓名</label>
+              <div class="my-1 col-8 col-md-10 d-flex text-items-center">
+                <input type="text" class="form-control form-control-sm" id="name">
+              </div>
+              <label for="pw" class="my-1 col-4 col-md-2 col-form-label text-end text-nowrap fw-bold">用戶密碼</label>
+              <div class="my-1 col-8 col-md-10">
+                <input type="password" class="form-control form-control-sm" id="pw">
+              </div>
+              <label for="changePw" class="my-1 col-4 col-md-2 col-form-label text-end text-nowrap fw-bold">密碼修改</label>
+              <div class="my-1 col-8 col-md-10">
+                <input class="form-control form-control-sm" type="password" id="changePw">
+              </div>
+              <label for="changePw2"
+                class="my-1 col-4 col-md-2 col-form-label text-end text-nowrap fw-bold">密碼確認</label>
+              <div class="my-1 col-8 col-md-10">
+                <input class="form-control form-control-sm" type="password" id="changePw2">
+              </div>
+              <label for="email" class="my-1 col-4 col-md-2 col-form-label text-end text-nowrap fw-bold">電子郵件</label>
+              <div class="my-1 col-8 col-md-10">
+                <input class="form-control form-control-sm" type="text" id="email">
+              </div>
+              <label for="phone" class="my-1 col-4 col-md-2 col-form-label text-end text-nowrap fw-bold">連絡電話</label>
+              <div class="my-1 col-8 col-md-10">
+                <input class="form-control form-control-sm" type="password" id="phone">
+              </div>
+              <div class="my-2 col-4 col-md-2 text-end text-nowrap fw-bold">作業群組</div>
+              <div class="my-2 col-8 col-md-10">
+                <div class="table-responsive">
+                  <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="hnb__tbhd text-nowrap">分行</th>
+                        <th scope="col" class="hnb__tbhd text-nowrap">開狀</th>
+                        <th scope="col" class="hnb__tbhd text-nowrap">通知</th>
+                        <th scope="col" class="hnb__tbhd text-nowrap">審核群組</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center text-nowrap">高雄分行</td>
+                        <td class="text-center text-nowrap">V</td>
+                        <td class="text-center text-nowrap">V</td>
+                        <td class="text-center text-nowrap">1</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+              <div class="my-2 col-4 col-md-2 text-end text-nowrap fw-bold">權限</div>
+              <div class="my-2 col-8 col-md-10">主要審核者</div>
+              <div class="my-2 col-4 col-md-2 text-end text-nowrap fw-bold">代理者帳號</div>
+              <div class="my-2 col-8 col-md-10">CCXXK</div>
+              <div class="my-2 col-4 col-md-2 text-end text-nowrap fw-bold">啟動代理</div>
+              <div class="my-2 col-8 col-md-10">Yes</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-end my-3">
+            <button type="reset" id="reset" class="me-2 px-3 btn btn-sm hnb__btn--reset">重設</button>
+            <button type="button" id="search" class="px-3 btn btn-sm hnb__btn--default"
+              onclick="confirmHandler()">確定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 訊息 視窗 -->
+  <div class="modal fade" id="messageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content hnb__modal">
+        <div class="modal-header py-2 border-bottom-0">
+          <h5 class="modal-title fs-5 fw-bolder text--hnb" id="messageModalLabel">
+            作業訊息
+          </h5>
+          <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div id="msgBody" class="modal-body bg-light"></div>
+        <div id="msgFooter" class="modal-footer justify-content-center border-top-0"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 訊息視窗
+    const messageModalLabel = document.querySelector('#messageModalLabel');
+    const msgBody = document.querySelector('#msgBody');
+    const msgFooter = document.querySelector('#msgFooter');
+
+    // 欄位相關
+    const name = document.querySelector('#name');
+    const pw = document.querySelector('#pw');
+    const changePw = document.querySelector('#changePw');
+    const changePw2 = document.querySelector('#changePw2');
+    const email = document.querySelector('#email');
+    const phone = document.querySelector('#phone');
+
+    function addHandler() {
+      name.value = '';
+      pw.value = '';
+      changePw.value = '';
+      changePw2.value = '';
+      email.value = '';
+      phone.value = '';
+    };
+
+    function confirmHandler() {
+      messageModalLabel.innerHTML = '作業訊息';
+      msgBody.innerHTML = `<p class="fw-bold hnb__text--green text-center">
+                作業已完成
+              </p>`;
+      msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" data-bs-dismiss="modal">關閉</button>`;
+      $('#messageModal').modal('show');
+    };
+
+  </script>
+</body>
+
+</html>

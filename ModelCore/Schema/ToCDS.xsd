@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="LLC">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="LC" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="AppNo" type="xs:string" />
+                            <xs:element name="AppDate" type="xs:string" />
+                            <xs:element name="LcNo" type="xs:string" />
+                            <xs:element name="IssuingDate" type="xs:string" />
+                            <xs:element name="AdvisingBank" type="xs:string" />
+                            <xs:element name="IssuingBank" type="xs:string" />
+                            <xs:element name="PayableBank" type="xs:string" />
+                            <xs:element name="Applicant" type="xs:string" />
+                            <xs:element name="LcAmt" type="xs:string" />
+                            <xs:element name="LcExpiry" type="xs:string" />
+                            <xs:element name="AdvisingBankName" type="xs:string" />
+                            <xs:element name="ReceiptNo" type="xs:string" />
+                            <xs:element name="Beneficiary" type="xs:string" />
+                            <xs:element name="ApplicantAddr" type="xs:string" />
+                            <xs:element name="PayableBankName" type="xs:string" />
+                            <xs:element name="PayableBankAddr" type="xs:string" />
+                            <xs:element name="AtSight" type="xs:string" />
+                            <xs:element name="AtUsance" type="xs:string" />
+                            <xs:element name="Usance" type="xs:string" />
+                            <xs:element name="AttachPaying" type="xs:string" />
+                            <xs:element name="AttachAcceptance" type="xs:string" />
+                            <xs:element name="AttachInv" type="xs:string" />
+                            <xs:element name="Goods" type="xs:string" />
+                            <xs:element name="Seal" type="xs:string" />
+                            <xs:element name="BeneSeal" type="xs:string" />
+                            <xs:element name="Partial" type="xs:string" />
+                            <xs:element name="NonPatial" type="xs:string" />
+                            <xs:element name="NoAfterThan" type="xs:string" />
+                            <xs:element name="EarlyInvDate" type="xs:string" />
+                            <xs:element name="LargerInvAmt" type="xs:string" />
+                            <xs:element name="BeneficiaryNo" type="xs:string" />
+                            <xs:element name="PaymentDate" type="xs:string" />
+                            <xs:element name="AcceptEInv" type="xs:string" />
+                            <xs:element name="AttachOthers" type="xs:string" />
+                            <xs:element name="InvDateStart" type="xs:string" />
+                            <xs:element name="NegoDateStart" type="xs:string" />
+                            <xs:element name="AcceptInvAddr" type="xs:string" />
+                            <xs:element name="AcceptInvDetails" type="xs:string" />
+                            <xs:element name="AttachEInv" type="xs:string" />
+                            <xs:element name="LargerInvNego" type="xs:string" />
+                            <xs:element name="SpecificOthers" type="xs:string" />
+                            <xs:element name="BankID" type="xs:string" />
+                            <xs:element name="PdfBase64" type="xs:string" />
+                            <xs:element name="ToConfirm" type="xs:string" />
+                            <xs:element name="Committed" type="xs:string" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="LcAdvice" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="AppNo" type="xs:string" />
+                            <xs:element name="AmendNo" type="xs:string" />
+                            <xs:element name="AdviceNo" type="xs:string" />
+                            <xs:element name="AdviceDate" type="xs:string" />
+                            <xs:element name="LcNo" type="xs:string" />
+                            <xs:element name="LcAmt" type="xs:string" />
+                            <xs:element name="LcExpiry" type="xs:string" />
+                            <xs:element name="Usance" type="xs:string" />
+                            <xs:element name="AttachPaying" type="xs:string" />
+                            <xs:element name="AttachAcceptance" type="xs:string" />
+                            <xs:element name="AttachInv" type="xs:string" />
+                            <xs:element name="Goods" type="xs:string" />
+                            <xs:element name="Seal" type="xs:string" />
+                            <xs:element name="BeneSeal" type="xs:string" />
+                            <xs:element name="Partial" type="xs:string" />
+                            <xs:element name="NoAfterThan" type="xs:string" />
+                            <xs:element name="EarlyInvDate" type="xs:string" />
+                            <xs:element name="LargerInvAmt" type="xs:string" />
+                            <xs:element name="PaymentDate" type="xs:string" />
+                            <xs:element name="AcceptEInv" type="xs:string" />
+                            <xs:element name="AttachOthers" type="xs:string" />
+                            <xs:element name="InvDateStart" type="xs:string" />
+                            <xs:element name="NegoDateStart" type="xs:string" />
+                            <xs:element name="AcceptInvAddr" type="xs:string" />
+                            <xs:element name="AcceptInvDetails" type="xs:string" />
+                            <xs:element name="AttachEInv" type="xs:string" />
+                            <xs:element name="LargerInvNego" type="xs:string" />
+                            <xs:element name="SpecificOthers" type="xs:string" />
+                            <xs:element name="BankID" type="xs:string" />
+                            <xs:element name="IssuingBank" type="xs:string" />
+                            <xs:element name="ReceiptNo" type="xs:string" />
+                            <xs:element name="PdfBase64" type="xs:string" />
+                            <xs:element name="ToConfirm" type="xs:string" />
+                            <xs:element name="Committed" type="xs:string" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Type" type="xs:string" minOccurs="0" maxOccurs="1" />
+                <xs:element name="ApplyLcNo" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ApplNo" type="xs:string" />
+                            <xs:element name="LcNo" type="xs:string" />
+                            <xs:element name="AmendNo" type="xs:string" />
+                            <xs:element name="CancelNo" type="xs:string" />
+                            <xs:element name="CancelDate" type="xs:string" />
+                            <xs:element name="BankID" type="xs:string" />
+                            <xs:element name="IssuingBank" type="xs:string" />
+                            <xs:element name="ReceiptNo" type="xs:string" />
+                            <xs:element name="PdfBase64" type="xs:string" />
+                            <xs:element name="ToConfirm" type="xs:string" />
+                            <xs:element name="Committed" type="xs:string" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="LcCancel" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ApplNo" type="xs:string" />
+                            <xs:element name="LcNo" type="xs:string" />
+                            <xs:element name="AmendNo" type="xs:string" />
+                            <xs:element name="CancelNo" type="xs:string" />
+                            <xs:element name="CancelDate" type="xs:string" />
+                            <xs:element name="BankID" type="xs:string" />
+                            <xs:element name="IssuingBank" type="xs:string" />
+                            <xs:element name="ReceiptNo" type="xs:string" />
+                            <xs:element name="PdfBase64" type="xs:string" />
+                            <xs:element name="ToConfirm" type="xs:string" />
+                            <xs:element name="Committed" type="xs:string" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Reject" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Code" type="xs:unsignedByte" />
+                            <xs:element name="Reason" type="xs:string" />
+							<xs:element name="BankID" type="xs:string" />
+							<xs:element name="ToConfirm" type="xs:string" />
+							<xs:element name="Committed" type="xs:string" />
+						</xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="AllowedNego">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DraftNo" type="xs:string" />
+							<xs:element name="LcNo" type="xs:string" />
+							<xs:element name="BankID" type="xs:string" />
+							<xs:element name="ToConfirm" type="xs:string" />
+							<xs:element name="Committed" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RejectedNego">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DraftNo" type="xs:string" />
+							<xs:element name="LcNo" type="xs:string" />
+							<xs:element name="BankID" type="xs:string" />
+							<xs:element name="ToConfirm" type="xs:string" />
+							<xs:element name="Committed" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

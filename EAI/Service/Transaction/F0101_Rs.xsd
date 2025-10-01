@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tw.org.ba="http://www.ba.org.tw" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.ifxforum.org" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="IFX">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="EAIHeader">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TxnID" type="xs:string" />
+                            <xs:element name="RecID" type="xs:string" />
+                            <xs:element name="SrcSystemID" type="xs:string" />
+                            <xs:element name="DomID" type="xs:string" />
+                            <xs:element name="DebugLevel" type="xs:string"  />
+                            <xs:element name="ErrCode" type="xs:string"  />
+                            <xs:element name="RecSize" type="xs:string"  />
+                            <xs:element name="TimeOut" type="xs:string"  />
+                            <xs:element name="Capacity" type="xs:string"  />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="LogTxn">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="PmtID" type="xs:unsignedLong" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="EAIBody">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="MsgRs">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Header">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="TxnId" type="xs:string" />
+                                                    <xs:element name="RspCode" type="xs:string" />
+                                                    <xs:element name="Desc" type="xs:string" />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="SvcRs">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="CUSRNO" type="xs:string" />
+                                                    <xs:element name="CIFKEY" type="xs:string" />
+                                                    <xs:element name="CIFERR" type="xs:string" />
+                                                    <xs:element name="CNAME" type="xs:string" />
+                                                    <xs:element name="ZIPCD1" type="xs:string" />
+                                                    <xs:element name="ADDR1" type="xs:string" />
+                                                    <xs:element name="ZIPCD2" type="xs:string" />
+                                                    <xs:element name="ADDR2" type="xs:string" />
+                                                    <xs:element name="AREA1" type="xs:string" />
+                                                    <xs:element name="TELNO1" type="xs:string" />
+                                                    <xs:element name="EXT1" type="xs:string" />
+                                                    <xs:element name="AREA2" type="xs:string" />
+                                                    <xs:element name="TELNO2" type="xs:string" />
+                                                    <xs:element name="EXT2" type="xs:string" />
+                                                    <xs:element name="MPHONE" type="xs:string" />
+                                                    <xs:element name="FAXAREA" type="xs:string" />
+                                                    <xs:element name="FAXNO" type="xs:string" />
+                                                    <xs:element name="FAXFG" type="xs:string" />
+                                                    <xs:element name="EMAIL" type="xs:string" />
+                                                    <xs:element name="EMAILFG" type="xs:string" />
+                                                    <xs:element name="KINDCD" type="xs:string" />
+                                                    <xs:element name="QID" type="xs:string" />
+                                                    <xs:element name="BCODE" type="xs:string" />
+                                                    <xs:element name="JOBCD" type="xs:string" />
+                                                    <xs:element name="TAXCD" type="xs:string" />
+                                                    <xs:element name="BIRTHDAY" type="xs:string" />
+                                                    <xs:element name="INCOMEFG" type="xs:string" />
+                                                    <xs:element name="CMPSCOP" type="xs:string" />
+                                                    <xs:element name="NET" type="xs:string" />
+                                                    <xs:element name="BUILD" type="xs:string" />
+                                                    <xs:element name="RIGHT" type="xs:string" />
+                                                    <xs:element name="CAPITAL" type="xs:string" />
+                                                    <xs:element name="STAFF" type="xs:string" />
+                                                    <xs:element name="CNTRY" type="xs:string" />
+                                                    <xs:element name="RISKCRY" type="xs:string" />
+                                                    <xs:element name="CITY" type="xs:string" />
+                                                    <xs:element name="SEX" type="xs:string" />
+                                                    <xs:element name="EDU" type="xs:string" />
+                                                    <xs:element name="MARIFG" type="xs:string" />
+                                                    <xs:element name="PCIFKEY" type="xs:string" />
+                                                    <xs:element name="PCIFERR" type="xs:string" />
+                                                    <xs:element name="PIDNAM" type="xs:string" />
+                                                    <xs:element name="PIDBIR" type="xs:string" />
+                                                    <xs:element name="DISPFG" type="xs:string" />
+                                                    <xs:element name="DEADFG" type="xs:string" />
+                                                    <xs:element name="STOPFG" type="xs:string" />
+                                                    <xs:element name="WTHDFG" type="xs:string" />
+                                                    <xs:element name="OPENFG" type="xs:string" />
+                                                    <xs:element name="REFUSE" type="xs:string" />
+                                                    <xs:element name="GATEFG" type="xs:string" />
+                                                    <xs:element name="INTRFG" type="xs:string" />
+                                                    <xs:element name="MAILFG" type="xs:string" />
+                                                    <xs:element name="TAXFG" type="xs:string" />
+                                                    <xs:element name="PASSNO" type="xs:string" />
+                                                    <xs:element name="PASSEND" type="xs:string" />
+                                                    <xs:element name="PASSOPN" type="xs:string" />
+                                                    <xs:element name="INQPW1" type="xs:string" />
+                                                    <xs:element name="FAXPW1" type="xs:string" />
+                                                    <xs:element name="TRNPW1" type="xs:string" />
+                                                    <xs:element name="INQPW2" type="xs:string" />
+                                                    <xs:element name="FAXPW2" type="xs:string" />
+                                                    <xs:element name="TRNPW2" type="xs:string" />
+                                                    <xs:element name="CODE" type="xs:string" />
+                                                    <xs:element name="EMPNO" type="xs:string" />
+                                                    <xs:element name="LAWFG" type="xs:string" />
+                                                    <xs:element name="LAWDAY" type="xs:string" />
+                                                    <xs:element name="REMARK" type="xs:string" />
+                                                    <xs:element name="CONTACT" type="xs:string" />
+                                                    <xs:element name="CONREL" type="xs:string" />
+                                                    <xs:element name="CONTEL1" type="xs:string" />
+                                                    <xs:element name="CONTEL2" type="xs:string" />
+                                                    <xs:element name="DPFIRDY" type="xs:string" />
+                                                    <xs:element name="LOANFIR" type="xs:string" />
+                                                    <xs:element name="OCIFKEY" type="xs:string" />
+                                                    <xs:element name="OCIFERR" type="xs:string" />
+                                                    <xs:element name="CHGDAY" type="xs:string" />
+                                                    <xs:element name="CREBRN" type="xs:string" />
+                                                    <xs:element name="KEMPNO" type="xs:string" />
+                                                    <xs:element name="LTXDAY" type="xs:string" />
+                                                    <xs:element name="LBRNO" type="xs:string" />
+                                                    <xs:element name="ENAM1" type="xs:string" />
+                                                    <xs:element name="ENAM2" type="xs:string" />
+                                                    <xs:element name="EADDR1" type="xs:string" />
+                                                    <xs:element name="EADDR2" type="xs:string" />
+                                                    <xs:element name="EADDR3" type="xs:string" />
+                                                    <xs:element name="EADDR4" type="xs:string" />
+                                                    <xs:element name="EFAXAREA" type="xs:string" />
+                                                    <xs:element name="EFAXNO" type="xs:string" />
+                                                    <xs:element name="EFAXFG" type="xs:string" />
+                                                    <xs:element name="ADVEMAIL" type="xs:string" />
+                                                    <xs:element name="ADVEMLFG" type="xs:string" />
+                                                    <xs:element name="ADVFEFG" type="xs:string" />
+                                                    <xs:element name="ADVFG" type="xs:string" />
+                                                    <xs:element name="ADVMAIL" type="xs:string" />
+                                                    <xs:element name="ADVADR1" type="xs:string" />
+                                                    <xs:element name="ADVADR2" type="xs:string" />
+                                                    <xs:element name="ADVBRNO" type="xs:string" />
+                                                    <xs:element name="BIOFG" type="xs:string" />
+                                                    <xs:element name="OUACFG" type="xs:string" />
+                                                    <xs:element name="FCREBRN" type="xs:string" />
+                                                    <xs:element name="FKEMPNO" type="xs:string" />
+                                                    <xs:element name="FLTXDAY" type="xs:string" />
+                                                    <xs:element name="FLBRNO" type="xs:string" />
+                                                    <xs:element name="BASFG" type="xs:string" />
+                                                    <xs:element name="FINAFG" type="xs:string" />
+                                                    <xs:element name="LCBRNO" type="xs:string" />
+                                                    <xs:element name="LCDAY" type="xs:string" />
+                                                    <xs:element name="VIPFG" type="xs:string" />
+                                                    <xs:element name="EXPDATE" type="xs:string" />
+                                                    <xs:element name="NCIFKEY" type="xs:string" />
+                                                    <xs:element name="NCIFERR" type="xs:string" />
+                                                    <xs:element name="FOBRNO" type="xs:string" />
+                                                    <xs:element name="FONO" type="xs:string" />
+                                                    <xs:element name="FONAME" type="xs:string" />
+                                                    <xs:element name="REGNUM" type="xs:string" />
+                                                    <xs:element name="ADVEMAIL1" type="xs:string" />
+                                                    <xs:element name="CONZIP1" type="xs:string" />
+                                                    <xs:element name="CONADD1" type="xs:string" />
+                                                    <xs:element name="ORGAN" type="xs:string" />
+                                                    <xs:element name="RADDR1" type="xs:string" />
+                                                    <xs:element name="RADDR2" type="xs:string" />
+                                                    <xs:element name="RADDR3" type="xs:string" />
+                                                    <xs:element name="RADDR4" type="xs:string" />
+                                                    <xs:element name="FDATE" type="xs:string" />
+                                                    <xs:element name="EDATE" type="xs:string" />
+                                                    <xs:element name="AUTOFLAG" type="xs:string" />
+                                                    <xs:element name="NETFLAG" type="xs:string" />
+                                                    <xs:element name="BCODE2" type="xs:string" />
+                                                    <xs:element name="EBKFG" type="xs:string" />
+                                                    <xs:element name="BCODEX" type="xs:string" />
+                                                    <xs:element name="CIFREASON" type="xs:string" />
+                                                    <xs:element name="FUNDFG" type="xs:string" />
+                                                    <xs:element name="CARDFG" type="xs:string" />
+                                                    <xs:element name="BOXFG" type="xs:string" />
+                                                    <xs:element name="TICKFG" type="xs:string" />
+                                                    <xs:element name="CONBRN" type="xs:string" />
+                                                    <xs:element name="GATEFG1" type="xs:string" />
+                                                    <xs:element name="RPTBRNO" type="xs:string" />
+                                                    <xs:element name="RMBFG" type="xs:string" />
+                                                    <xs:element name="SPEFG" type="xs:string" />
+                                                    <xs:element name="STAFFCODE" type="xs:string" />
+                                                    <xs:element name="CORPFG" type="xs:string" />
+                                                    <xs:element name="CORPID" type="xs:string" />
+                                                    <xs:element name="CORPERR" type="xs:string" />
+                                                    <xs:element name="PREMFG" type="xs:string" />
+                                                    <xs:element name="PREMDAY" type="xs:string" />
+                                                    <xs:element name="PREMEDAY" type="xs:string" />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

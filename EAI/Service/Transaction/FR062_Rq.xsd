@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:tw.org.ba="http://www.ba.org.tw" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.ifxforum.org" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="IFX">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="EAIHeader">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TxnID" type="xs:string" />
+							<xs:element name="RecID" type="xs:string" />
+							<xs:element name="SrcSystemID" type="xs:string" />
+							<xs:element name="DomID" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="LogTxn">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TxnID" type="xs:string" />
+							<xs:element name="PrcDt" type="xs:string" />
+							<xs:element name="PmtID" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EAIBody">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="MsgRq">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Header">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="TxnId" type="xs:string" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="SvcRq">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="REFNO" type="xs:string" />
+													<xs:element name="SYSTEM" type="xs:string" />
+													<xs:element name="BRNO" type="xs:string" />
+													<xs:element name="CIFKEY" type="xs:string" />
+													<xs:element name="CIFERR" type="xs:string" />
+													<xs:element name="PCIFKEY" type="xs:string" />
+													<xs:element name="PCIFERR" type="xs:string" />
+													<xs:element name="BCIFKEY" type="xs:string" />
+													<xs:element name="BCIFERR" type="xs:string" />
+													<xs:element name="CNAME" type="xs:string" />
+													<xs:element name="MARK1" type="xs:string" />
+													<xs:element name="ENAME" type="xs:string" />
+													<xs:element name="MARK2" type="xs:string" />
+													<xs:element name="BIRTH" type="xs:string" />
+													<xs:element name="MARK3" type="xs:string" />
+													<xs:element name="NAL" type="xs:string" />
+													<xs:element name="MARK4" type="xs:string" />
+													<xs:element name="MATCH" type="xs:string" />
+													<xs:element name="SCORE" type="xs:string" />
+													<xs:element name="LEVEL" type="xs:string" />
+													<xs:element name="AMLFG" type="xs:string" />
+													<xs:element name="ERRCODE" type="xs:string" />
+													<xs:element name="ERRTEXT" type="xs:string" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+<xs:schema xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:tw.org.ba="http://www.ba.org.tw" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.ifxforum.org" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="IFX"   >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="EAIHeader">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TxnID" type="xs:string"  />
+                            <xs:element name="RecID" type="xs:string"  />
+                            <xs:element name="SrcSystemID" type="xs:string"  />
+                            <xs:element name="DomID" type="xs:string"  />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="LogTxn">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TxnID" type="xs:string" />
+                            <xs:element name="PrcDt" type="xs:string" />
+                            <xs:element name="PmtID" type="xs:string" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="EAIBody">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="MsgRq"  >
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Header"  >
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="TxnId" type="xs:string"  />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="SvcRq"  >
+                                            <xs:complexType>
+                                                <xs:sequence>
+													<xs:element name="KINBR" type="xs:string" />
+													<xs:element name="IDSCPT" type="xs:string" />
+													<xs:element name="CRDB" type="xs:string" />
+													<xs:element name="SECNO" type="xs:string" />
+													<xs:element name="ZERO2" type="xs:string" />
+													<xs:element name="SUPNO" type="xs:string" />
+													<xs:element name="CIFKEY" type="xs:string" />
+													<xs:element name="BRELCD" type="xs:string" />
+													<xs:element name="NBCD" type="xs:string" />
+													<xs:element name="FORCE" type="xs:string" />
+													<xs:element name="PSUEDO" type="xs:string" />
+													<xs:element name="HCODE" type="xs:string" />
+													<xs:element name="ECKIN" type="xs:string" />
+													<xs:element name="RELNO3" type="xs:string" />
+													<xs:element name="DRVSNO" type="xs:string" />
+													<xs:element name="NOTE1" type="xs:string" />
+													<xs:element name="REMK1" type="xs:string" />
+													<xs:element name="NOTE2" type="xs:string" />
+													<xs:element name="REMK2" type="xs:string" />
+													<xs:element name="MISDEP" type="xs:string" />
+													<xs:element name="PDUT" type="xs:string" />
+													<xs:element name="MACTNO" type="xs:string" />
+													<xs:element name="TBRNO" type="xs:string" />
+													<xs:element name="TDEPT" type="xs:string" />
+													<xs:element name="TACNO" type="xs:string" />
+													<xs:element name="TSBNO" type="xs:string" />
+													<xs:element name="TDTLNO" type="xs:string" />
+													<xs:element name="TRVSTYP" type="xs:string" />
+													<xs:element name="TSECNO" type="xs:string" />
+													<xs:element name="CRVSNO" type="xs:string" />
+													<xs:element name="CNAMNO" type="xs:string" />
+													<xs:element name="DNAMNO" type="xs:string" />
+													<xs:element name="FLAG" type="xs:string" />
+													<xs:element name="EDATE" type="xs:string" />
+													<xs:element name="KIND" type="xs:string" />
+													<xs:element name="TRACTNO" type="xs:string" />
+													<xs:element name="APPSRNO" type="xs:string" />
+													<xs:element name="SDATE" type="xs:string" />
+													<xs:element name="REFNO" type="xs:string" />
+													<xs:element name="TXAMT" type="xs:string" />
+												</xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

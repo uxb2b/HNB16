@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 設定客戶資料 -->
+  <div id="SetCustomer" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">客戶管理作業</li>
+        <li class="breadcrumb-item active" aria-current="page">設定客戶資料</li>
+      </ol>
+    </nav>
+
+    <!-- 設定客戶資料清冊 -->
+    <div id="editList">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">設定客戶資料</h1>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap">公司名稱</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">統一編號</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">檢附本票</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">本票帳號</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">本票印鑑</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-nowrap">網際股份有限公司</td>
+                  <td class="text-center text-nowrap">12345678</td>
+                  <td class="text-center text-nowrap">No</td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default" data-bs-toggle="modal"
+                      data-bs-target="#setModal" onclick="editHandler('網際股份有限公司');">
+                      編輯
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-nowrap">優仕股份有限公司</td>
+                  <td class="text-center text-nowrap">12345678</td>
+                  <td class="text-center text-nowrap">No</td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default" data-bs-toggle="modal"
+                      data-bs-target="#setModal" onclick="editHandler('優仕股份有限公司');">
+                      編輯
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-nowrap">實枚股份有限公司</td>
+                  <td class="text-center text-nowrap">12345678</td>
+                  <td class="text-center text-nowrap">No</td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default" data-bs-toggle="modal"
+                      data-bs-target="#setModal" onclick="editHandler('實枚股份有限公司');">
+                      編輯
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-nowrap">春源鋼鐵股份有限公司</td>
+                  <td class="text-center text-nowrap">12345678</td>
+                  <td class="text-center text-nowrap">No</td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default" data-bs-toggle="modal"
+                      data-bs-target="#setModal" onclick="editHandler('春源鋼鐵股份有限公司');">
+                      編輯
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-nowrap">宏博鋼鐵股份有限公司</td>
+                  <td class="text-center text-nowrap">12345678</td>
+                  <td class="text-center text-nowrap">No</td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default" data-bs-toggle="modal"
+                      data-bs-target="#setModal" onclick="editHandler('宏博鋼鐵股份有限公司');">
+                      編輯
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 設定客戶資料 視窗 -->
+  <div class="modal fade" id="setModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="setModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content hnb__modal">
+        <div class="modal-header py-2 border-bottom-0">
+          <h5 class="modal-title fs-5 fw-bolder text--hnb" id="setModalLabel">
+            設定客戶資料
+          </h5>
+          <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div id="setBody" class="modal-body bg-light">
+          <div class="row">
+            <label for="companyName" class="my-1 col-2 col-form-label text-end text-nowrap fw-bold">公司名稱</label>
+            <div class="my-1 col-10 d-flex align-items-center" id="companyName"></div>
+            <label for="affix" class="my-1 col-2 col-form-label text-end text-nowrap fw-bold">檢附本票</label>
+            <div class="my-1 col-10 d-flex align-items-center">
+              <input class="form-check-input" type="checkbox" id="affix" value="yes">
+            </div>
+            <label for="draftAccount" class="my-1 col-2 col-form-label text-end text-nowrap fw-bold">本票帳號</label>
+            <div class="my-1 col-10">
+              <input class="form-control form-control-sm" type="text" id="draftAccount">
+            </div>
+            <label for="stamp" class="my-1 col-2 col-form-label text-end text-nowrap fw-bold">本票印鑑</label>
+            <div class="my-1 col-10">
+              <input type="file" class="form-control form-control-sm" id="stampUrl" accept="image/*"
+                aria-describedby="stamp" aria-label="Upload">
+              <div id="stampPreview" class="my-2">尚無印鑑資料</div>
+            </div>
+          </div>
+        </div>
+        <div id="setFooter" class="modal-footer justify-content-center border-top-0">
+          <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default"
+            onclick="confirmHandler()">確定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 訊息 視窗 -->
+  <div class="modal fade" id="messageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content hnb__modal">
+        <div class="modal-header py-2 border-bottom-0">
+          <h5 class="modal-title fs-5 fw-bolder text--hnb" id="messageModalLabel">
+            作業訊息
+          </h5>
+          <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div id="msgBody" class="modal-body bg-light"></div>
+        <div id="msgFooter" class="modal-footer justify-content-center border-top-0"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 編輯客戶資料 editHandler
+    const companyName = document.querySelector('#companyName');
+    const stampUrl = document.querySelector('#stampUrl');
+    const stampPreview = document.querySelector('#stampPreview');
+
+    function editHandler(copName) {
+      companyName.innerHTML = copName;
+      stampUrl.value = '';
+      stampPreview.innerHTML = '尚無印鑑資料';
+    };
+
+    // 上傳檔案
+    stampUrl.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          stampPreview.innerHTML = `<img src="${e.target.result}" alt="Stamp Preview" class="img-thumbnail" style="max-width: 200px;">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // 訊息視窗
+    const messageModalLabel = document.querySelector('#messageModalLabel');
+    const msgBody = document.querySelector('#msgBody');
+    const msgFooter = document.querySelector('#msgFooter');
+
+    function confirmHandler() {
+      $('#setModal').modal('hide');
+      setTimeout(() => {
+        messageModalLabel.innerHTML = '作業訊息';
+        msgBody.innerHTML = `<p class="fw-bold hnb__text--green text-center">
+                作業已完成
+              </p>`;
+        msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" data-bs-dismiss="modal">關閉</button>`;
+        $('#messageModal').modal('show');
+      }, 500);
+    };
+
+  </script>
+</body>
+
+</html>

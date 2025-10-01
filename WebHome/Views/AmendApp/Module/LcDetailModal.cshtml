@@ -1,0 +1,43 @@
+﻿<!-- 信用狀 視窗 -->
+<div class="modal fade" id="lcDetailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="lcDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+        <form id="accountManagerForm">
+            <div id="modalContent" class="modal-content hnb__modal">
+                <!-- 內容將由 AJAX 載入 -->
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $('#lcDetailModal').on('shown.bs.modal', function (e) {
+      // 這裡用 AJAX 載入內容
+      $.ajax({
+        url: '../AmendApp/LcDetailModalContent',
+        type: 'GET',
+        success: function (data) {
+          $('#modalContent').html(data);
+        },
+        error: function () {
+          $('#modalContent').html('<div class="p-4 text-danger">載入明細失敗，請稍後再試。</div>');
+        }
+      });
+    });
+
+    $('#lcDetailModal').on('hidden.bs.modal', function (e) {
+      // 清空內容
+      $('#modalContent').html('');
+    });
+
+    // 修改申請書類別變更(即期 / 遠期) changeLcType
+    function changeLcType(type) {
+      const lcType = document.querySelector('#lcType');
+      const lcTypeDate = document.querySelector('#lcTypeDate');
+      lcType.textContent = type;
+      if (type === '遠期') {
+        lcTypeDate.textContent = '以「定日付款」方式填寫到期日，期到期日為自匯票發票日起不超過 120 天。';
+      } else {
+        lcTypeDate.textContent = '見票即付。';
+      };
+    }
+</script>

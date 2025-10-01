@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.uxcds.com/xmlschema/cds" xmlns:cds="http://www.uxcds.com/xmlschema/cds" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:element name="allConditions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="conditionGroup" maxOccurs="100">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="cds:conditions"/>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="code" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="conditions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="condition" maxOccurs="100">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="title" type="xs:string"/>
+              <xs:element name="description" type="xs:string"/>
+              <xs:element name="prefixMessage" type="xs:string" minOccurs="0" maxOccurs="100"/>
+				<xs:element name="singleChoice" type="cds:SingleChoiceType"/>
+				<xs:element name="multiChoice" type="cds:MultiChoiceType"/>
+				<xs:element name="textBlank" type="cds:TextBlankType"/>
+				<xs:element name="textArea" type="cds:TextAreaType"/>
+				<xs:element name="textOnly" type="cds:TextOnlyType"/>
+				<xs:element name="suffixMessage" type="xs:string" minOccurs="0" maxOccurs="100"/>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="present" use="required">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="sight"/>
+					<xs:enumeration value="usance"/>
+					<xs:enumeration value="specify"/>
+					<xs:enumeration value="cross"/>
+                  <xs:enumeration value="general"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="type" use="required">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="singleChoice"/>
+                  <xs:enumeration value="multiChoice"/>
+                  <xs:enumeration value="textBlank"/>
+                  <xs:enumeration value="textArea"/>
+                  <xs:enumeration value="textOnly"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="used" use="required">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="true"/>
+                  <xs:enumeration value="false"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="changed" use="optional">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="true"/>
+                  <xs:enumeration value="false"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="SingleChoiceType">
+    <xs:sequence maxOccurs="100">
+      <xs:element name="item" type="cds:ItemType" maxOccurs="100"/>
+      <xs:element name="messageSegment" minOccurs="0" maxOccurs="100"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="MultiChoiceType">
+    <xs:sequence maxOccurs="100">
+      <xs:element name="item" type="cds:ItemType" maxOccurs="100"/>
+      <xs:element name="messageSegment" minOccurs="0" maxOccurs="100"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="TextBlankType">
+    <xs:sequence maxOccurs="100">
+      <xs:element name="blank" maxOccurs="100">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="name" type="xs:string" use="required"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element type="xs:string"  name="messageSegment" minOccurs="0" maxOccurs="100"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="TextAreaType">
+    <xs:sequence maxOccurs="100">
+      <xs:element name="area" maxOccurs="100">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="name" type="xs:string" use="required"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="messageSegment" minOccurs="0" maxOccurs="100"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="TextOnlyType">
+    <xs:sequence maxOccurs="100">
+      <xs:element type="xs:string" name="messageSegment" minOccurs="0" maxOccurs="100"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="ItemType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="itemValue" type="xs:string" use="required"/>
+        <xs:attribute name="checked" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="true"/>
+				<xs:enumeration value="false"/>
+				<xs:enumeration value=""/>
+			</xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>

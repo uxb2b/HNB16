@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 分行信用狀暨押匯筆數金額 -->
+  <div id="QueryBeneficiaryBlcAmount" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">查詢作業</li>
+        <li class="breadcrumb-item active" aria-current="page">分行信用狀暨押匯筆數金額</li>
+      </ol>
+    </nav>
+
+    <!-- 查詢分行信用狀暨押匯筆數金額 -->
+    <div id="queryForm">
+      <form>
+        <h1 class="py-2 fs-4 fw-bolder">查詢分行信用狀暨押匯筆數金額</h1>
+        <div class="mb-2 card">
+          <div class="card-body bg-light">
+            <div class="row py-2">
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="row">
+                  <label for="appDate" class="col-2 col-md-3 col-form-label text-end text-nowrap">開狀日期</label>
+                  <div class="col-10 col-md-9">
+                    <div class="d-flex align-items-center">
+                      <div class="input-group flex-nowrap">
+                        <input type="datetime-local" id="lcStartDate" placeholder="請點選起日"
+                          class="form-control form-control-sm hnb__calendar">
+                        <label class="input-group-text py-1" for="lcStartDate">
+                          <span class="mdi mdi-calendar-month"></span>
+                        </label>
+                      </div>
+                      <span class="px-2">~</span>
+                      <div class="input-group flex-nowrap">
+                        <input type="datetime-local" id="lcEndDate" placeholder="請點選訖日"
+                          class="form-control form-control-sm hnb__calendar">
+                        <label class="input-group-text py-1" for="lcEndDate">
+                          <span class="mdi mdi-calendar-month"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="pt-1 text-danger text-end text-nowrap">
+                      <span id="lcDateAlert" class="text-danger pe-2 d-none pe-1">
+                        <span class="mdi mdi-close-thick"></span>
+                        結束日期須晚於開始日期
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <div class="row">
+                  <label for="appDate" class="col-2 col-md-3 col-form-label text-end text-nowrap">押匯日期</label>
+                  <div class="col-10 col-md-9">
+                    <div class="d-flex align-items-center">
+                      <div class="input-group flex-nowrap">
+                        <input type="datetime-local" id="draftStartDate" placeholder="請點選起日"
+                          class="form-control form-control-sm hnb__calendar">
+                        <label class="input-group-text py-1" for="draftStartDate">
+                          <span class="mdi mdi-calendar-month"></span>
+                        </label>
+                      </div>
+                      <span class="px-2">~</span>
+                      <div class="input-group flex-nowrap">
+                        <input type="datetime-local" id="draftEndDate" placeholder="請點選訖日"
+                          class="form-control form-control-sm hnb__calendar">
+                        <label class="input-group-text py-1" for="draftEndDate">
+                          <span class="mdi mdi-calendar-month"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="pt-1 text-danger text-end text-nowrap">
+                      <span id="draftDateAlert" class="text-danger pe-2 d-none pe-1">
+                        <span class="mdi mdi-close-thick"></span>
+                        結束日期須晚於開始日期
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-end py-1">
+                <button type="reset" id="reset" class="me-2 px-3 btn btn-sm hnb__btn--reset">重設</button>
+                <button type="button" id="searchBtn" class="px-3 btn btn-sm hnb__btn--default"
+                  onclick="searchHandler()">確定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 分行信用狀暨押匯筆數金額明細表 -->
+    <div id="queryList" class="hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">分行信用狀暨押匯筆數金額明細表</h1>
+        <div>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+            <span class="mdi mdi-cloud-download"></span>
+            下載電子檔
+          </button>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap" onclick="printList()">
+            <span class="mdi mdi-printer"></span>
+            列印
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap">分行代號</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">分行名稱</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">CDSID 開狀筆數</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">CDSID 開狀金額</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">臨櫃開狀筆數</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">臨櫃開狀金額</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">網銀開狀筆數</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">網銀開狀金額</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">押匯筆數</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">押匯金額</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center">707</td>
+                  <td class="text-center">高雄分行</td>
+                  <td class="text-end">0</td>
+                  <td class="text-end">$0</td>
+                  <td class="text-end">15</td>
+                  <td class="text-end">$5,000,000</td>
+                  <td class="text-end">0</td>
+                  <td class="text-end">$0</td>
+                  <td class="text-end">0</td>
+                  <td class="text-end">$0</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="hnb__text--red">
+                  <td class="text-center">合計</td>
+                  <td class="text-center"></td>
+                  <td class="text-end">0</td>
+                  <td class="text-end">$0</td>
+                  <td class="text-end">15</td>
+                  <td class="text-end">$5,000,000</td>
+                  <td class="text-end">0</td>
+                  <td class="text-end">$0</td>
+                  <td class="text-end">0</td>
+                  <td class="text-end">$0</td>
+                </tr>
+                <tr class="hnb__text--red">
+                  <td class="text-center">總合計</td>
+                  <td class="text-center"></td>
+                  <td class="text-end">0</td>
+                  <td class="text-end">$0</td>
+                  <td class="text-end">15</td>
+                  <td class="text-end">$5,000,000</td>
+                  <td class="text-end">0</td>
+                  <td class="text-end">$0</td>
+                  <td class="text-end">0</td>
+                  <td class="text-end">$0</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <nav class="mt-3 d-flex align-items-center justify-content-between">
+        <div class="d-flex text-nowrap">
+          <ul class="pagination pagination-sm">
+            <li class="page--item hnb__page--item disabled">
+              <a class="page-link">第一頁</a>
+            </li>
+            <li class="page--item hnb__page--item disabled">
+              <a class="page-link">
+                <span class="mdi mdi-chevron-left"></span>
+              </a>
+            </li>
+            <li class="page--item hnb__page--item active"><a class="page-link" href="#">1</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">2</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">3</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">4</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">5</a></li>
+            <li class="page--item hnb__page--item">
+              <a class="page-link" href="#">
+                <span class="mdi mdi-chevron-right"></span>
+              </a>
+            </li>
+            <li class="page--item hnb__page--item">
+              <a class="page-link" href="#">最後一頁</a>
+            </li>
+          </ul>
+          <div class="input-group input-group-sm ms-2 mb-3 text-nowrap page-width">
+            <span class="input-group-text" id="inputGroup-sizing-sm">第</span>
+            <input type="text" class="form-control" value="">
+            <span class="input-group-text" id="inputGroup-sizing-sm">頁</span>
+            <button class="btn hnb__btn--default" type="button" id="button-addon2">前往</button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 查詢控制項
+    const searchBtn = document.querySelector('#searchBtn');
+    const queryForm = document.querySelector('#queryForm');
+    const queryList = document.querySelector('#queryList');
+
+    // 查詢信用狀 searchHandler
+    function searchHandler() {
+      queryList.classList.remove('hnb__hide');
+    };
+
+    // 開啟列印視窗 printList
+    function printList() {
+      window.open(
+        '../Query/QueryPrint.html?page=QueryBlcAmount',
+        'printList',
+        'scrollbars=yes'
+        //'width=800,height=600,scrollbars=yes'
+      );
+    };
+
+    // 月曆
+    const lcDateAlert = document.querySelector("#lcDateAlert");
+    const draftDateAlert = document.querySelector("#draftDateAlert");
+    const currentTime = new Date()
+    const config = {
+      locale: 'zh_tw',
+      //enableTime: true, //可選時與分
+      dateFormat: "Y/m/d", //時間格式
+      time_24hr: true, //24 時制
+      minuteIncrement: 15, //分鐘每次選擇間隔單位
+      allowInput: true, //可輸入控制
+      //minDate: "today", //可選最小時間，可直接接受 'today' 字串
+      //maxDate: currentTime.setMonth(currentTime.getMonth() + 1), //可選最大時間，從今天起一個月
+      onChange: function (selectedDates, dateStr, instance) {
+        console.log(`你現在點選的是 ${instance.input.id}，時間為 ${selectedDates} / ${dateStr}`);
+        checkDateTime(dateStr, instance.input.id);
+      }
+    };
+    flatpickr('#lcStartDate, #lcEndDate', config);
+    flatpickr('#draftStartDate, #draftEndDate', config);
+
+    let lcStartDateValue = null;
+    let lcEndDateValue = null;
+    let draftStartDateValue = null;
+    let draftEndDateValue = null;
+
+    function checkDateTime(dateStr, id) {
+      // 辨別開狀結束日期須晚於開始日期
+      if (id === "lcStartDate") {
+        lcStartDateValue = dateStr
+      };
+
+      if (id === "lcEndDate") {
+        lcEndDateValue = dateStr
+      };
+
+      if (lcStartDateValue > lcEndDateValue) {
+        lcDateAlert.classList.remove("d-none");
+        searchBtn.classList.add("disabled");
+      } else {
+        lcDateAlert.classList.add("d-none");
+        searchBtn.classList.remove("disabled");
+      };
+      // 辨別押匯結束日期須晚於開始日期
+      if (id === "draftStartDate") {
+        draftStartDateValue = dateStr
+      };
+
+      if (id === "draftEndDate") {
+        draftEndDateValue = dateStr
+      };
+
+      if (draftStartDateValue > draftEndDateValue) {
+        draftDateAlert.classList.remove("d-none");
+        searchBtn.classList.add("disabled");
+      } else {
+        draftDateAlert.classList.add("d-none");
+        searchBtn.classList.remove("disabled");
+      };
+    };
+
+  </script>
+</body>
+
+</html>

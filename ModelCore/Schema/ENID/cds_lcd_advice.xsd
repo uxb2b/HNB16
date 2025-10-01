@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Daphne Deng (Universal Exchange Inc) -->
+<xs:schema targetNamespace="http://www.uxcds.com/xmlschema/cds" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cds="http://www.uxcds.com/xmlschema/cds" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="cds_lcd_type.xsd"/>
+	<xs:element name="CDSLcdAdvice">
+		<xs:annotation>
+			<xs:documentation>
+CDS國內信用狀修改通知書
+
+version:版本號碼
+</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="lcAdviceInfo" type="cds:LcdAdvInfoType">
+					<xs:annotation>
+						<xs:documentation>信用狀修改通知書資料</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="lcDocOld" type="cds:LcdType">
+					<xs:annotation>
+						<xs:documentation>信用狀資料修改前</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="lcDocNew" type="cds:LcdType">
+					<xs:annotation>
+						<xs:documentation>信用狀資料修改後</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="lcAmendments" type="cds:LcdAmendmentsType">
+					<xs:annotation>
+						<xs:documentation>信用狀修改資料</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="cpDoc" type="cds:CPType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>本票</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="lcData" type="cds:LcdDataType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>信用狀控制資料</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="version" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

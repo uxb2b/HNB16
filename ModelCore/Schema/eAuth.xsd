@@ -1,0 +1,155 @@
+<?xml version="1.0" ?>
+<xs:schema id="eAuth" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+	attributeFormDefault="qualified" elementFormDefault="qualified">
+	<xs:element name="eAuth" msdata:IsDataSet="true" msdata:Locale="zh-TW" msdata:EnforceConstraints="False">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="User" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Auth">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="Branch" type="xs:string" />
+											<xs:attribute name="CN" type="xs:string"/>
+											<xs:attribute name="CName" type="xs:string" />
+											<xs:attribute name="Company" type="xs:string" />
+											<xs:attribute name="UserName" type="xs:string" />
+											<xs:attribute name="Email" type="xs:string" />
+											<xs:attribute name="EPSK" type="xs:string" />
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Role" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element maxOccurs="unbounded" name="RoleItem">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="MONEY_DAILY" type="xs:string" use="required" />
+											<xs:attribute name="MONEY_PASS" type="xs:string" use="required" />
+											<xs:attribute name="MONEY_VERIFY" type="xs:string" use="required" />
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Function" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element maxOccurs="unbounded" name="FunctionItem">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="FLOW" type="xs:string" use="required" />
+											<xs:attribute name="FUNCTIONID" type="xs:string" use="required" />
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="AclList" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element maxOccurs="unbounded" name="AclsItem">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="AccountNo" type="xs:string" use="required" />
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Enterprise" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element maxOccurs="unbounded" name="EnterpriseMember">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="ReceiptNo" type="xs:string" use="required" />
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="userSession" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="isAlive" type="xs:boolean" minOccurs="0" />
+							<xs:element name="isCertAuthorized" type="xs:boolean" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="VerifyItem" maxOccurs="unbounded" minOccurs="0">
+					<xs:complexType>
+						<xs:attribute name="DocID" form="unqualified" type="xs:string" />
+						<xs:attribute name="StepID" form="unqualified" type="xs:string" />
+						<xs:attribute name="Function" form="unqualified" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PassItem" maxOccurs="unbounded" minOccurs="0">
+					<xs:complexType>
+						<xs:attribute name="DocID" form="unqualified" type="xs:string" />
+						<xs:attribute name="StepID" form="unqualified" type="xs:string" />
+						<xs:attribute name="Function" form="unqualified" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RejectItem" maxOccurs="unbounded" minOccurs="0">
+					<xs:complexType>
+						<xs:attribute name="DocID" form="unqualified" type="xs:string" />
+						<xs:attribute name="StepID" form="unqualified" type="xs:string" />
+						<xs:attribute name="Function" form="unqualified" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="task"  maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="flowSchema" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="schemaID" type="xs:string" />
+									<xs:attribute name="schemaKey" type="xs:string" />
+									<xs:attribute name="schemaName" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="taskID" type="xs:string" />
+						<xs:attribute name="taskKey" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="step" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="user" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="account" type="xs:string" />
+									<xs:attribute name="email" type="xs:string" />
+									<xs:attribute name="userKey" type="xs:string" />
+									<xs:attribute name="userName" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="stepKey" type="xs:string" />
+						<xs:attribute name="stepName" type="xs:string" />
+						<xs:attribute name="taskID" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

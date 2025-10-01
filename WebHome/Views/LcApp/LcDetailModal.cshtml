@@ -1,0 +1,31 @@
+﻿<!-- 信用狀 視窗 -->
+<div class="modal fade" id="lcDetailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="lcDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+        <form id="accountManagerForm">
+            <div id="lcDetailModalContent" class="modal-content hnb__modal">
+                <!-- 內容將由 AJAX 載入 -->
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $('#lcDetailModal').on('shown.bs.modal', function (e) {
+        // 這裡用 AJAX 載入內容
+        $.ajax({
+            url: '../LcApp/LcDetailModalContent',
+            type: 'GET',
+            success: function (data) {
+                $('#lcDetailModalContent').html(data);
+            },
+            error: function () {
+                $('#lcDetailModalContent').html('<div class="p-4 text-danger">載入明細失敗，請稍後再試。</div>');
+            }
+        });
+    });
+
+    $('#lcDetailModal').on('hidden.bs.modal', function (e) {
+        // 清空內容
+        $('#lcDetailModalContent').html('');
+    });
+</script>

@@ -1,0 +1,102 @@
+﻿<div class="accordion-item">
+    <h2 class="accordion-header" id="heading_App">
+        <button class="py-2 fs-1-5 fw-bold accordion-button hnb__menu--title rounded-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#App" aria-expanded="false" aria-controls="App">
+            申請作業
+        </button>
+    </h2>
+    <div id="App" class="accordion-collapse collapse" aria-labelledby="heading_App" data-bs-parent="#accordionSideMenu" style="">
+        <div class="accordion-body p-0">
+            <div class="list-group list-group-flush" id="list-tab" role="tablist">
+                <a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="LcApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-LcApp">開狀申請書</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="AmendApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-AmendApp">修改申請書</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="DraftApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-DraftApp">押匯申請</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="AmendAccept" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-AmendAccept">修改信用狀接受註記</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="CancelApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-CancelApp">註銷申請/切結書</a><div class="accordion accordion-flush" id="App-sub">
+                    <div class="accordion-item border-0">
+                        <h3 class="px-2 accordion-header" id="heading_SameDayReversal">
+                            <button class="py-2 ps-3 fs-0-8-75 fw-bold subAccordion accordion-button hnb__menu--title rounded-0 border-top border-bottom collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#SameDayReversal" aria-expanded="false" aria-controls="SameDayReversal">當日沖正交易</button>
+                        </h3>
+                        <div id="SameDayReversal" class="px-2 accordion-collapse collapse" aria-labelledby="heading_SameDayReversal" data-bs-parent="#App-sub">
+                            <div class="accordion-body p-0 border-bottom"><div class="list-group list-group-flush" id="list-tab" role="tablist"><a class="ps-4-5 list-group-item list-group-item-action hnb__menu--btn" id="AmendLcApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-AmendLcApp">開狀沖正(EC)</a><a class="ps-4-5 list-group-item list-group-item-action hnb__menu--btn" id="CurrentAmendApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-CurrentAmendApp">修狀沖正(EC)</a><a class="ps-4-5 list-group-item list-group-item-action hnb__menu--btn" id="CurrentCancelApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-CurrentCancelApp">註銷信用狀(EC)</a><a class="ps-4-5 list-group-item list-group-item-action hnb__menu--btn" id="CurrentAmendDraftApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-CurrentAmendDraftApp">押匯沖正(EC)</a></div></div>
+                        </div>
+                    </div><div class="accordion-item border-0">
+                        <h3 class="px-2 accordion-header" id="heading_SameDayAdjustment">
+                            <button class="py-2 ps-3 fs-0-8-75 fw-bold subAccordion accordion-button hnb__menu--title rounded-0 border-top border-bottom collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#SameDayAdjustment" aria-expanded="false" aria-controls="SameDayAdjustment">當日調整帳務</button>
+                        </h3>
+                        <div id="SameDayAdjustment" class="px-2 accordion-collapse collapse" aria-labelledby="heading_SameDayAdjustment" data-bs-parent="#App-sub">
+                            <div class="accordion-body p-0 border-bottom"><div class="list-group list-group-flush" id="list-tab" role="tablist"><a class="ps-4-5 list-group-item list-group-item-action hnb__menu--btn" id="LcAdjustment" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-LcAdjustment">開狀申請當日調整帳務</a><a class="ps-4-5 list-group-item list-group-item-action hnb__menu--btn" id="AmendAdjustment" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-AmendAdjustment">修改申請當日調整帳務</a><a class="ps-4-5 list-group-item list-group-item-action hnb__menu--btn" id="CancelAdjustment" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-CancelAdjustment">註銷申請當日調整帳務</a><a class="ps-4-5 list-group-item list-group-item-action hnb__menu--btn" id="DraftAdjustment" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-DraftAdjustment">押匯申請當日調整帳務</a></div></div>
+                        </div>
+                    </div>
+                </div><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="SentTrfStatus" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-SentTrfStatus">傳送已轉帳狀態</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="ExpiredLc" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-ExpiredLc">CDS 過期案件主動註銷</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="accordion-item">
+    <h2 class="accordion-header" id="heading_Review">
+        <button class="py-2 fs-1-5 fw-bold accordion-button hnb__menu--title rounded-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Review" aria-expanded="false" aria-controls="Review">
+            編審作業
+        </button>
+    </h2>
+    <div id="Review" class="accordion-collapse collapse" aria-labelledby="heading_Review" data-bs-parent="#accordionSideMenu">
+        <div class="accordion-body p-0">
+            <div class="list-group list-group-flush" id="list-tab" role="tablist"><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="ReviewLcApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-ReviewLcApp">開狀申請書</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="ReviewAmendApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-ReviewAmendApp">修改申請書</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="ReviewCancelApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-ReviewCancelApp">註銷申請/切結書</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="ReviewDraftApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-ReviewDraftApp">押匯申請</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="ReviewInterestRate" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-ReviewInterestRate">利率約定(改貸)</a></div>
+        </div>
+    </div>
+</div>
+<div class="accordion-item">
+    <h2 class="accordion-header" id="heading_Query">
+        <button class="py-2 fs-1-5 fw-bold accordion-button hnb__menu--title rounded-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Query" aria-expanded="false" aria-controls="Query">
+            查詢作業
+        </button>
+    </h2>
+    <div id="Query" class="accordion-collapse collapse" aria-labelledby="heading_Query" data-bs-parent="#accordionSideMenu">
+        <div class="accordion-body p-0">
+            <div class="list-group list-group-flush" id="list-tab" role="tablist"><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryLcApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryLcApp">開狀申請書</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryAmendApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryAmendApp">修改申請書</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryAmendNotice" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryAmendNotice">修改通知書</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryCancelApp" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryCancelApp">註銷申請/切結書</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryLcList" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryLcList">信用狀</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryDraftList" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryDraftList">押匯申請</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryMarLc" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryMarLc">主管核准開狀紀錄</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryMarDraft" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryMarDraft">主管核准押匯紀錄</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryOutstandLc" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryOutstandLc">未結案信用狀額度與保證金</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryInterestRate" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryInterestRate">利率約定 (改貸)</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="QueryAccount" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-QueryAccount">會計帳務分錄</a></div>
+        </div>
+    </div>
+</div>
+<div class="accordion-item">
+    <h2 class="accordion-header" id="heading_Prompt">
+        <button class="py-2 fs-1-5 fw-bold accordion-button hnb__menu--title rounded-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Prompt" aria-expanded="false" aria-controls="Prompt">
+            電子押匯提示作業
+        </button>
+    </h2>
+    <div id="Prompt" class="accordion-collapse collapse" aria-labelledby="heading_Prompt" data-bs-parent="#accordionSideMenu">
+        <div class="accordion-body p-0">
+            <div class="list-group list-group-flush" id="list-tab" role="tablist"><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="PromptDraft" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-PromptDraft">押匯提示</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="RePromptDraft" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-RePromptDraft">重新提示</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="WebPromptDraft" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-WebPromptDraft">網銀押匯提示</a></div>
+        </div>
+    </div>
+</div>
+<div class="accordion-item">
+    <h2 class="accordion-header" id="heading_Amend">
+        <button class="py-2 fs-1-5 fw-bold accordion-button hnb__menu--title rounded-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Amend" aria-expanded="false" aria-controls="Amend">
+            補收開狀手續費作業
+        </button>
+    </h2>
+    <div id="Amend" class="accordion-collapse collapse" aria-labelledby="heading_Amend" data-bs-parent="#accordionSideMenu">
+        <div class="accordion-body p-0">
+            <div class="list-group list-group-flush" id="list-tab" role="tablist"><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="ChargeLc" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-ChargeLc">補收開狀手續費</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="ChargeAmendLc" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-ChargeAmendLc">當日更正補收開狀手續費</a></div>
+        </div>
+    </div>
+</div>
+<div class="accordion-item">
+    <h2 class="accordion-header" id="heading_Customer">
+        <button class="py-2 fs-1-5 fw-bold accordion-button hnb__menu--title rounded-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Customer" aria-expanded="false" aria-controls="Customer">
+            客戶管理作業
+        </button>
+    </h2>
+    <div id="Customer" class="accordion-collapse collapse" aria-labelledby="heading_Customer" data-bs-parent="#accordionSideMenu">
+        <div class="accordion-body p-0">
+            <div class="list-group list-group-flush" id="list-tab" role="tablist"><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="SetGroup" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-SetGroup">設定客戶群組</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="SetCustomer" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-SetCustomer">設定客戶資料</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="SetCustomerBranch" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-SetCustomerBranch">客戶所屬分行異動</a><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="SetBeneficiary" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-SetBeneficiary">受益人資料</a></div>
+        </div>
+    </div>
+</div>
+<div class="accordion-item">
+    <h2 class="accordion-header" id="heading_Member">
+        <button class="py-2 fs-1-5 fw-bold accordion-button hnb__menu--title rounded-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Member" aria-expanded="false" aria-controls="Member">
+            會員管理作業
+        </button>
+    </h2>
+    <div id="Member" class="accordion-collapse collapse" aria-labelledby="heading_Member" data-bs-parent="#accordionSideMenu">
+        <div class="accordion-body p-0">
+            <div class="list-group list-group-flush" id="list-tab" role="tablist"><a class="ps-4 list-group-item list-group-item-action hnb__menu--btn" id="ManagerPersonal" href="javascript:void(0)" role="tab" data-bs-toggle="list" aria-controls="list-ManagerPersonal">個人設定</a></div>
+        </div>
+    </div>
+</div>

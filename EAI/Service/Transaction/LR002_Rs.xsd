@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<xs:schema id="IFX" targetNamespace="http://www.ifxforum.org" xmlns:mstns="http://www.ifxforum.org" xmlns="http://www.ifxforum.org" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+    <xs:element name="IFX"   >
+        <xs:complexType>
+            <xs:sequence >
+                <xs:element name="EAIHeader">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="DebugLevel" type="xs:string"  />
+                            <xs:element name="ErrCode" type="xs:string"  />
+                            <xs:element name="RecSize" type="xs:string"  />
+                            <xs:element name="DomID" type="xs:string"  />
+                            <xs:element name="TimeOut" type="xs:string"  />
+                            <xs:element name="RecID" type="xs:string"  />
+                            <xs:element name="Capacity" type="xs:string"  />
+                            <xs:element name="SrcSystemID" type="xs:string"  />
+                            <xs:element name="TxnID" type="xs:string"  />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="LogTxn">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="PmtID" type="xs:string"  />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="EAIBody">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="MsgRs"  >
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Header"  >
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="TxnId" type="xs:string"  />
+                                                    <xs:element name="RspCode" type="xs:string"  />
+                                                    <xs:element name="Desc" type="xs:string"  />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="SvcRs"  >
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="BRNO" type="xs:string"  />
+                                                    <xs:element name="TRMSEQ" type="xs:string"  />
+                                                    <xs:element name="TXTNO" type="xs:string"  />
+                                                    <xs:element name="IRTNM" type="xs:string"  />
+                                                    <xs:element name="FITIRT" type="xs:string"  />
+                                                    <xs:element name="DFFITIRT" type="xs:string"  />
+                                                    <xs:element name="LNCRT" type="xs:string"  />
+                                                    <xs:element name="RATECD" type="xs:string"  />
+                                                    <xs:element name="INTRT" type="xs:string"  />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

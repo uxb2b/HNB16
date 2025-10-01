@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<CDSLcd version="1.0" xsi:schemaLocation="http://www.uxcds.com/xmlschema/cds cds_lcd.xsd" xmlns="http://www.uxcds.com/xmlschema/cds" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<lcInfo appNo="ENID113000071"/>
+	<lcDoc>
+		<lcTitle>不可撤銷信用狀</lcTitle>
+		<lcType>usance</lcType>
+		<lcHeader>敬啟者： 　　本行茲徇右列申請人之請求開發 本信用狀，本信用狀規定如有未盡事 宜適用國際商會所訂現行「信用狀統 一慣例與實務」之規定。</lcHeader>
+		<lcNo>113108050110090014</lcNo>
+		<issuingDate>2024/10/25</issuingDate>
+		<issuingBank address="台北市松江路222號2F" branchCode="1083" branchName="城東分行" code="008" name="華南商業銀行" phone="02-25512111"/>
+		<advisingBank address="台北市松江路222號2F" branchCode="1083" branchName="城東分行" changed="false" code="008" name="華南商業銀行" phone="02-25512111"/>
+		<advisingBankNo/>
+		<payingBank address="台北市松江路222號2F" branchCode="1083" branchName="城東分行" changed="false" code="008" name="華南商業銀行" phone="02-25512111"/>
+		<applicant address="測試市測試路1號" addressChanged="false" name="鈞元鋼鐵" nameChanged="false" phone="02-22446688" regNo="90000001"/>
+		<beneficiary address="高雄市三民區X濱路159999號1樓" addressChanged="false" chiefEmail="" chiefEmailChanged="false" chiefName="高孟聰" chiefNameChanged="false" chiefTitle="董事" chiefTitleChanged="false" name="天X庫X限X司" nameChanged="false" phone="07-7670111" phoneChanged="false" regNo="59286121"/>
+		<amount changed="false" chinese="伍萬元整" value="50000"/>
+		<currency code="1" name="新臺幣"/>
+		<expiryDate changed="false">2025/01/24</expiryDate>
+		<lcConditions>
+			<lcCond>本信用狀可由上開受益人在不超過上開金額範圍內，依本信用狀規定條件簽發匯票洽請承兌╱付款： 一、匯票之條件：    甲、付款人：華南商業銀行城東分行   乙、付款期限：以「定日付款」方式填寫到期日，其到期日為自匯票發票日 起算60天。                 (本信用狀匯票墊款利息由買方負擔者，本行依受益人簽發、提示之匯票即期付款)   丙、金額：須與相關發票上所開列金額一致或依照本信用狀其他提示。 二、應檢附之單證如下：    1. 匯票承兌/付款申請書乙份    2. 發票    3. 其他：       上項單證應載明申請人向受益人購買下列貨品：                線材</lcCond>
+		</lcConditions>
+		<lcAdditionalConditions>
+			<lcAddCond>特別指示： 1. 匯票承兌/付款申請書使用  ■本行   □受益人  所訂格式，申請書上信用狀申請人所蓋印鑑應與原留印鑑相符。 2. 分批交貨：■可以。   □不可以。 3. ■匯票墊款利息由買方負擔。  □匯票貼現利息由賣方負擔。　 4. 最後交貨日期：民國 114年 01月 24日　 5. 限定押匯日期： 自民國 　年　月　日起始可押匯　 6. 受益人押匯時，匯票承兌/付款申請書□可以   ■不可以　僅由受益人單方蓋章　 7. 押匯文件透過通知銀行之櫃台提示　 8. 其他：</lcAddCond>
+		</lcAdditionalConditions>
+		<conditions>
+			<condition changed="false" name="PaymentTerm" present="general" type="singleChoice" used="true">
+				<title>付款期限</title>
+				<description>付款期限方式</description>
+				<singleChoice name="PaymentTermSingle">
+					<item checked="false" itemValue="atSight" name="Sight">見票即付</item>
+					<item checked="true" itemValue="atDaysAfterDate" name="Usance">發票日後定日付款</item>
+				</singleChoice>
+			</condition>
+			<condition changed="true" name="AtDaysAfterDate" present="usance" type="textBlank" used="true">
+				<title>發票日後定日付款</title>
+				<description>填寫買方到期日</description>
+				<prefixMessage>以「定日付款」方式填寫到期日，其到期日為自匯票發票日起算</prefixMessage>
+				<textBlank name="AtDaysBlank">
+					<blank name="AtDays">60</blank>
+					<messageSegment>天。</messageSegment>
+				</textBlank>
+			</condition>
+			<condition changed="true" name="UsanceAppendix" present="usance" type="singleChoice" used="true">
+				<title>發票日單據</title>
+				<description>匯票或(統一)發票</description>
+				<singleChoice name="UsanceAppendixSingle">
+					<item checked="true" itemValue="draft" name="Draft">匯票</item>
+					<item checked="false" itemValue="invoice" name="Invoice">(統一)發票</item>
+					<item checked="false" itemValue="others" name="Others">其他</item>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="GoodsName" present="general" type="textArea" used="true">
+				<title>貨物名稱</title>
+				<description>填寫貨物名稱</description>
+				<textArea name="GoodsNameArea">
+					<area name="GoodsName">線材</area>
+				</textArea>
+			</condition>
+			<condition changed="false" name="NonCSNegotiationSpecialClause" present="general" type="textArea" used="true">
+				<title>非中鋼之電子押匯特別指示條款</title>
+				<description>不使用中鋼之電子押匯特別指示條款，並自行填寫電子押匯特別指示條款</description>
+				<prefixMessage>1. 匯票承兌/付款申請書使用貴行所訂格式，申請書上信用狀申請人所蓋印鑑應與原留印鑑相符。</prefixMessage>
+				<prefixMessage>或自行填寫電子押匯特別指示條款</prefixMessage>
+				<textArea name="NonCSNegotiationSpecialClauseArea">
+					<area name="NonCSNegotiationSpecialClause"> 1. 匯票承兌/付款申請書使用貴行所訂格式，申請書上信用狀申請人所蓋印鑑應與原留印鑑相符。</area>
+				</textArea>
+			</condition>
+			<condition changed="false" name="DraftPaymentOrAcceptanceApplication" present="cross" type="textOnly" used="true">
+				<title>檢附單證</title>
+				<description>檢附匯票付款申請書或匯票承兌申請書乙份</description>
+				<textOnly name="DraftPaymentOrAcceptanceApplicationText">
+					<messageSegment>匯票承兌/付款申請書乙份</messageSegment>
+				</textOnly>
+			</condition>
+			<condition changed="false" name="IsNormalInvoice" present="general" type="singleChoice" used="true">
+				<title>檢附單證</title>
+				<description>檢附發票或統一發票</description>
+				<prefixMessage>發票或統一發票：</prefixMessage>
+				<singleChoice name="IsNormalInvoiceSingle">
+					<item checked="true" itemValue="true" name="Yes">發票</item>
+					<item checked="false" itemValue="false" name="No">統一發票</item>
+					<messageSegment/>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="OtherAppendix" present="general" type="textArea" used="true">
+				<title>其他檢附單據</title>
+				<description>填寫其他檢附單據</description>
+				<textArea name="OtherAppendixArea">
+					<area name="OtherAppendix"/>
+				</textArea>
+			</condition>
+			<condition changed="false" name="IsUsanceLcInterestPayByBuyer" present="usance" type="singleChoice" used="true">
+				<title>遠期信用狀利息</title>
+				<description>遠期信用狀利息由買方負擔或賣方負擔</description>
+				<prefixMessage>遠期信用狀利息：</prefixMessage>
+				<singleChoice name="IsUsanceLcInterestPayByBuyerSingle">
+					<item checked="true" itemValue="true" name="Yes">買方負擔</item>
+					<item checked="false" itemValue="false" name="No">賣方負擔</item>
+					<messageSegment>　(未填者視為由買方負擔)</messageSegment>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="IsAcceptanceChargePayByBuyer" present="usance" type="singleChoice" used="false">
+				<title>承兌手續費</title>
+				<description>選擇承兌手續費由買方或賣方負擔</description>
+				<prefixMessage>承兌手續費：</prefixMessage>
+				<singleChoice name="IsAcceptanceChargePayByBuyerSingle">
+					<item checked="true" itemValue="true" name="Yes">買方</item>
+					<item checked="false" itemValue="false" name="No">賣方</item>
+					<messageSegment>負擔　(未填者視為由買方負擔)</messageSegment>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="IsBatchDeliverGoods" present="general" type="singleChoice" used="true">
+				<title>交貨方式</title>
+				<description>選擇是否可分批交貨</description>
+				<prefixMessage>分批交貨：</prefixMessage>
+				<singleChoice name="IsBatchDeliverGoodsSingle">
+					<item checked="true" itemValue="true" name="Yes">可以</item>
+					<item checked="false" itemValue="false" name="No">不可以</item>
+					<messageSegment>　(未填者視為得分批交貨)</messageSegment>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="LastDateOfDelivery" present="general" type="textBlank" used="true">
+				<title>最後交貨日期</title>
+				<description>最後交貨日期</description>
+				<prefixMessage>最後交貨日期</prefixMessage>
+				<textBlank name="LastDateOfDeliveryBlank">
+					<blank name="LastDateOfDelivery">2025/01/24</blank>
+					<messageSegment>　(未填者自開狀日起三個月視為最後交貨日)</messageSegment>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="OtherSpecialClause" present="general" type="textArea" used="true">
+				<title>其他特別指示條款</title>
+				<description>填寫其他特別指示條款</description>
+				<textArea name="OtherSpecialClauseArea">
+					<area name="OtherSpecialClause"/>
+				</textArea>
+			</condition>
+			<condition changed="false" name="NegotiateDate" present="general" type="textBlank" used="true">
+				<title>限定押匯日期</title>
+				<description>限定押匯日期</description>
+				<prefixMessage>限定押匯日期</prefixMessage>
+				<textBlank name=" NegotiateDateBlank">
+					<blank name="NegotiateDate"/>
+					<messageSegment>起始可押匯</messageSegment>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="IsBeneficiarySignOnly" present="general" type="singleChoice" used="true">
+				<title>受益人押匯時，匯票承兌/付款申請書</title>
+				<description>受益人押匯時，匯票承兌/付款申請書僅可不可以僅由受益人單方蓋章</description>
+				<prefixMessage>受益人押匯時，匯票承兌/付款申請書</prefixMessage>
+				<singleChoice name="IsBeneficiarySignOnlySingle">
+					<item checked="false" itemValue="true" name="Yes">可以</item>
+					<item checked="true" itemValue="false" name="No">不可以</item>
+					<messageSegment>　僅由受益人單方蓋章</messageSegment>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="NegoDocNotice" present="general" type="textOnly" used="true">
+				<title>押匯文件提示</title>
+				<description>押匯文件透過通知銀行之櫃台提示</description>
+				<textOnly name="NegoDocNoticeText">
+					<messageSegment>押匯文件透過通知銀行之櫃台提示</messageSegment>
+				</textOnly>
+			</condition>
+			<condition changed="false" name="DraftFormat" present="general" type="singleChoice" used="true">
+				<title>匯票承兌/付款申請書格式</title>
+				<description>本行或受益人</description>
+				<prefixMessage>匯票承兌/付款申請書使用</prefixMessage>
+				<singleChoice name="DraftFormatSingle">
+					<item checked="true" itemValue="bank" name="Bank">本行</item>
+					<item checked="false" itemValue="beneficiary" name="Beneficiary">受益人</item>
+					<messageSegment>所訂格式</messageSegment>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="RateLow" present="usance" type="textBlank" used="true">
+				<title>填寫墊款日起每月日期</title>
+				<description>填寫墊款日起每月日期</description>
+				<prefixMessage>自墊款日起每月</prefixMessage>
+				<textBlank name="PayDateBlank">
+					<blank name="PayDate"/>
+					<messageSegment>日(未填者視為撥貸日之相對日)</messageSegment>
+				</textBlank>
+			</condition>
+		</conditions>
+		<lcTail>   　　上述匯票須載明本信用狀之日期及編號並限於 有效期限內向本行辦理提示請求承兌╱付款。上述 單證經審查結果核與本信用狀規定條款相符時，本 行保證上開依規定簽發、提示之匯票必能如約獲得 承兌╱付款。   </lcTail>
+	</lcDoc>
+	<lcData>
+		<payment>
+			<term>atDaysAfterDate</term>
+			<days>60</days>
+		</payment>
+		<isPartialShipment>false</isPartialShipment>
+		<isCSCConditions>false</isCSCConditions>
+		<CSCSalesDept/>
+	</lcData>
+</CDSLcd>

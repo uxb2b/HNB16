@@ -1,0 +1,227 @@
+﻿@{
+    Layout = "~/Views/LcApp/LcAppTemplate.cshtml";
+}
+
+<!-- 選擇開狀申請書填寫方式 -->
+<div id="setForm">
+    <h1 class="py-2 fs-4 fw-bolder">選擇開狀申請書填寫方式</h1>
+    <div class="mb-2 card">
+        <div class="card-body bg-light">
+            <form id="selectType">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="mb-2 row">
+                            <label for="beneType" class="col-2 col-md-3 col-form-label text-end text-nowrap">受益人類別</label>
+                            <div class="col-10 col-md-9">
+                                <select id="beneType" class="form-select form-select-sm">
+                                    <option value="" selected>= 請選擇 =</option>
+                                    <option value="cds">CDS 客戶 (中鋼、中鴻、中鋁、華新麗華、東和鋼鐵)</option>
+                                    <option value="fpc">台塑 e 化平台客戶 (台塑集團、奇美集團)</option>
+                                    <option value="other">其他客戶</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="beneSelect" class="col-12 col-md-6 col-lg-4">
+                        <div class="mb-2 row">
+                            <label for="bene" id="beneTitle"
+                                   class="col-2 col-md-3 col-form-label text-end text-nowrap">受益人</label>
+                            <div class="col-10 col-md-9">
+                                <select id="bene" class="form-select form-select-sm">
+                                    <option value="0" selected>= 請選擇 =</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="inputSelect" class="col-12 col-md-6 col-lg-4">
+                        <div class="mb-2 row">
+                            <label for="inputType" class="col-2 col-md-3 col-form-label text-end text-nowrap">填寫方式</label>
+                            <div class="col-10 col-md-9">
+                                <select id="inputType" class="form-select form-select-sm">
+                                    <option value="0" selected>= 請選擇 =</option>
+                                    <option value="reWrite">重新填寫申請書</option>
+                                    <option value="modify">舊有申請資料修改</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-end py-1">
+                        <button type="button" id="setTypeBtn" class="px-3 btn btn-sm hnb__btn--default text-nowrap disabled"
+                                onclick="settingHandler()">
+                            確定
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        // 受益人類別控制項
+        const beneType = document.querySelector('#beneType');
+        const beneSelect = document.querySelector('#beneSelect');
+        const beneTitle = document.querySelector('#beneTitle');
+        const bene = document.querySelector('#bene');
+        const inputSelect = document.querySelector('#inputSelect');
+        const inputType = document.querySelector('#inputType');
+        const setTypeBtn = document.querySelector('#setTypeBtn');
+        // 查詢控制項
+        const setForm = document.querySelector('#setForm');
+        const selectType = document.querySelector('#selectType');
+        const queryForm = document.querySelector('#queryForm');
+        const lcForCdsAppList = document.querySelector('#lcForCdsAppList');
+        const lcAppList = document.querySelector('#lcAppList');
+        const lcforOtherAppList = document.querySelector('#lcforOtherAppList');
+        let currentEditType = null;
+
+        // fetch 受益人清單
+        async function fetchBeneficiaries(type) {
+            const res = await fetch('../api/beneficiaries', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ type })
+            });
+            if (!res.ok) return [];
+            return await res.json();
+        }
+
+        beneType.addEventListener('change', async () => {
+          currentEditType = beneType.value;
+          const beneItems = document.querySelectorAll('.beneItem');
+
+          // 初始化選單
+          if (beneItems.length > 0) {
+            bene.value = '0';
+            // selectType.reset();
+            beneItems.forEach(item => bene.removeChild(item));
+          };
+
+          // 動態載入受益人選單
+          if (currentEditType === 'cds' || currentEditType === 'fpc') {
+            beneTitle.textContent = currentEditType === 'cds' ? '受益人' : '集團受益人';
+            const list = await fetchBeneficiaries(currentEditType);
+            list.forEach(item => {
+              const itemEl = document.createElement('option');
+              itemEl.value = item.value;
+              itemEl.classList.add('beneItem');
+              itemEl.textContent = item.text;
+              bene.appendChild(itemEl);
+            });
+          }
+
+          // 依流程開啟清冊或填寫
+          if (currentEditType === 'other') {
+            // beneSelect.classList.add('hnb__hide');
+            // inputSelect.classList.add('hnb__hide');
+            bene.value = '0';
+            inputType.value = '0';
+          } else {
+            // if (beneSelect.classList.contains('hnb__hide')) {
+            //   beneSelect.classList.remove('hnb__hide');
+            // }
+            inputType.value = '0';
+            // inputSelect.classList.remove('hnb__hide');
+          }
+          checkSetForm();
+        });
+
+        bene.addEventListener('change', () => {
+          checkSetForm();
+        });
+
+        inputType.addEventListener('change', () => {
+          checkSetForm();
+        });
+
+        function checkSetForm() {
+            setTypeBtn.classList.add('disabled');
+            if(inputType.value !== '0') {
+                  if (beneType.value === 'other' || bene.value !== '0')
+                      setTypeBtn.classList.remove('disabled');
+            }
+        }
+
+        // 選擇開狀申請書填寫方式 settingHandler
+        async function settingHandler() {
+          setForm.classList.add('hnb__hide');
+          const payload = {
+            beneType: beneType.value,
+            bene: bene.value,
+            inputType: inputType.value
+          };
+          const res = await fetch('../LcApp/NextStep', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            const result = await res.json();
+            // 根據 server 回傳 next 顯示對應區塊
+            $('').launchDownload(result.next,payload);
+          } else {
+            alert(res.text);
+          }
+        };
+
+        const beneCorp = document.querySelector('#beneCorp');
+        const beneCorp2 = document.querySelector('#beneCorp2');
+        const beneNo1 = document.querySelector('#beneNo1');
+        const beneName1 = document.querySelector('#beneName1');
+        const beneNo2 = document.querySelector('#beneNo2');
+        const beneName2 = document.querySelector('#beneName2');
+        // [beneCorp, beneCorp2].forEach(item => {
+        //   item.addEventListener('change', (event) => {
+        //     const value = event.target.value;
+        //     if (value === '75708007') {
+        //       beneNo1.textContent = value;
+        //       beneNo2.value = value;
+        //       beneName1.textContent = '台灣塑膠工業股份有限公司';
+        //       beneName2.value = '台灣塑膠工業股份有限公司';
+        //     }
+        //     if (value === '20201258') {
+        //       beneNo1.textContent = value;
+        //       beneNo2.value = value;
+        //       beneName1.textContent = '泰西股份有限公司';
+        //       beneName2.value = '泰西股份有限公司';
+        //     }
+        //   });
+        // });
+
+        // 申請確認
+        function confirmReview() {
+            doPost('../LcApp/ConfirmReview', {}, function (data) {
+                $(data).appendTo($('body'));
+            });
+        };
+
+        // 月曆
+        const dateAlert = document.querySelector(".dateAlert");
+        const currentTime = new Date()
+
+        let startDateValue = null
+        let endDateValue = null
+
+        // 辨別結束日期須晚於開始日期
+        function checkDateTime(dateStr, id) {
+          if (id === "startDate") {
+            startDateValue = dateStr
+          }
+
+          if (id === "endDate") {
+            endDateValue = dateStr
+          }
+
+          if (startDateValue > endDateValue) {
+            dateAlert.classList.remove("d-none");
+          } else {
+            dateAlert.classList.add("d-none");
+          }
+        };
+
+    </script>
+}

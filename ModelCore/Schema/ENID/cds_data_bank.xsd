@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Daphne Deng (Universal Exchange Inc) -->
+<xs:schema targetNamespace="http://www.uxcds.com/xmlschema/cds" xmlns:cds="http://www.uxcds.com/xmlschema/cds" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="cds_data_type.xsd"/>
+	<xs:element name="CDSDataBank">
+		<xs:annotation>
+			<xs:documentation>
+CDS銀行基本資料
+version:版本號碼
+</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="bankInfo" type="cds:BankInfoType">
+					<xs:annotation>
+						<xs:documentation>銀行資訊</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="branchItems" type="cds:BankBranchType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>分行資料</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="cpNoRange" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>
+startCpNo:本票號碼區間起始
+
+endCpNo:本票號碼區間終結</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="startCpNo" type="xs:string" use="required"/>
+						<xs:attribute name="endCpNo" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="version" type="xs:string" use="required" fixed="1.0"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

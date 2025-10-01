@@ -1,0 +1,105 @@
+﻿@using WebHome.Helper
+@{
+    var profile = Context.GetUser();
+    var bankUser = profile?.ProfileData;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <title>華南銀行 - 國內信用狀系統</title>
+    <link rel="stylesheet" href="../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+    <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body>
+    <header class="navbar fixed-top flex-nowrap border-bottom p-0 shadow-sm">
+        <div class="navbar-brand hnb__logo me-0 px-3">
+            <img src="../assets/images/logo-hncb.png" alt="HNB logo" class="pe-2">
+            <span class="align-text-top fs-4 fw-bold custom-element" style="color: #2a91bc;">國內信用狀系統</span>
+        </div>
+        <nav class="d-inline-flex align-items-center me-4">
+            <span class="px-2 fw-bold">
+                <span id="authTitle"></span>
+                @Html.Raw(profile?.UserName) 您好，歡迎使用本系統
+            </span>
+            <span class="px-2">|</span>
+            <a id="todoList" class="hnb__link--tab mx-2" href="#" onclick="todoListHandler()">待辦事項</a>
+            <a id="info" class="hnb__link--tab mx-2" href="#" onclick="infoListHandler()">訊息匣</a>
+            <button id="logout" class="btn logout btn-sm ms-3 px-3" type="button">
+                <span class="mdi mdi-logout"></span>
+                登出
+            </button>
+        </nav>
+    </header>
+    <div class="container-fluid px-0">
+        <!-- 左側選單-->
+        <nav id="sidebarMenu" class="d-block sidebar collapse">
+            <div class="position-sticky pb-5">
+                <div class="accordion accordion-flush" id="accordionSideMenu">
+                    <!-- 這裡會動態生成側邊選單 -->
+                    @if (ModelCore.Properties.AppSettings.Default.BankUserRoleID.Contains(bankUser?.ROLE_ID))
+                    {
+                        await Html.RenderPartialAsync($"~/Views/SiteAction/SideMenu/{bankUser!.ROLE_ID}.cshtml");
+                    }
+                </div>
+            </div>
+        </nav>
+        <!-- 主畫面，靜態頁面僅以 iframe 方式模擬 -->
+        <main class="content__wrapper">
+            <iframe id="main-content" title="Inline Frame" src="" style="width: 100%; height: 100%">
+            </iframe>
+        </main>
+    </div>
+    <footer class="navbar fixed-bottom flex-nowrap p-3">
+    </footer>
+
+    <!-- JS Plugin -->
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.js"></script>
+    @* <script src="../assets/js/sideMenu.js"></script> *@
+    <script>
+        // 檢查 cookie 值是否存在，若無則回到 login 畫面
+        function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        const userName = getCookie('username');
+        let isAuth = false;
+        // 檢查 URL 參數
+        function checkAuth() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const auth = urlParams.get('auth');
+          isAuth = !!auth;
+        }
+        window.onload = () => {
+        };
+
+        // 登出 logout
+        const logout = document.querySelector('#logout');
+        logout.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          window.location.href = '../Login'
+        });
+
+        // 待辦事項 todoList
+        function todoListHandler() {
+          clearAccordionAction();
+          mainContent.src = './pages/TodoList.html';
+        };
+
+        // 訊息匣 infoList
+        function infoListHandler() {
+          clearAccordionAction();
+          mainContent.src = './pages/Info.html';
+        };
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:tw.org.ba="http://www.ba.org.tw" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.ifxforum.org" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="IFX">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="EAIHeader">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TxnID" type="xs:string" />
+                            <xs:element name="RecID" type="xs:string" />
+                            <xs:element name="SrcSystemID" type="xs:string" />
+                            <xs:element name="DomID" type="xs:string" />
+                            <xs:element name="ErrCode" type="xs:string" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="LogTxn">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TxnID" type="xs:string" />
+                            <xs:element name="PmtID" type="xs:string" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="EAIBody">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="MsgRs">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Header">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="TxnId" type="xs:string" />
+                                                    <xs:element name="RspCode" type="xs:string" />
+                                                    <xs:element name="Desc" type="xs:string" />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="SvcRs">
+                                            <xs:complexType>
+                                                <xs:sequence>
+													<xs:element name="BRNO" type="xs:string" />
+													<xs:element name="TRMSEQ" type="xs:string" />
+													<xs:element name="TXTNO" type="xs:string" />
+													<xs:element name="TPFG" type="xs:string" />
+													<xs:element name="CBDAY" type="xs:string" />
+													<xs:element name="ACTBAL" type="xs:string" />
+													<xs:element name="AVBAL" type="xs:string" />
+													<xs:element name="NBCNT" type="xs:string" />
+													<xs:element name="CHAMT" type="xs:string" />
+													<xs:element name="CDWAMT" type="xs:string" />
+													<xs:element name="REFNO" type="xs:unsignedLong" />
+													<xs:element name="CNAME" type="xs:string" />
+													<xs:element name="SEX" type="xs:string" />
+													<xs:element name="ID" type="xs:string" />
+													<xs:element name="OACTNO" type="xs:unsignedLong" />
+													<xs:element name="IACTNO" type="xs:string" />
+													<xs:element name="TXAMT" type="xs:string" />
+													<xs:element name="FEEBYWHO" type="xs:string" />
+													<xs:element name="CDSTAN" type="xs:string" />
+													<xs:element name="TXMEMO" type="xs:string" />
+													<xs:element name="TXTIME" type="xs:string" />
+													<xs:element name="TXDATE" type="xs:string" />
+													<xs:element name="AMT" type="xs:string" />
+													<xs:element name="OBANKID" type="xs:string" />
+													<xs:element name="RCVNAME" type="xs:string" />
+													<xs:element name="EDIID" type="xs:string" />
+													<xs:element name="EDINODE" type="xs:string" />
+													<xs:element name="EBKFG" type="xs:string" />
+													<xs:element name="PFG" type="xs:string" />
+												</xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

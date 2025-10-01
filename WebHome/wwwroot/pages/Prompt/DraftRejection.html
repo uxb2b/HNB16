@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 押匯拒絕原因維護 -->
+  <div id="DraftRejection" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">電子押匯提示作業</li>
+        <li class="breadcrumb-item active" aria-current="page">押匯拒絕原因維護</li>
+      </ol>
+    </nav>
+
+    <!-- 押匯拒絕原因維護清冊 -->
+    <div id="queryList">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">押匯拒絕原因維護清冊</h1>
+        <div>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap" onclick="addHandler();">
+            <span class="mdi mdi-plus"></span>
+            新增
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap">代碼</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">拒絕原因</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">00000000</td>
+                  <td class="text-nowrap">押匯日期大於起始日期</td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default"
+                      onclick="editHandler('押匯日期大於起始日期');">
+                      編輯
+                    </button>
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--red" onclick="deleteHandler();">
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">00000001</td>
+                  <td class="text-nowrap">逾信用狀有效期限</td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default" onclick="editHandler();">
+                      編輯
+                    </button>
+                    <button type="button" class="mx-1 px-3 tn btn-sm hnb__btn--red" onclick="deleteHandler();">
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">00000002</td>
+                  <td class="text-nowrap">匯票金額大於信用狀可用餘額</td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default"
+                      onclick="editHandler('匯票金額大於信用狀可用餘額');">
+                      編輯
+                    </button>
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--red" onclick="deleteHandler();">
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">00000003</td>
+                  <td class="text-nowrap">分批交貨</td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default" onclick="editHandler('分批交貨');">
+                      編輯
+                    </button>
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--red" onclick="deleteHandler();">
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">00000004</td>
+                  <td class="text-nowrap">發票金額與匯票金額不符</td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default"
+                      onclick="editHandler('發票金額與匯票金額不符');">
+                      編輯
+                    </button>
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--red" onclick="deleteHandler();">
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">00000005</td>
+                  <td class="text-nowrap">匯票日期早於信用狀付款日</td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default"
+                      onclick="editHandler('匯票日期早於信用狀付款日');">
+                      編輯
+                    </button>
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--red" onclick="deleteHandler();">
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">00000006</td>
+                  <td class="text-nowrap">簽章不符</td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default" onclick="editHandler('簽章不符');">
+                      編輯
+                    </button>
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--red" onclick="deleteHandler();">
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">99999999</td>
+                  <td class="text-nowrap">其他</td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default" onclick="editHandler('其他');">
+                      編輯
+                    </button>
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--red" onclick="deleteHandler();">
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 訊息 視窗 -->
+  <div class="modal fade" id="messageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content hnb__modal">
+        <div class="modal-header py-2 border-bottom-0">
+          <h5 class="modal-title fs-5 fw-bolder text--hnb" id="messageModalLabel">
+            作業訊息
+          </h5>
+          <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div id="msgBody" class="modal-body bg-light"></div>
+        <div id="msgFooter" class="modal-footer justify-content-center border-top-0"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 查詢控制項
+    const queryForm = document.querySelector('#queryForm');
+    const queryList = document.querySelector('#queryList');
+
+    // 查詢開狀申請書 searchHandler
+    function searchHandler() {
+      queryList.classList.remove('hnb__hide');
+    };
+
+    const messageModalLabel = document.querySelector('#messageModalLabel');
+    const msgBody = document.querySelector('#msgBody');
+    const msgFooter = document.querySelector('#msgFooter');
+    // 新增拒絕原因 addHandler
+    function addHandler() {
+      console.log('Add new application');
+      messageModalLabel.innerHTML = '新增拒絕原因';
+      msgBody.innerHTML = `<div class="row">
+                  <label for="reason" class="col-3 col-form-label text-end text-nowrap">拒絕原因</label>
+                  <div class="col-9">
+                    <input type="text" class="form-control form-control-sm" id="reason">
+                  </div>
+                </div>`;
+      msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="confirmHandler()">確定</button>`;
+      $('#messageModal').modal('show');
+    };
+
+    // 編輯拒絕原因 editHandler
+    function editHandler(reason) {
+      messageModalLabel.innerHTML = '編輯拒絕原因';
+      msgBody.innerHTML = `<div class="row">
+                  <label for="reason" class="col-3 col-form-label text-end text-nowrap fw-bold">拒絕原因</label>
+                  <div class="col-9">
+                    <input type="text" class="form-control form-control-sm" id="reason" value="${reason}">
+                  </div>
+                </div>`;
+      msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="confirmHandler()">確定</button>`;
+      $('#messageModal').modal('show');
+    };
+
+    // 刪除拒絕原因 deleteHandler
+    function deleteHandler() {
+      messageModalLabel.innerHTML = '作業訊息';
+      msgBody.innerHTML = `<p class="fw-bold hnb__text--green text-center">
+              您確定要刪除此筆資料嗎？
+            </p>`;
+      msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="confirmHandler()">確定</button>`;
+      $('#messageModal').modal('show');
+    };
+
+    function confirmHandler() {
+      $('#messageModal').modal('hide');
+      setTimeout(() => {
+        messageModalLabel.innerHTML = '作業訊息';
+        msgBody.innerHTML = `<p class="fw-bold hnb__text--green text-center">
+                作業已完成
+              </p>`;
+        msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" data-bs-dismiss="modal">關閉</button>`;
+        $('#messageModal').modal('show');
+      }, 500);
+    };
+
+  </script>
+</body>
+
+</html>

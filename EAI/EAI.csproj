@@ -1,0 +1,686 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <AssemblyKeyContainerName />
+    <AssemblyOriginatorKeyFile />
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile />
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn />
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile />
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn />
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Update="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Update="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Update="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <PackageReference Include="IBMMQDotnetClient" Version="9.4.3" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="BSNS\BlueStar.cs">
+      <DependentUpon>BlueStar.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\A1000_Rq.cs">
+      <DependentUpon>A1000_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\A1000_Rs.cs">
+      <DependentUpon>A1000_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\B8500_Rq.cs">
+      <DependentUpon>B8500_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\B8500_Rs.cs">
+      <DependentUpon>B8500_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\BR758.cs">
+      <DependentUpon>BR758.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F0104_Rq.cs">
+      <DependentUpon>F0104_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F0104_Rs.cs">
+      <DependentUpon>F0104_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F0390_Rq.cs">
+      <DependentUpon>F0390_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F0390_Rs.cs">
+      <DependentUpon>F0390_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F0482_Rq.cs">
+      <DependentUpon>F0482_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F0482_Rs.cs">
+      <DependentUpon>F0482_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4851_Rq.cs">
+      <DependentUpon>F4851_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4851_Rs.cs">
+      <DependentUpon>F4851_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4852_Rq.cs">
+      <DependentUpon>F4852_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4852_Rs.cs">
+      <DependentUpon>F4852_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4853_Rq.cs">
+      <DependentUpon>F4853_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4853_Rs.cs">
+      <DependentUpon>F4853_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4854_Rq.cs">
+      <DependentUpon>F4854_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4854_Rs.cs">
+      <DependentUpon>F4854_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4855_Rq.cs">
+      <DependentUpon>F4855_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4855_Rs.cs">
+      <DependentUpon>F4855_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4856_Rq.cs">
+      <DependentUpon>F4856_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F4856_Rs.cs">
+      <DependentUpon>F4856_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\FR062_Rq.cs">
+      <DependentUpon>FR062_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\FR062_Rs.cs">
+      <DependentUpon>FR062_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\K1000_Rq.cs">
+      <DependentUpon>K1000_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\K1000_Rs.cs">
+      <DependentUpon>K1000_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L0104_Rq.cs">
+      <DependentUpon>L0104_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L0104_Rs.cs">
+      <DependentUpon>L0104_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L0105_Rq.cs">
+      <DependentUpon>L0105_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L0105_Rs.cs">
+      <DependentUpon>L0105_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L0602_Rq.cs">
+      <DependentUpon>L0602_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L0602_Rs.cs">
+      <DependentUpon>L0602_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L2200_Rq.cs">
+      <DependentUpon>L2200_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L2200_Rs.cs">
+      <DependentUpon>L2200_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L2300_Rq.cs">
+      <DependentUpon>L2300_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L2300_Rs.cs">
+      <DependentUpon>L2300_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L4200_Rq.cs">
+      <DependentUpon>L4200_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L4200_Rs.cs">
+      <DependentUpon>L4200_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L4700_Rq.cs">
+      <DependentUpon>L4700_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L4700_Rs.cs">
+      <DependentUpon>L4700_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR006_Rq.cs">
+      <DependentUpon>LR006_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR006_Rs.cs">
+      <DependentUpon>LR006_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\R1000_Rq.cs">
+      <DependentUpon>R1000_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\P1002_Rq.cs">
+      <DependentUpon>P1002_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\P1000_Rq.cs">
+      <DependentUpon>P1000_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\R1000_Rs.cs">
+      <DependentUpon>R1000_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\P1002_Rs.cs">
+      <DependentUpon>P1002_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\P1000_Rs.cs">
+      <DependentUpon>P1000_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\C0066_Rq.cs">
+      <DependentUpon>C0066_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\R0060_Rq.cs">
+      <DependentUpon>R0060_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\C0066_Rs.cs">
+      <DependentUpon>C0066_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\R0060_Rs.cs">
+      <DependentUpon>R0060_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\D0310_Rq.cs">
+      <DependentUpon>D0310_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\D0310_Rs.cs">
+      <DependentUpon>D0310_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F0101_Rq.cs">
+      <DependentUpon>F0101_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\F0101_Rs.cs">
+      <DependentUpon>F0101_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L1000_Rq.cs">
+      <DependentUpon>L1000_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L1000_Rs.cs">
+      <DependentUpon>L1000_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L1201_Rq.cs">
+      <DependentUpon>L1201_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L1201_Rs.cs">
+      <DependentUpon>L1201_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L1203_Rq.cs">
+      <DependentUpon>L1203_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L1203_Rs.cs">
+      <DependentUpon>L1203_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L3400_Rq.cs">
+      <DependentUpon>L3400_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L3400_Rs.cs">
+      <DependentUpon>L3400_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L3700_Rq.cs">
+      <DependentUpon>L3700_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L3700_Rs.cs">
+      <DependentUpon>L3700_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L4500_Rq.cs">
+      <DependentUpon>L4500_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L4500_Rs.cs">
+      <DependentUpon>L4500_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L4600_Rq.cs">
+      <DependentUpon>L4600_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L4600_Rs.cs">
+      <DependentUpon>L4600_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L5300_Rq.cs">
+      <DependentUpon>L5300_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L5300_Rs.cs">
+      <DependentUpon>L5300_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L8600_Rq.cs">
+      <DependentUpon>L8600_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\L8600_Rs.cs">
+      <DependentUpon>L8600_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR001_Rq.cs">
+      <DependentUpon>LR001_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR001_Rs.cs">
+      <DependentUpon>LR001_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR002_Rq.cs">
+      <DependentUpon>LR002_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR002_Rs.cs">
+      <DependentUpon>LR002_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR003_Rq.cs">
+      <DependentUpon>LR003_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR003_Rs.cs">
+      <DependentUpon>LR003_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR004_Rq.cs">
+      <DependentUpon>LR004_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR004_Rs.cs">
+      <DependentUpon>LR004_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR017_Rq.cs">
+      <DependentUpon>LR017_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR017_Rs.cs">
+      <DependentUpon>LR017_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR018_Rq.cs">
+      <DependentUpon>LR018_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR018_Rs.cs">
+      <DependentUpon>LR018_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR027_Rq.cs">
+      <DependentUpon>LR027_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR027_Rs.cs">
+      <DependentUpon>LR027_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR028_Rq.cs">
+      <DependentUpon>LR028_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\LR028_Rs.cs">
+      <DependentUpon>LR028_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\R3600_Rq.cs">
+      <DependentUpon>R3600_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\R3600_Rs.cs">
+      <DependentUpon>R3600_Rs.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\R3801_Rq.cs">
+      <DependentUpon>R3801_Rq.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Service\Transaction\R3801_Rs.cs">
+      <DependentUpon>R3801_Rs.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Service\Transaction\D0310_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>D0310_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\D0310_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>D0310_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L1000_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L1000_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L1000_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L1000_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L1201_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L1201_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L1201_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L1201_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L1203_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L1203_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L1203_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L1203_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L3400_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L3400_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L3400_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L3400_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L3700_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L3700_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L3700_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L3700_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L4500_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L4500_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L4500_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L4500_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L4600_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L4600_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L4600_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L4600_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L5300_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L5300_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L5300_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L5300_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L8600_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L8600_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\L8600_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L8600_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR001_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR001_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR001_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR001_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR002_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR002_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR002_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR002_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR003_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR003_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR003_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR003_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR004_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR004_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR004_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR004_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR017_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR017_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR017_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR017_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR018_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR018_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR018_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR018_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR027_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR027_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR027_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR027_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR028_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR028_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\LR028_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LR028_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\R3600_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>R3600_Rq.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\R3600_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>R3600_Rs.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service\Transaction\R3801_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>R3801_Rq.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Service\Transaction\R3801_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>R3801_Rs.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="BSNS\BlueStar.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\A1000_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\A1000_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\B8500_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\B8500_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F0101_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F0101_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F0104_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F0104_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F0390_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F0390_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F0482_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F0482_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4851_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4851_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4852_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4852_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4853_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4853_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4854_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4854_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4855_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4855_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4856_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\F4856_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\FR062_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\FR062_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\K1000_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\K1000_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Service\Transaction\L2300_Rq.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L2300_Rq.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Service\Transaction\L2300_Rs.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>L2300_Rs.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Update="Service\Transaction\L0104_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L0104_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L0105_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L0105_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L0602_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L0602_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L2200_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L2200_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L4200_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L4200_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L4700_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\L4700_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\LR006_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\LR006_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Service\Transaction\BR758.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>BR758.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <ProjectReference Include="..\CommonLib.Core\CommonLib.Core.csproj" />
+    <None Update="Service\Transaction\R1000_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\P1002_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\P1000_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\R1000_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\P1002_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\P1000_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\C0066_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\R0060_Rq.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\C0066_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Service\Transaction\R0060_Rs.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+</Project>

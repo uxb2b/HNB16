@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="BlueStar">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="BSNS_TelegramSource" type="xs:string" />
+				<xs:element name="BSNS_ProductID" type="xs:string" />
+				<xs:element name="BSNS_NotificationClassID" type="xs:string" />
+				<xs:element name="BSNS_CustomerID" type="xs:string" />
+				<xs:element name="BSNS_CustomerName" type="xs:string" />
+				<xs:element name="BSNS_AccountNumber" type="xs:string"/>
+				<xs:element name="BSNS_AccountCurrency" type="xs:string"/>
+				<xs:element name="BSNS_TFACode" type="xs:string"/>
+				<xs:element name="BSNS_TxnDate" type="xs:string"/>
+				<xs:element name="BSNS_SentDate" type="xs:string"/>
+				<xs:element name="BSNS_SentTime" type="xs:string"/>
+				<xs:element name="BSNS_JournalSeqNO" type="xs:string"/>
+				<xs:element name="Branch" type="xs:string" />
+				<xs:element name="BSNS_IsBypassBSNS" type="xs:string" />
+				<xs:element name="ScheduledSendTime" type="xs:string" />
+				<xs:element name="BSNS_ContactWindowSet">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="BSNS_ContactWindow" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="BSNS_DeliveryChannel" type="xs:string" />
+										<xs:element name="BSNS_ContactName" type="xs:string" />
+										<xs:element name="BSNS_ContactAddress" type="xs:string" />
+										<xs:element name="BSNS_Language" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="NotificationTitle" type="xs:string"/>
+				<xs:element name="ContentText" type="xs:string" />
+				<xs:element name="ContentXML">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Head" type="xs:string" />
+							<xs:element name="Body" type="xs:string" />
+							<xs:element minOccurs="0" name="NotificationInfo">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ContactInfo">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="TxnID" type="xs:string" />
+													<xs:element name="From">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Name" type="xs:string" />
+																<xs:element name="ID" type="xs:string" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="To">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Name" type="xs:string" />
+																<xs:element name="ID" type="xs:string" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Subject" type="xs:string" />
+													<xs:element name="TxnDate" type="xs:string" />
+													<xs:element name="TxnTime" type="xs:string" />
+													<xs:element name="Severity" type="xs:string" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Message">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="TextMessage" type="xs:string" />
+													<xs:element name="InfoMessage">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Title" type="xs:string" />
+																<xs:element name="MainMsg" type="xs:string" />
+																<xs:element name="WarnMsg" type="xs:string" />
+																<xs:element name="OtherMsg" type="xs:string" />
+																<xs:element name="AddMsg" type="xs:string" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Attachments" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Attachment" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="Type" type="xs:string" use="required" />
+											<xs:attribute name="FileName" type="xs:string" use="required" />
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="MsgName" type="xs:string" use="required" />
+			<xs:attribute name="App" type="xs:string" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

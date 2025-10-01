@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 會計帳務分錄 -->
+  <div id="QueryAccount" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">查詢作業</li>
+        <li class="breadcrumb-item active" aria-current="page">會計帳務分錄</li>
+      </ol>
+    </nav>
+
+    <!-- 查詢會計帳務分錄 -->
+    <div id="queryForm">
+      <form>
+        <h1 class="py-2 fs-4 fw-bolder">查詢會計帳務分錄</h1>
+        <div class="mb-2 card">
+          <div class="card-body bg-light">
+            <div class="row">
+              <div class="py-1 col-12 d-flex">
+                <div class="pt-2 form-check" style="width:120px;">
+                  <input class="form-check-input" type="radio" name="formGroup" id="check1" value="科目彙總查詢">
+                  <label class="d-flex align-items-center" for="check1">
+                    <span class="text-nowrap">科目彙總查詢</span>
+                  </label>
+                </div>
+                <div class="row mx-0 flex-grow-1">
+                  <div class="col-12 col-md-6 col-lg-3">
+                    <div class="row align-items-center">
+                      <div class="col-2 col-md-3 text-end text-nowrap">日期</div>
+                      <div class="py-1 col-10 col-md-9">
+                        <div class="input-group input-group-sm flex-nowrap">
+                          <input type="datetime-local" id="date1" class="form-control form-control-sm hnb__calendar"
+                            readonly>
+                          <label class="input-group-text" for="date1">
+                            <span class="mdi mdi-calendar-month"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-1 border border-0 border-top border-secondary">
+            <div class="row">
+              <div class="py-1 col-12 d-flex">
+                <div class="pt-2 form-check" style="width:120px;">
+                  <input class="form-check-input" type="radio" name="formGroup" id="check2" value="交易分錄">
+                  <label class="d-flex align-items-center" for="check2">
+                    <span class="text-nowrap">交易分錄</span>
+                  </label>
+                </div>
+                <div class="row mx-0 flex-grow-1">
+                  <div class="col-12 col-md-6 col-lg-3">
+                    <div class="row align-items-center">
+                      <div class="col-2 col-md-3 text-end text-nowrap">類別</div>
+                      <div class="py-1 col-10 col-md-9">
+                        <select id="dealType" class="form-select form-select-sm">
+                          <option value="" selected>= 請選擇 =</option>
+                          <option value="開狀會計分錄">開狀會計分錄</option>
+                          <option value="修改信用狀會計分錄">修改信用狀會計分錄</option>
+                          <option value="退國內信用狀保證金會計分錄">退國內信用狀保證金會計分錄</option>
+                          <option value="註銷未用餘額會計分錄">註銷未用餘額會計分錄</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3">
+                    <div class="row align-items-center">
+                      <div class="col-2 col-md-3 text-end text-nowrap">日期</div>
+                      <div class="py-1 col-10 col-md-9">
+                        <div class="input-group input-group-sm flex-nowrap">
+                          <input type="datetime-local" id="date2" class="form-control form-control-sm hnb__calendar"
+                            readonly>
+                          <label class="input-group-text" for="date2">
+                            <span class="mdi mdi-calendar-month"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-end py-1">
+                <button type="reset" id="resetBtn" class="me-2 px-3 btn btn-sm hnb__btn--reset">重設</button>
+                <button type="button" id="searchBtn" class="px-3 btn btn-sm hnb__btn--default disabled"
+                  onclick="searchHandler()">確定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 國內信用狀會計科目彙總明細 -->
+    <div id="queryList1" class="queryList hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">國內信用狀會計科目彙總明細</h1>
+        <div>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+            <span class="mdi mdi-cloud-download"></span>
+            下載電子檔
+          </button>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap">
+            <span class="mdi mdi-printer"></span>
+            列印
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="my-1">
+            <span class="fw-bold">查詢日期：</span>114/06/20
+            <br>
+            <span class="fw-bold">幣別：</span>新台幣 (元)
+            <br>
+            <span class="hnb__text--green"><span class="fw-bold">分行代號：</span>700</span>
+          </div>
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">信用狀號碼</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">科目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">子目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 12%;">借方</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">貸方</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">099700030161000861</td>
+                  <td class="text-nowrap">29601001存入保證金</td>
+                  <td class="text-nowrap">信用狀</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">0</td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">099700030161000861</td>
+                  <td class="text-nowrap">29601001存入保證金</td>
+                  <td class="text-nowrap">信用狀</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">0</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="hnb__text--red">
+                  <td class="text-center fw-bold">明細合計</td>
+                  <td colspan="2"></td>
+                  <td class="text-end fw-bold">0</td>
+                  <td class="text-end fw-bold">0</td>
+                </tr>
+              </tfoot>
+            </table>
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">信用狀號碼</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">科目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">子目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 12%;">借方</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">貸方</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">099700030161000861</td>
+                  <td class="text-nowrap">4200300140國內信用狀手續費收入</td>
+                  <td class="text-nowrap">信用狀開狀手續費-商金</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">1,000</td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">099700030161000861</td>
+                  <td class="text-nowrap">4200300140國內信用狀手續費收入</td>
+                  <td class="text-nowrap">信用狀開狀手續費-商金</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">1,000</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="hnb__text--red">
+                  <td class="text-center fw-bold">明細合計</td>
+                  <td colspan="2"></td>
+                  <td class="text-end fw-bold">0</td>
+                  <td class="text-end fw-bold">2,000</td>
+                </tr>
+              </tfoot>
+            </table>
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">信用狀號碼</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">科目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">子目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 12%;">借方</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">貸方</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">099700030161000861</td>
+                  <td class="text-nowrap">60001臨時欠存</td>
+                  <td class="text-nowrap"></td>
+                  <td class="text-end text-nowrap">1,000</td>
+                  <td class="text-end text-nowrap"></td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">099700030161000861</td>
+                  <td class="text-nowrap">60001臨時欠存</td>
+                  <td class="text-nowrap"></td>
+                  <td class="text-end text-nowrap">1,000</td>
+                  <td class="text-end text-nowrap"></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="hnb__text--red">
+                  <td class="text-center fw-bold">明細合計</td>
+                  <td colspan="2"></td>
+                  <td class="text-end fw-bold">2,000</td>
+                  <td class="text-end fw-bold">0</td>
+                </tr>
+              </tfoot>
+            </table>
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">信用狀號碼</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">科目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">子目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 12%;">借方</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">貸方</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">099700030161000861</td>
+                  <td class="text-nowrap">81011010應收信用狀款</td>
+                  <td class="text-nowrap">連線轉檔專用</td>
+                  <td class="text-end text-nowrap">100,000</td>
+                  <td class="text-end text-nowrap"></td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">099700030161000861</td>
+                  <td class="text-nowrap">81011010應收信用狀款</td>
+                  <td class="text-nowrap">連線轉檔專用</td>
+                  <td class="text-end text-nowrap">3,200,000</td>
+                  <td class="text-end text-nowrap"></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="hnb__text--red">
+                  <td class="text-center fw-bold">明細合計</td>
+                  <td colspan="2"></td>
+                  <td class="text-end fw-bold">3,300,000</td>
+                  <td class="text-end fw-bold">0</td>
+                </tr>
+              </tfoot>
+            </table>
+            <table class="mb-0 table table-sm hnb__table hnb__bg--white">
+              <tbody>
+                <tr class="hnb__text--red">
+                  <td class="text-center fw-bold" style="width: 25%;">總合計</td>
+                  <td colspan="2" class="text-center text-nowrap" style="width: 50%;"></td>
+                  <td class="text-end text-nowrap fw-bold" style="width: 12%;">3,302,000</td>
+                  <td class="text-end text-nowrap fw-bold">2,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 開狀會計分錄 -->
+    <div id="queryList2" class="queryList hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">開狀會計分錄</h1>
+        <div>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+            <span class="mdi mdi-cloud-download"></span>
+            下載電子檔
+          </button>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap">
+            <span class="mdi mdi-printer"></span>
+            列印
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="my-1">
+            <span class="fw-bold">查詢日期：</span>114/06/20
+            <br>
+            <span class="fw-bold">幣別：</span>新台幣 (元)
+          </div>
+          <h6 class="my-2 hnb__title fw-bold">A.即期信用狀</h6>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 15%;">分行</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">會計科目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">子目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 12%;">借方</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">貸方</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">700高雄分行</td>
+                  <td class="text-nowrap">81011010應收信用狀款</td>
+                  <td class="text-nowrap">轉檔連線專用</td>
+                  <td class="text-end text-nowrap">15,200,000</td>
+                  <td class="text-end text-nowrap"></td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-nowrap">91011010信用狀款項</td>
+                  <td class="text-nowrap">轉檔連線專用</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">15,200,000</td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">700高雄分行</td>
+                  <td class="text-nowrap">29601001存入保證金</td>
+                  <td class="text-nowrap">信用狀</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">0</td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-nowrap">4200300140國內信用狀手續費收入</td>
+                  <td class="text-nowrap">信用狀開狀手續費-商金</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">7,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h6 class="my-2 hnb__title fw-bold">B.遠期信用狀 ( 買方付息 )</h6>
+          <div class="m-3">N/A</div>
+          <h6 class="my-2 hnb__title fw-bold">C.遠期信用狀 ( 賣方付息 )</h6>
+          <h6 class="my-2 ps-3 hnb__title fw-bold border-start-0">C.1 賣方付承兌費</h6>
+          <div class="m-3">N/A</div>
+          <h6 class="my-2 ps-3 hnb__title fw-bold border-start-0">C.2 買方付承兌費</h6>
+          <div class="m-3">N/A</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 修改信用狀會計分錄 -->
+    <div id="queryList3" class="queryList hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">修改信用狀會計分錄</h1>
+        <div>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+            <span class="mdi mdi-cloud-download"></span>
+            下載電子檔
+          </button>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap">
+            <span class="mdi mdi-printer"></span>
+            列印
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="my-1">
+            <span class="fw-bold">查詢日期：</span>114/06/20
+            <br>
+            <span class="fw-bold">幣別：</span>新台幣 (元)
+          </div>
+          <h6 class="my-2 hnb__title fw-bold">A.增加信用狀金額</h6>
+          <h6 class="my-2 ps-3 hnb__title fw-bold border-start-0">A.1 即期信用狀</h6>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 15%;">分行</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">會計科目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">子目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 12%;">借方</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">貸方</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">700高雄分行</td>
+                  <td class="text-nowrap">81011010應收信用狀款</td>
+                  <td class="text-nowrap">轉檔連線專用</td>
+                  <td class="text-end text-nowrap">15,200,000</td>
+                  <td class="text-end text-nowrap"></td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-nowrap">91011010信用狀款項</td>
+                  <td class="text-nowrap">轉檔連線專用</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">15,200,000</td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap">700高雄分行</td>
+                  <td class="text-nowrap">29601001存入保證金</td>
+                  <td class="text-nowrap">信用狀</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">0</td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-nowrap">4200300140國內信用狀手續費收入</td>
+                  <td class="text-nowrap">信用狀開狀手續費-商金</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">7,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h6 class="my-2 ps-3 hnb__title fw-bold border-start-0">A.2 遠期信用狀 ( 買方付息 )</h6>
+          <div class="m-3">N/A</div>
+          <h6 class="my-2 ps-3 hnb__title fw-bold border-start-0">A.3 遠期信用狀 ( 賣方付息 )</h6>
+          <h6 class="my-2 ps-3 hnb__title fw-bold border-start-0">A.3.1 賣方付承兌費</h6>
+          <div class="m-3">N/A</div>
+          <h6 class="my-2 ps-3 hnb__title fw-bold border-start-0">A.3.2 買方付承兌費</h6>
+          <div class="m-3">N/A</div>
+          <h6 class="my-2 hnb__title fw-bold">B.修改其他內容</h6>
+          <div class="m-3">N/A</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 退國內信用狀保證金會計分錄 -->
+    <div id="queryList4" class="queryList hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">退國內信用狀保證金會計分錄</h1>
+        <div>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+            <span class="mdi mdi-cloud-download"></span>
+            下載電子檔
+          </button>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap">
+            <span class="mdi mdi-printer"></span>
+            列印
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="my-1">
+            <span class="fw-bold">查詢日期：</span>114/06/20
+            <br>
+            <span class="fw-bold">幣別：</span>新台幣 (元)
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 15%;">分行</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">會計科目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">子目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 12%;">借方</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">貸方</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">700高雄分行</td>
+                  <td class="text-nowrap">81011010應收信用狀款</td>
+                  <td class="text-nowrap">轉檔連線專用</td>
+                  <td class="text-end text-nowrap">3,200,000</td>
+                  <td class="text-end text-nowrap"></td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-nowrap">91011010信用狀款項</td>
+                  <td class="text-nowrap">轉檔連線專用</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">3,200,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 註銷未用餘額會計分錄 -->
+    <div id="queryList5" class="queryList hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">註銷未用餘額會計分錄</h1>
+        <div>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+            <span class="mdi mdi-cloud-download"></span>
+            下載電子檔
+          </button>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap">
+            <span class="mdi mdi-printer"></span>
+            列印
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="my-1">
+            <span class="fw-bold">查詢日期：</span>114/06/20
+            <br>
+            <span class="fw-bold">幣別：</span>新台幣 (元)
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 15%;">分行</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">會計科目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 25%;">子目</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap" style="width: 12%;">借方</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">貸方</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">700高雄分行</td>
+                  <td class="text-nowrap">81011010應收信用狀款</td>
+                  <td class="text-nowrap">轉檔連線專用</td>
+                  <td class="text-end text-nowrap">3,200,000</td>
+                  <td class="text-end text-nowrap"></td>
+                </tr>
+                <tr>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-nowrap">91011010信用狀款項</td>
+                  <td class="text-nowrap">轉檔連線專用</td>
+                  <td class="text-end text-nowrap"></td>
+                  <td class="text-end text-nowrap">3,200,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 查詢控制項
+    const queryForm = document.querySelector('#queryForm');
+    const queryList1 = document.querySelector('#queryList1');
+    const queryList2 = document.querySelector('#queryList2');
+    const queryList3 = document.querySelector('#queryList3');
+    const queryList4 = document.querySelector('#queryList4');
+    const queryList5 = document.querySelector('#queryList5');
+    const searchBtn = document.querySelector('#searchBtn');
+    const dealType = document.querySelector('#dealType');
+
+    // 查詢查詢會計帳務分錄 searchHandler
+    let selectedValue = '';
+    let dealTypeValue = '';
+
+    // 監聽查詢類型選擇 - 點選'科目彙總查詢'時查詢按鈕可操作
+    const radioButtons = document.getElementsByName('formGroup');
+    for (const radioButton of radioButtons) {
+      radioButton.addEventListener('change', () => {
+        if (radioButton.checked) {
+          selectedValue = radioButton.value;
+          if (selectedValue === '科目彙總查詢') {
+            searchBtn.classList.remove('disabled');
+          };
+
+          if (selectedValue === '交易分錄' && dealType.value === '') {
+            searchBtn.classList.add('disabled');
+          }
+        }
+      });
+    };
+
+    // 選擇交易類別控制查詢按鈕顯示狀態
+    dealType.addEventListener('change', () => {
+      dealTypeValue = dealType.value;
+      if (dealTypeValue) {
+        searchBtn.classList.remove('disabled');
+      } else {
+        searchBtn.classList.add('disabled');
+      }
+    });
+
+    function searchHandler() {
+      closeAllList();
+      if (selectedValue) {
+        if (selectedValue === '科目彙總查詢') {
+          queryList1.classList.remove('hnb__hide');
+        };
+        if (selectedValue === '交易分錄') {
+          switch (dealTypeValue) {
+            case '開狀會計分錄':
+              queryList2.classList.remove('hnb__hide');
+              break;
+            case '修改信用狀會計分錄':
+              queryList3.classList.remove('hnb__hide');
+              break;
+            case '退國內信用狀保證金會計分錄':
+              queryList4.classList.remove('hnb__hide');
+              break;
+            case '註銷未用餘額會計分錄':
+              queryList5.classList.remove('hnb__hide');
+              break;
+          }
+        };
+      };
+    };
+
+    // 關閉全部表單
+    const queryList = document.querySelectorAll('.queryList');
+    function closeAllList() {
+      queryList.forEach(list => list.classList.add('hnb__hide'));
+    };
+
+    // 月曆
+    const currentTime = new Date()
+    const config = {
+      locale: 'zh_tw',
+      //enableTime: true, //可選時與分
+      dateFormat: "Y/m/d", //時間格式
+      time_24hr: true, //24 時制
+      minuteIncrement: 15, //分鐘每次選擇間隔單位
+      allowInput: true, //可輸入控制
+      //minDate: "today", //可選最小時間，可直接接受 'today' 字串
+      //maxDate: currentTime.setMonth(currentTime.getMonth() + 1), //可選最大時間，從今天起一個月
+      onChange: function (selectedDates, dateStr, instance) {
+        console.log(`你現在點選的是 ${instance.input.id}，時間為 ${selectedDates} / ${dateStr}`);
+        //checkDateTime(dateStr, instance.input.id);
+      }
+    };
+
+    // 日期選擇器 - 有效期限 / 最後交貨日期 / 限定押匯日期
+    flatpickr('#date1, #date2', config);
+
+  </script>
+</body>
+
+</html>

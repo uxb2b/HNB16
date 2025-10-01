@@ -1,0 +1,123 @@
+﻿@model WebHome.Models.PagingViewModel
+
+<div id="pagingContainer">
+<nav class="mt-3 d-flex align-items-center justify-content-between">
+    <div class="d-flex text-nowrap">
+        <ul class="pagination pagination-sm">
+            <li class="page--item hnb__page--item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" href="#" onclick="goToPage(1);return false;">第一頁</a>
+            </li>
+            <li class="page--item hnb__page--item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" href="#" onclick="goToPage(Math.max(1, @Model.PageIndex - 10));return false;">
+                    <span class="mdi mdi-chevron-double-left"></span>
+                </a>
+            </li>
+            <li class="page--item hnb__page--item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" href="#" onclick="goToPage(@(Model.PageIndex - 1));return false;">
+                    <span class="mdi mdi-chevron-left"></span>
+                </a>
+            </li>
+            @for (int i = Math.Max(1, Model.PageIndex - 2); i <= Math.Min(Model.PageCount, Model.PageIndex + 2); i++)
+            {
+                <li class="page--item hnb__page--item @(i == Model.PageIndex ? "active" : "")">
+                    <a class="page-link" href="#" onclick="goToPage(@i);return false;">@i</a>
+                </li>
+            }
+            <li class="page--item hnb__page--item @(Model.PageIndex == Model.PageCount ? "disabled" : "")">
+                <a class="page-link" href="#" onclick="goToPage(@(Model.PageIndex + 1));return false;">
+                    <span class="mdi mdi-chevron-right"></span>
+                </a>
+            </li>
+            <li class="page--item hnb__page--item @(Model.PageIndex == Model.PageCount ? "disabled" : "")">
+                <a class="page-link" href="#" onclick="goToPage(Math.min(@Model.PageCount, @Model.PageIndex + 10));return false;">
+                    <span class="mdi mdi-chevron-double-right"></span>
+                </a>
+            </li>
+            <li class="page--item hnb__page--item @(Model.PageIndex == Model.PageCount ? "disabled" : "")">
+                <a class="page-link" href="#" onclick="goToPage(@Model.PageCount);return false;">最後一頁</a>
+            </li>
+        </ul>
+        <div class="input-group input-group-sm ms-2 mb-3 text-nowrap">
+            <span class="input-group-text" id="inputGroup-sizing-sm">第</span>
+            <input type="text" class="form-control" value="@Model.PageIndex" id="pagingInput" style="width:50px;">
+            <span class="input-group-text" id="inputGroup-sizing-sm">頁</span>
+            <button class="btn hnb__btn--default" type="button" onclick="goToPage(parseInt(document.getElementById('pagingInput').value));">前往</button>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="text-end">
+            <span class="hnb__text--red">總筆數：</span>@Model.TotalCount ，<span class="hnb__text--red">總金額：</span>NT$ @Model.TotalAmount.ToString("N0")
+        </div>
+    </div>
+</nav>
+</div>
+
+<script>
+    // PagingViewModel 資料
+    var pagingModel = {
+        pageIndex: @Model.PageIndex,
+        pageSize: @Model.PageSize,
+        totalCount: @Model.TotalCount,
+        totalAmount: @Model.TotalAmount,
+        pageCount: @Model.PageCount
+    };
+
+    function goToPage(page) {
+        if (page < 1) page = 1;
+        if (page > pagingModel.pageCount) page = pagingModel.pageCount;
+        pagingModel.pageIndex = page;
+        console.log('goToPage:', page);
+        renderPaging();
+    }
+
+    function renderPaging() {
+        var $container = $('#pagingContainer');
+        $container.empty();
+        var $nav = $('<nav class="mt-3 d-flex align-items-center justify-content-between"></nav>');
+        var $left = $('<div class="d-flex text-nowrap"></div>');
+        var $ul = $('<ul class="pagination pagination-sm"></ul>');
+        // 第一頁
+        $ul.append($('<li></li>').addClass('page--item hnb__page--item' + (pagingModel.pageIndex == 1 ? ' disabled' : ''))
+            .append($('<a></a>').addClass('page-link').attr('href', '#').text('第一頁').on('click', function(){ goToPage(1); return false; })));
+        // << 往前10頁
+        $ul.append($('<li></li>').addClass('page--item hnb__page--item' + (pagingModel.pageIndex == 1 ? ' disabled' : ''))
+            .append($('<a></a>').addClass('page-link').attr('href', '#').append($('<span></span>').addClass('mdi mdi-chevron-double-left'))
+                .on('click', function(){ goToPage(Math.max(1, pagingModel.pageIndex - 10)); return false; })));
+        // < 前一頁
+        $ul.append($('<li></li>').addClass('page--item hnb__page--item' + (pagingModel.pageIndex == 1 ? ' disabled' : ''))
+            .append($('<a></a>').addClass('page-link').attr('href', '#').append($('<span></span>').addClass('mdi mdi-chevron-left'))
+                .on('click', function(){ goToPage(pagingModel.pageIndex - 1); return false; })));
+        // 頁碼
+        var start = Math.max(1, pagingModel.pageIndex - 2);
+        var end = Math.min(pagingModel.pageCount, pagingModel.pageIndex + 2);
+        for (var i = start; i <= end; i++) {
+            $ul.append($('<li></li>').addClass('page--item hnb__page--item' + (i == pagingModel.pageIndex ? ' active' : ''))
+                .append($('<a></a>').addClass('page-link').attr('href', '#').text(i).on('click', (function(page){ return function(){ goToPage(page); return false; }; })(i))));
+        }
+        // > 下一頁
+        $ul.append($('<li></li>').addClass('page--item hnb__page--item' + (pagingModel.pageIndex == pagingModel.pageCount ? ' disabled' : ''))
+            .append($('<a></a>').addClass('page-link').attr('href', '#').append($('<span></span>').addClass('mdi mdi-chevron-right'))
+                .on('click', function(){ goToPage(pagingModel.pageIndex + 1); return false; })));
+        // >> 往後10頁
+        $ul.append($('<li></li>').addClass('page--item hnb__page--item' + (pagingModel.pageIndex == pagingModel.pageCount ? ' disabled' : ''))
+            .append($('<a></a>').addClass('page-link').attr('href', '#').append($('<span></span>').addClass('mdi mdi-chevron-double-right'))
+                .on('click', function(){ goToPage(Math.min(pagingModel.pageCount, pagingModel.pageIndex + 10)); return false; })));
+        // 最後一頁
+        $ul.append($('<li></li>').addClass('page--item hnb__page--item' + (pagingModel.pageIndex == pagingModel.pageCount ? ' disabled' : ''))
+            .append($('<a></a>').addClass('page-link').attr('href', '#').text('最後一頁').on('click', function(){ goToPage(pagingModel.pageCount); return false; })));
+        $left.append($ul);
+        // 跳頁 input
+        var $inputGroup = $('<div class="input-group input-group-sm ms-2 mb-3 text-nowrap page-width"></div>');
+        $inputGroup.append('<span class="input-group-text" id="inputGroup-sizing-sm">第</span>');
+        var $input = $('<input type="text" class="form-control" style="width:50px;">').val(pagingModel.pageIndex).attr('id', 'pagingInput');
+        $inputGroup.append($input);
+        $inputGroup.append('<span class="input-group-text" id="inputGroup-sizing-sm">頁</span>');
+        $inputGroup.append($('<button class="btn hnb__btn--default" type="button">前往</button>').on('click', function(){ goToPage(parseInt($('#pagingInput').val())); }));
+        $left.append($inputGroup);
+        $nav.append($left);
+        // 右側統計
+        var $right = $('<div class="mb-3"><div class="text-end"><span class="hnb__text--red">總筆數：</span>' + pagingModel.totalCount + ' ，<span class="hnb__text--red">總金額：</span>NT$ ' + pagingModel.totalAmount.toLocaleString() + '</div></div>');
+        $nav.append($right);
+        $container.append($nav);
+    }
+</script>

@@ -1,0 +1,35 @@
+﻿@model IFormCollection
+@{
+    var _dialogID = Model["dialogID"].ToString() ?? "promptModal";
+}
+<!-- 選擇訊息 視窗 -->
+<div class="modal fade" id="promptModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="promptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <form id="accountManagerForm">
+            <div class="modal-content hnb__modal">
+                <div class="modal-header py-2 border-bottom-0">
+                    <h5 class="modal-title fs-5 fw-bolder text--hnb" id="promptModalLabel">
+                        作業訊息
+                    </h5>
+                    <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal"
+                            aria-label="Close">
+                        <span class="mdi mdi-close"></span>
+                    </button>
+                </div>
+                <div class="modal-body bg-light">
+                    <p class="fw-bold hnb__text--green text-center">
+                        離開不會儲存此筆資料，您確認要離開嗎？
+                    </p>
+                </div>
+                <div class="modal-footer justify-content-center border-top-0">
+                    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default"
+                            onclick="location.href = 'LcApp.html';">
+                        確定
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

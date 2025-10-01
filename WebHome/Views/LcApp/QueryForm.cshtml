@@ -1,0 +1,187 @@
+﻿@{
+    Layout = "~/Views/LcApp/LcAppTemplate.cshtml";
+}
+<!-- 查詢舊有開狀申請書 -->
+<div id="queryForm">
+    <form>
+        <h1 class="py-2 fs-4 fw-bolder">查詢舊有開狀申請書</h1>
+        <div class="mb-2 card">
+            <div class="card-body bg-light">
+                <div class="row">
+                    <div class="py-1 col-12 d-flex">
+                        <div class="pt-2 form-check" style="width:25px;">
+                            <input class="form-check-input" type="radio" name="formGroup" id="check1">
+                        </div>
+                        <div class="row mx-0 flex-grow-1">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="row align-items-center">
+                                    <label for="lcNo" class="col-2 col-md-3 col-form-label text-end text-nowrap">信用狀號碼</label>
+                                    <div class="py-1 col-10 col-md-9">
+                                        <input type="text" class="form-control form-control-sm" id="lcNo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-1 border border-0 border-top border-secondary">
+                <div class="py-1 col-12 d-flex">
+                    <div class="pt-2 form-check" style="width:25px;">
+                        <input class="form-check-input" type="radio" name="formGroup" id="check2">
+                    </div>
+                    <div class="row mx-0 flex-grow-1">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="row align-items-center">
+                                <label for="appNo" class="col-2 col-md-3 col-form-label text-end text-nowrap">開狀申請書號碼</label>
+                                <div class="py-1 col-10 col-md-9">
+                                    <input type="text" class="form-control form-control-sm" id="appNo">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-1 border border-0 border-top border-secondary">
+                <div class="py-1 col-12 d-flex">
+                    <div class="pt-2 form-check" style="width:25px;">
+                        <input class="form-check-input" type="radio" name="formGroup" id="check3">
+                    </div>
+                    <div class="row mx-0 flex-grow-1">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="row align-items-center">
+                                <label for="beneNo" class="col-2 col-md-3 col-form-label text-end text-nowrap">申請人放款戶號</label>
+                                <div class="py-1 col-10 col-md-9">
+                                    <input type="text" class="form-control form-control-sm" id="beneNo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="row align-items-center">
+                                <label for="beneInNo" class="col-2 col-md-3 col-form-label text-end text-nowrap">受益人統編</label>
+                                <div class="py-1 col-10 col-md-9">
+                                    <input type="text" class="form-control form-control-sm" id="beneInNo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="row align-items-center">
+                                <div for="status" class="col-2 col-md-3 col-form-label text-end text-nowrap">狀態</div>
+                                <div class="py-1 col-10 col-md-9">
+                                    <select id="branchNo" class="form-select form-select-sm">
+                                        <option selected>= 請選擇 =</option>
+                                        <option>待銀行審核</option>
+                                        <option>已核准</option>
+                                        <option>已拒絕</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="row align-items-center">
+                                <label for="appDate" class="col-2 col-md-3 col-form-label text-end text-nowrap">開狀日期</label>
+                                <div class="py-1 col-10 col-md-9">
+                                    <div class="d-flex align-items-center">
+                                        <div class="input-group flex-nowrap">
+                                            <input type="datetime-local" id="startDate" placeholder="請點選起日"
+                                                   class="form-control form-control-sm hnb__calendar">
+                                            <label class="input-group-text py-1" for="startDate">
+                                                <span class="mdi mdi-calendar-month"></span>
+                                            </label>
+                                        </div>
+                                        <span class="px-2">~</span>
+                                        <div class="input-group flex-nowrap">
+                                            <input type="datetime-local" id="endDate" placeholder="請點選訖日"
+                                                   class="form-control form-control-sm hnb__calendar">
+                                            <label class="input-group-text py-1" for="endDate">
+                                                <span class="mdi mdi-calendar-month"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="pt-1 text-danger text-end text-nowrap">
+                                        <span class="text-danger dateAlert pe-2 d-none pe-1">
+                                            <span class="mdi mdi-close-thick"></span>
+                                            結束日期須晚於開始日期
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-end py-1">
+                        <button type="reset" id="reset" class="me-2 px-3 btn btn-sm hnb__btn--reset">重設</button>
+                        <button type="button" id="search" class="px-3 btn btn-sm hnb__btn--default"
+                                onclick="searchHandler()">
+                            確定
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 開狀申請書清冊 -->
+<div id="queryList">
+</div>
+@{
+    await Html.RenderPartialAsync("~/Views/LcApp/LcAppDetailModal.cshtml");
+    await Html.RenderPartialAsync("~/Views/LcApp/LcDetailModal.cshtml");
+}
+<script>
+
+        const queryList = document.querySelector('#queryList');
+
+        // 查詢舊有開狀申請書 searchHandler
+    function searchHandler() {
+      doPost('../LcApp/SearchHandler',{},function(data)
+      {
+          $(queryList).empty().append(data);
+      });
+    }
+
+        // 編輯開狀申請書 editHandler
+        function editHandler() {
+            var url = '../LcApp/ForOthers';
+          switch (currentDataRow.benetype) {
+            case 'cds':
+              url = '../LcApp/ForCDS';
+              break;
+            case 'fpg':
+              url = '../LcApp/ForFPG';;
+              break;
+          };
+
+          const payload = {
+            beneType: currentDataRow.benetype,
+            lcNo: currentDataRow.lcno
+          };
+
+            $('').launchDownload(url, payload);
+        }
+
+    // 綁定所有 的 <a>，點擊時取得父 <tr> 的 data-*
+    var currentDataRow;
+    function attachRowData() {
+        const rows = queryList.querySelector('tbody').querySelectorAll('a')
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                currentDataRow = row.closest('tr').dataset;
+            });
+        });
+    }
+
+        function attachEditHandler() {
+            const editButtons = queryList.querySelector('tbody').querySelectorAll('.editItem');
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    currentDataRow = row.dataset;
+                    console.log(currentDataRow);
+                    editHandler();
+                });
+            });
+        }
+
+
+</script>

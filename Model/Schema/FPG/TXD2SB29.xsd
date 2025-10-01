@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="J2SP">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="BkId" type="xs:string" />
+                <xs:element name="FILENAME" type="xs:string" minOccurs="0" />
+                <xs:element name="TABLENAME" type="xs:string" />
+                <xs:element name="FLAG" type="xs:unsignedShort" minOccurs="0" nillable="1" />
+                <xs:element name="INITIALFILE" type="xs:string" minOccurs="0" />
+                <xs:element name="ITEM">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TXD2SB29" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="LCBK" type="xs:string"  />
+                                    <xs:attribute name="LCPESRFNO" type="xs:string"  />
+                                    <xs:attribute name="CUCOCNM" type="xs:string"  />
+                                    <xs:attribute name="CTMNM" type="xs:string"  />
+                                    <xs:attribute name="CTMTEL" type="xs:string"  />
+                                    <xs:attribute name="BENFRFNO" type="xs:string"  />
+                                    <xs:attribute name="BENFCOCNM" type="xs:string"  />
+                                    <xs:attribute name="BENFDIV" type="xs:string"  />
+                                    <xs:attribute name="BENFADR" type="xs:string"  />
+                                    <xs:attribute name="CUNO" type="xs:string"  />
+                                    <xs:attribute name="AMT" type="xs:decimal"  />
+                                    <xs:attribute name="LCNO" type="xs:string"  />
+                                    <xs:attribute name="LCSQNO" type="xs:string"  />
+                                    <xs:attribute name="EFFDDAT" type="xs:string"  />
+                                    <xs:attribute name="CUCY" type="xs:string"  />
+                                    <xs:attribute name="DSRCONT" type="xs:string"  />
+                                    <xs:attribute name="LCBKACID" type="xs:string"  />
+                                    <xs:attribute name="PAYTY" type="xs:string"  />
+                                    <xs:attribute name="PAYDYS" type="xs:string"  />
+                                    <xs:attribute name="PAMK" type="xs:string"  />
+                                    <xs:attribute name="DLEDDAT" type="xs:string"  />
+                                    <xs:attribute name="IVDATMK" type="xs:string"  />
+                                    <xs:attribute name="IVAMTMK" type="xs:string"  />
+                                    <xs:attribute name="IVADRMK" type="xs:string"  />
+                                    <xs:attribute name="PAYCKMK" type="xs:string"  />
+                                    <xs:attribute name="CUAPLCOMT" type="xs:string"  />
+                                    <xs:attribute name="LCAPLTM" type="xs:string"  />
+                                    <xs:attribute name="BKCHKTM" type="xs:string"  />
+                                    <xs:attribute name="BKCHKCOMT" type="xs:string"  />
+                                    <xs:attribute name="TRNTM" type="xs:string"  />
+                                    <xs:attribute name="EIVMK" type="xs:string"  />
+                                    <xs:attribute name="ASSNPAYCKEDDAT" type="xs:string"  />
+                                    <xs:attribute name="ASSNEPRDAT" type="xs:string"  />
+                                    <xs:attribute name="EPRDIFRR" type="xs:decimal"  />
+                                    <xs:attribute name="PAYCKFRSTD" type="xs:string"  />
+                                    <xs:attribute name="IVFROPNDAT" type="xs:string" />
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:string"  />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

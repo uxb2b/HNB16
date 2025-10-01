@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CDSLcdApplication xmlns="http://www.uxcds.com/xmlschema/cds"      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:type="CDSLcdApplication">
+	<lcAppInfo appNo="CDSD114000086" appDate="2025/04/16"/>
+	<lcDoc>
+		<lcTitle>不可撤銷信用狀</lcTitle>
+		<lcType>sight</lcType>
+		<lcHeader>  敬啟者：  　　本行茲徇右列申請人之請求開發  本信用狀，本信用狀規定如有未盡事  宜適用國際商會所訂現行「信用狀統  一慣例與實務」之規定。</lcHeader>
+		<lcNo></lcNo>
+		<issuingDate></issuingDate>
+		<issuingBank name="華南商業銀行" code="008" branchName="城東分行"              branchCode="1083" address="台北市松江路222號2F" phone="02-25512111"/>
+		<advisingBank name="華南商業銀行" code="008" branchName="城東分行"              branchCode="1083" address="台北市松江路222號2F" phone="02-25512111" changed="false"/>
+		<advisingDate></advisingDate>
+		<advisingBankNo></advisingBankNo>
+		<payingBank name="華南商業銀行" code="008" branchName="城東分行"              branchCode="1083" address="台北市松江路222號2F" phone="02-25512111" changed="false"/>
+		<applicant name="扢嶧測試有限公司" nameChanged="false" regNo="90000001"              address="測試市測試路1號" addressChanged="false" phone="02-22446688"/>
+		<beneficiary name="中國鋼鐵股份有限公司" nameChanged="false"              regNo="30414175" address="高雄市小港區中鋼路900號"              addressChanged="false" phone="07-8021111"/>
+		<amount value="2342" chinese="貳仟參佰肆拾貳元整" changed="false"/>
+		<currency code="1" name="新臺幣"/>
+		<expiryDate changed="false">2025/12/31</expiryDate>
+		<lcConditions>
+			<lcCond>本信用狀可由上開受益人在不超過上開金額範圍內依本狀規定條件簽發匯票洽請承兌╱付款，該匯票之條件：     甲、付款人：華南商業銀行城東分行   乙、付款期限：見票即付。   丙、金額：須與相關發票上所開列金額一致。   丁、應檢附之單證如下：     1. ■匯票付款申請書乙份。　□匯票承兌申請書乙份     2. ■統一發票。        上項單證應載明申請人向受益人購買下列貨品：         cd</lcCond>
+		</lcConditions>
+		<lcAdditionalConditions>
+			<lcAddCond>特別指示：    1. 電子押匯特別指示條款  (1)賣方所提供鋼品之一部或全部，可能產自中國鋼鐵股份有限公司或中龍鋼鐵股份有限公司(下稱中龍      公司)，視實際出貨狀況而定。如產自中龍公司，賣方就其鋼品品質，負賣方責任，至如約定價格、     各交易條件及優惠措施均不受影響。  (2)匯票及匯票付款申請書使用中鋼格式，由受益人單獨簽章或使用數位憑證有效。  (3)貨物可以分批交貨。  (4)貨物明細以發票為準。  (5)發票金額大於匯票金額及發票內容備註「受託代銷」字樣可以接受。  (6)本信用狀適用eUCP2.0版。  (7)允許受益人以匯票、匯票付款申請書及發票電子檔(包含電子發票證明聯等)方式押匯，另「受益人     完整提示通知」得附加於匯票付款申請書之最後。  (8)押匯電子文件透過網址: HTTPS://CDSLC.UXCDS.COM/CDSLC/提示。    2. 最後交貨日期： 民國 　 年 　 月 　 日　(未填者自開狀日起三個月視為最後交貨日)            </lcAddCond>
+		</lcAdditionalConditions>
+		<conditions>
+			<condition name="PaymentTerm" present="general"                  type="singleChoice" used="true" changed="false">
+				<title>付款期限</title>
+				<description>付款期限方式</description>
+				<singleChoice name="PaymentTermSingle">
+					<item name="Sight" itemValue="atSight" checked="true">見票即付</item>
+					<item name="Usance" itemValue="atDaysAfterDate" checked="false">發票日後定日付款</item>
+				</singleChoice>
+			</condition>
+			<condition name="AtDaysAfterDate" present="usance"                  type="textBlank" used="false" changed="false">
+				<title>發票日後定日付款</title>
+				<description>填寫買方到期日</description>
+				<prefixMessage>以「定日付款」方式填寫到期日，其到期日為自匯票發票日起算</prefixMessage>
+				<textBlank name="AtDaysBlank">
+					<blank name="AtDays"/>
+					<messageSegment>天。</messageSegment>
+				</textBlank>
+			</condition>
+			<condition name="GoodsName" present="general"                  type="textArea" used="true" changed="false">
+				<title>貨物名稱</title>
+				<description>填寫貨物名稱</description>
+				<textArea name="GoodsNameArea">
+					<area name="GoodsName">cd</area>
+				</textArea>
+			</condition>
+			<condition name="NonCSNegotiationSpecialClause"                  present="general" type="textArea" used="false" changed="false">
+				<title>非中國鋼鐵股份有限公司之電子押匯特別指示條款</title>
+				<description>不使用中鋼之電子押匯特別指示條款，並自行填寫電子押匯特別指示條款</description>
+				<prefixMessage>中國鋼鐵股份有限公司之電子押匯特別指示條款  </prefixMessage>
+				<prefixMessage>(1)賣方所提供鋼品之一部或全部，可能產自中國鋼鐵股份有限公司或中龍鋼鐵股份有限公司(下稱中龍  </prefixMessage>
+				<prefixMessage>    公司)，視實際出貨狀況而定。如產自中龍公司，賣方就其鋼品品質，負賣方責任，至如約定價格、  </prefixMessage>
+				<prefixMessage>   各交易條件及優惠措施均不受影響。  </prefixMessage>
+				<prefixMessage>(2)匯票及匯票付款申請書使用中鋼格式，由受益人單獨簽章或使用數位憑證有效。  </prefixMessage>
+				<prefixMessage>(3)貨物可以分批交貨。  </prefixMessage>
+				<prefixMessage>(4)貨物明細以發票為準。  </prefixMessage>
+				<prefixMessage>(5)發票金額大於匯票金額及發票內容備註「受託代銷」字樣可以接受。  </prefixMessage>
+				<prefixMessage>(6)本信用狀適用eUCP2.0版。  </prefixMessage>
+				<prefixMessage>(7)允許受益人以匯票、匯票付款申請書及發票電子檔(包含電子發票證明聯等)方式押匯，另「受益人  </prefixMessage>
+				<prefixMessage>   完整提示通知」得附加於匯票付款申請書之最後。  </prefixMessage>
+				<prefixMessage>(8)押匯電子文件透過網址: HTTPS://CDSLC.UXCDS.COM/CDSLC/提示。  </prefixMessage>
+				<prefixMessage>或自行填寫電子押匯特別指示條款  </prefixMessage>
+				<textArea name="NonCSNegotiationSpecialClauseArea">
+					<area name="NonCSNegotiationSpecialClause">(1)賣方所提供鋼品之一部或全部，可能產自中國鋼鐵股份有限公司或中龍鋼鐵股份有限公司(下稱中龍      公司)，視實際出貨狀況而定。如產自中龍公司，賣方就其鋼品品質，負賣方責任，至如約定價格、     各交易條件及優惠措施均不受影響。  (2)匯票及匯票付款申請書使用中鋼格式，由受益人單獨簽章或使用數位憑證有效。  (3)貨物可以分批交貨。  (4)貨物明細以發票為準。  (5)發票金額大於匯票金額及發票內容備註「受託代銷」字樣可以接受。  (6)本信用狀適用eUCP2.0版。  (7)允許受益人以匯票、匯票付款申請書及發票電子檔(包含電子發票證明聯等)方式押匯，另「受益人     完整提示通知」得附加於匯票付款申請書之最後。  (8)押匯電子文件透過網址: HTTPS://CDSLC.UXCDS.COM/CDSLC/提示。</area>
+				</textArea>
+			</condition>
+			<condition name="DraftPaymentOrAcceptanceApplication"                  present="cross" type="singleChoice" used="true" changed="false">
+				<title>檢附單證</title>
+				<description>檢附匯票付款申請書或匯票承兌申請書乙份</description>
+				<singleChoice name="DraftPaymentOrAcceptanceApplicationSingle">
+					<item name="Payment" itemValue="payment" checked="true">匯票付款申請書乙份</item>
+					<item name="Acceptance" itemValue="acceptance" checked="false">匯票承兌申請書乙份</item>
+				</singleChoice>
+			</condition>
+			<condition name="Invoice" present="general" type="textOnly"                  used="true" changed="false">
+				<title>檢附單證</title>
+				<description>檢附統一發票</description>
+				<textOnly name="InvoiceText">
+					<messageSegment>統一發票</messageSegment>
+				</textOnly>
+			</condition>
+			<condition name="OtherAppendix" present="general"                  type="textArea" used="false" changed="false">
+				<title>其他檢附單據</title>
+				<description>填寫其他檢附單據</description>
+				<textArea name="OtherAppendixArea">
+					<area name="OtherAppendix">~請填寫其他應檢附之單據~</area>
+				</textArea>
+			</condition>
+			<condition name="IsUsanceLcInterestPayByBuyer"                  present="usance" type="singleChoice" used="false" changed="false">
+				<title>遠期信用狀利息</title>
+				<description>遠期信用狀利息由買方負擔或賣方負擔</description>
+				<prefixMessage>遠期信用狀利息：</prefixMessage>
+				<singleChoice name="IsUsanceLcInterestPayByBuyerSingle">
+					<item name="Yes" itemValue="true" checked="true">買方負擔</item>
+					<item name="No" itemValue="false" checked="false">賣方負擔</item>
+					<messageSegment>　(未填者視為由買方負擔)</messageSegment>
+				</singleChoice>
+			</condition>
+			<condition name="IsAcceptanceChargePayByBuyer"                  present="usance" type="singleChoice" used="false" changed="false">
+				<title>承兌手續費</title>
+				<description>選擇承兌手續費由買方或賣方負擔</description>
+				<prefixMessage>承兌手續費：</prefixMessage>
+				<singleChoice name="IsAcceptanceChargePayByBuyerSingle">
+					<item name="Yes" itemValue="true" checked="true">買方</item>
+					<item name="No" itemValue="false" checked="false">賣方</item>
+					<messageSegment>負擔　(未填者視為由買方負擔)</messageSegment>
+				</singleChoice>
+			</condition>
+			<condition name="IsBatchDeliverGoods" present="general"                  type="singleChoice" used="false" changed="false">
+				<title>交貨方式</title>
+				<description>選擇是否可分批交貨</description>
+				<prefixMessage>分批交貨：</prefixMessage>
+				<singleChoice name="IsBatchDeliverGoodsSingle">
+					<item name="Yes" itemValue="true" checked="true">可以</item>
+					<item name="No" itemValue="false" checked="false">不可以</item>
+					<messageSegment>　(未填者視為得分批交貨)</messageSegment>
+				</singleChoice>
+			</condition>
+			<condition name="LastDateOfDelivery" present="general"                  type="textBlank" used="false" changed="false">
+				<title>最後交貨日期</title>
+				<description>最後交貨日期</description>
+				<prefixMessage>最後交貨日期</prefixMessage>
+				<textBlank name="LastDateOfDeliveryBlank">
+					<blank name="LastDateOfDelivery"/>
+					<messageSegment>　(未填者自開狀日起三個月視為最後交貨日)</messageSegment>
+				</textBlank>
+			</condition>
+			<condition name="OtherSpecialClause" present="general"                  type="textArea" used="false" changed="false">
+				<title>其他特別指示條款</title>
+				<description>填寫其他特別指示條款</description>
+				<textArea name="OtherSpecialClauseArea">
+					<area name="OtherSpecialClause">~其他特別指示條款~</area>
+				</textArea>
+			</condition>
+			<condition name="SpecialMessageForCS" present="general"                  type="singleChoice" used="true" changed="false">
+				<title>中國鋼鐵股份有限公司特殊訊息</title>
+				<description>填寫中國鋼鐵股份有限公司特殊訊息</description>
+				<prefixMessage>特殊訊息</prefixMessage>
+				<singleChoice name="TransactionDepartmentSingle">
+					<item name="C21" itemValue="C21" checked="true">C21</item>
+					<item name="C22" itemValue="C22" checked="false">C22</item>
+					<item name="C24" itemValue="C24" checked="false">C24</item>
+					<item name="C25" itemValue="C25" checked="false">C25</item>
+					<item name="C26" itemValue="C26" checked="false">C26</item>
+				</singleChoice>
+			</condition>
+		</conditions>
+		<lcTail>  　　上述匯票須載明本信用狀之日期及編號並限於  有效期限內向本行辦理提示請求承兌╱付款。上述  單證經審查結果核與本信用狀規定條款相符時，本  行保證上開依規定簽發、提示之匯票必能如約獲得  承兌╱付款。    </lcTail>
+		<advisingBankNotes></advisingBankNotes>
+	</lcDoc>
+	<cpDoc>
+		<cpNo></cpNo>
+		<issuingDate></issuingDate>
+		<dueDate></dueDate>
+		<issuingBank name="" code="" branchName="" branchCode=""              address="" phone=""/>
+		<cpAccount></cpAccount>
+		<payingBank name="" code="" branchName="" branchCode=""              address="" phone=""/>
+		<payer name="" regNo="" address="" phone=""/>
+		<payerUndertaker></payerUndertaker>
+		<beneficiary name="" regNo="" address="" phone=""/>
+		<amount value="" chinese=""/>
+		<currency code="" name=""/>
+		<signet></signet>
+	</cpDoc>
+	<lcData>
+		<payment>
+			<term>atSight</term>
+			<days></days>
+			<date></date>
+		</payment>
+		<isPartialShipment>true</isPartialShipment>
+		<isCSCConditions>true</isCSCConditions>
+		<CSCSalesDept>C21</CSCSalesDept>
+	</lcData>
+</CDSLcdApplication>

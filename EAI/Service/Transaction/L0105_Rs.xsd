@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:tw.org.ba="http://www.ba.org.tw" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.ifxforum.org" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="IFX">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="EAIHeader">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TxnID" type="xs:string" />
+                            <xs:element name="RecID" type="xs:string" />
+                            <xs:element name="SrcSystemID" type="xs:string" />
+                            <xs:element name="DomID" type="xs:string" />
+                            <xs:element name="ErrCode" type="xs:string" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="LogTxn">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TxnID" type="xs:string" />
+                            <xs:element name="PrcDt" type="xs:date" />
+                            <xs:element name="PmtID" type="xs:string" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="EAIBody">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="MsgRs">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Header">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="TxnId" type="xs:string" />
+                                                    <xs:element name="RecCtrlStatus" type="xs:string" />
+                                                    <xs:element name="RspCode" type="xs:string" />
+                                                    <xs:element name="Desc" type="xs:string" />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="SvcRs">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="BRNO" type="xs:string" />
+                                                    <xs:element name="TRMSEQ" type="xs:string" />
+                                                    <xs:element name="TXTNO" type="xs:string" />
+                                                    <xs:element name="IBRNO" type="xs:string" />
+                                                    <xs:element name="CIFKEY" type="xs:string" />
+                                                    <xs:element name="CIFERR" type="xs:string" />
+                                                    <xs:element name="NAME" type="xs:string" />
+                                                    <xs:element name="CNT" type="xs:string" />
+                                                    <xs:element name="AMT" type="xs:string" />
+                                                    <xs:element name="HAMT1" type="xs:string" />
+                                                    <xs:element name="HAMT2" type="xs:string" />
+                                                    <xs:element name="AOBRNO" type="xs:string" />
+                                                    <xs:element name="AONO" type="xs:string" />
+                                                    <xs:element name="TEL" type="xs:string" />
+                                                    <xs:element name="BDAMT" type="xs:string" />
+                                                    <xs:element name="DMAMT" type="xs:string" />
+                                                    <xs:element name="LOBRNO" type="xs:string" />
+                                                    <xs:element name="LONO" type="xs:string" />
+                                                    <xs:element name="CLOBRNO" type="xs:string" />
+                                                    <xs:element name="CLONO" type="xs:string" />
+                                                    <xs:element name="LTRAMT" type="xs:string" />
+                                                    <xs:element name="G4000AMT" type="xs:string" />
+                                                    <xs:element name="CRGRAMT" type="xs:string" />
+                                                    <xs:element name="CRGRGAMT" type="xs:string" />
+                                                    <xs:element name="LCARBAL" type="xs:string" />
+                                                    <xs:element maxOccurs="unbounded" name="Detail">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="APNO" type="xs:string" />
+                                                                <xs:element name="SRNO" type="xs:string" />
+                                                                <xs:element name="CHKDG" type="xs:string" />
+                                                                <xs:element name="SQNO" type="xs:string" />
+                                                                <xs:element name="ACTBAL" type="xs:string" />
+                                                                <xs:element name="APSDAY" type="xs:string" />
+                                                                <xs:element name="APEDAY" type="xs:string" />
+                                                                <xs:element name="OIDATE" type="xs:string" />
+                                                                <xs:element name="IDATE" type="xs:string" />
+                                                                <xs:element name="CHARCD1" type="xs:string" />
+                                                                <xs:element name="CHARCD2" type="xs:string" />
+                                                                <xs:element name="FITIRT" type="xs:string" />
+                                                                <xs:element name="OACTBAL" type="xs:string" />
+                                                                <xs:element name="XCRT" type="xs:string" />
+                                                                <xs:element name="STATUS" type="xs:string" />
+                                                                <xs:element name="LNCD" type="xs:string" />
+                                                                <xs:element name="SINTFG" type="xs:string" />
+                                                                <xs:element name="BRNO1" type="xs:string" />
+                                                                <xs:element name="PRDATE" type="xs:string" />
+                                                                <xs:element name="EXSDAY" type="xs:string" />
+                                                                <xs:element name="CURCD" type="xs:string" />
+                                                                <xs:element name="OCODE" type="xs:string" />
+                                                                <xs:element name="APRNO" type="xs:string" />
+                                                                <xs:element name="IRTCD" type="xs:string" />
+                                                                <xs:element name="SURFLG" type="xs:string" />
+                                                                <xs:element name="MGNO" type="xs:string" />
+                                                                <xs:element name="LTYSTUS" type="xs:string" />
+                                                                <xs:element name="ARBAL" type="xs:string" />
+                                                                <xs:element name="APAMT" type="xs:string" />
+                                                                <xs:element name="LOANFG" type="xs:string" />
+                                                                <xs:element name="REFNO1" type="xs:string" />
+                                                                <xs:element name="REFNO2" type="xs:string" />
+                                                                <xs:element name="CRGRFLG" type="xs:string" />
+                                                                <xs:element name="CRGRRATE" type="xs:string" />
+                                                                <xs:element name="CRBRNO" type="xs:string" />
+                                                                <xs:element name="CRAPNO" type="xs:string" />
+                                                                <xs:element name="CRSRNO" type="xs:string" />
+                                                                <xs:element name="CRCHKDG" type="xs:string" />
+                                                                <xs:element name="CRSQNO" type="xs:string" />
+                                                                <xs:element name="LOANFG1" type="xs:string" />
+                                                                <xs:element name="FEEFG" type="xs:string" />
+                                                                <xs:element name="FEDAY" type="xs:string" />
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,123 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <title>華南銀行 - 國內信用狀系統</title>
+    <link rel="stylesheet" href="../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+    <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body>
+    <div class="px-0 hnb__signin-wrapper">
+        <main class="hnb__signin--form">
+            <form id="loginForm">
+                <div class="text-center pb-2">
+                    <img class="mb-1 logo" src="../assets/images/logo-hncb.png" alt="HNB logo">
+                    <div class="align-text-top fs-4 fw-bold custom-element" style="color: #2a91bc;">
+                        國內信用狀系統
+                    </div>
+                </div>
+
+                <div id="loginError" class="alert alert-danger d-none" role="alert"></div>
+
+                @* <div class="my-2 form-floating">
+                    <select class="form-select form-select-sm" id="auth">
+                        <option value="BH" selected>經辦</option>
+                        <option value="BS">主管</option>
+                        <option value="SM">系統管理員</option>
+                        <option value="MB">總行</option>
+                        <option value="BM">分行管理員</option>
+                    </select>
+                    <label for="auth">權限</label>
+                </div> *@
+                <div class="form-floating">
+                    <input type="text" class="form-control form-control-sm" id="account" placeholder="帳號">
+                    <label for="account">帳號</label>
+                </div>
+                <div class="form-floating mt-2">
+                    <input type="password" class="form-control form-control-sm" id="password" autocomplete="false"
+                           placeholder="密碼">
+                    <label for="password">密碼</label>
+                </div>
+
+                <button id="signIn" class="w-100 btn btn-lg login mt-3" type="submit">進入</button>
+            </form>
+        </main>
+    </div>
+    <!-- JS Plugin -->
+    <script>
+        debugger;
+        (function () {
+            const form = document.getElementById('loginForm');
+            const signIn = document.getElementById('signIn');
+            const accountInput = document.getElementById('account');
+            const passwordInput = document.getElementById('password');
+            const errorBox = document.getElementById('loginError');
+
+            function showError(message) {
+                errorBox.textContent = message || '登入失敗';
+                errorBox.classList.remove('d-none');
+            }
+
+            function clearError() {
+                errorBox.textContent = '';
+                errorBox.classList.add('d-none');
+            }
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                clearError();
+
+                const account = accountInput.value.trim();
+                const password = passwordInput.value;
+
+                if (!account || !password) {
+                    showError('帳號與密碼不可為空白');
+                    return;
+                }
+
+                signIn.disabled = true;
+                signIn.classList.add('disabled');
+
+                try {
+                    const resp = await fetch('@Url.Action("SignIn", "Login")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ account: account, password: password })
+                    });
+
+                    if (!resp.ok) {
+                        showError('伺服器回應錯誤');
+                        return;
+                    }
+
+                    const data = await resp.json();
+                    if (data && data.success) {
+                        // 登入成功，轉到主畫面（帶上 auth 參數以符合現有前端檢查）
+                        window.location.href = '../MainPage/Index';
+                    } else {
+                        showError((data && data.message) || '帳號或密碼錯誤');
+                    }
+                } catch (ex) {
+                    console.error(ex);
+                    showError('系統發生錯誤，請稍後再試');
+                } finally {
+                    signIn.disabled = false;
+                    signIn.classList.remove('disabled');
+                }
+            });
+        })();
+    </script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/jquery-3.7.1.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 客戶所屬分行異動 -->
+  <div id="SetCustomerBranch" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">客戶管理作業</li>
+        <li class="breadcrumb-item active" aria-current="page">客戶所屬分行異動</li>
+      </ol>
+    </nav>
+
+    <!-- 客戶所屬分行異動清冊 -->
+    <div id="editList">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">客戶所屬分行異動</h1>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap">客戶名稱</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">憑證序號</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">原開狀分行</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">新開狀分行</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">異動類別</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-nowrap">70762411 網際股份有限公司</td>
+                  <td style="width:30%">
+                    4F6025B396703387944A6345D30
+
+                    4F6025B396703387944A6345D30
+                    1211DF465465SD54564V153154F
+                    465465VC5645V4544V318C7V778
+                  </td>
+                  <td class="text-center text-nowrap">7007高雄分行</td>
+                  <td class="text-center text-nowrap">7007高雄分行</td>
+                  <td class="text-center text-nowrap">變更憑證序號</td>
+                  <td class="text-center text-nowrap">
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--default" onclick="approveHandler();">
+                      核准
+                    </button>
+                    <button type="button" class="mx-1 px-3 btn btn-sm hnb__btn--red" onclick="rejectHandler();">
+                      拒絕
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 訊息 視窗 -->
+  <div class="modal fade" id="messageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content hnb__modal">
+        <div class="modal-header py-2 border-bottom-0">
+          <h5 class="modal-title fs-5 fw-bolder text--hnb" id="messageModalLabel">
+            作業訊息
+          </h5>
+          <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div id="msgBody" class="modal-body bg-light"></div>
+        <div id="msgFooter" class="modal-footer justify-content-center border-top-0"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 訊息視窗
+    const messageModalLabel = document.querySelector('#messageModalLabel');
+    const msgBody = document.querySelector('#msgBody');
+    const msgFooter = document.querySelector('#msgFooter');
+
+    // 核准 approveHandler
+    function approveHandler() {
+      messageModalLabel.innerHTML = '作業訊息';
+      msgBody.innerHTML = `<p class="fw-bold hnb__text--green text-center">
+                您確定將核准所選取的資料嗎？
+              </p>`;
+      msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="confirmHandler()">確定</button>`;
+      $('#messageModal').modal('show');
+    };
+
+    // 拒絕 rejectHandler
+    function rejectHandler() {
+      messageModalLabel.innerHTML = '作業訊息';
+      msgBody.innerHTML = `<p class="fw-bold hnb__text--red text-center">
+                您確定將拒絕所選取的資料嗎？
+              </p>`;
+      msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="confirmHandler()">確定</button>`;
+      $('#messageModal').modal('show');
+    };
+
+    function confirmHandler() {
+      $('#messageModal').modal('hide');
+      setTimeout(() => {
+        messageModalLabel.innerHTML = '作業訊息';
+        msgBody.innerHTML = `<p class="fw-bold hnb__text--green text-center">
+                作業已完成
+              </p>`;
+        msgFooter.innerHTML = `<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" data-bs-dismiss="modal">關閉</button>`;
+        $('#messageModal').modal('show');
+      }, 500);
+    };
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ARCredit" targetNamespace="http://cdslc.uxcds.com/CDSLC#draft" elementFormDefault="qualified" xmlns="http://cdslc.uxcds.com/CDSLC#draft" xmlns:mstns="http://cdslc.uxcds.com/CDSLC#draft" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="Invoices.xsd"/>
+	<xs:include schemaLocation="CDSLC.xsd"/>
+	<xs:element name="ARCredit" >
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="creditItem" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:string" name="agreementNo" />
+							<xs:element name="bankCode" type="xs:string" />
+							<xs:element name="validationDate" type="xs:string" />
+							<xs:element name="expirationDate" type="xs:string" />
+							<xs:element name="creditDays" type="xs:int" />
+							<xs:element name="buyerReceiptNo" type="xs:string" />
+							<xs:element name="sellerReceiptNo" type="xs:string" minOccurs="0" maxOccurs="1" />
+							<xs:element name="creditAmount" type="xs:decimal" />
+							<xs:element name="Customer" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="orgSeqNo" type="xs:string" />
+										<xs:element name="batchNo" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="uploadStatus" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="orderItem" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="purchaseAmount" type="xs:decimal" />
+							<xs:element name="purchaseDate" type="xs:string" />
+							<xs:element name="discountDays" type="xs:int" />
+							<xs:element name="expirationDate" type="xs:string" />
+							<xs:element name="managementFee" type="xs:decimal" minOccurs="0" />
+							<xs:element name="agentFee" type="xs:decimal" minOccurs="0" />
+							<xs:element name="appropriateAmount" type="xs:decimal" />
+							<xs:element name="managementFeeNoTax" type="xs:decimal" minOccurs="0" />
+							<xs:element name="agentFeeNoTax" type="xs:decimal" minOccurs="0" />
+							<xs:element name="taxAmount" type="xs:decimal" minOccurs="0" />
+							<xs:element name="contractQuarter" type="xs:string" minOccurs="0" />
+							<xs:element name="contractNo" type="xs:string" minOccurs="0" />
+							<xs:element name="agreementNo" type="xs:string" />
+							<xs:element name="Customer" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="orgSeqNo" type="xs:string" />
+										<xs:element name="batchNo" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="uploadStatus" type="xs:string" />
+							<xs:element name="bankCode" type="xs:string" minOccurs="0" maxOccurs="1" />
+							<xs:element name="buyerReceiptNo" type="xs:string" />
+							<xs:element ref="invoices" maxOccurs="1" minOccurs="0"></xs:element>
+						</xs:sequence>
+						<xs:attribute name="No" type="xs:string" use="required" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="POPayoff" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="PayoffDate" type="xs:string" />
+							<xs:element name="Customer" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="orgSeqNo" type="xs:string" />
+										<xs:element name="batchNo" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="PurchaseNo" type="xs:string" />
+							<xs:element name="PayoffAmount" type="xs:decimal" minOccurs="0" maxOccurs="1" nillable="true" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>			
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

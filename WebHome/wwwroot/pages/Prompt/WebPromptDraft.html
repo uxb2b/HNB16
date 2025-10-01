@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 網銀押匯提示 -->
+  <div id="WebPromptDraft" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">電子押匯提示作業</li>
+        <li class="breadcrumb-item active" aria-current="page">網銀押匯提示</li>
+      </ol>
+    </nav>
+
+    <!-- 網銀押匯提示 -->
+    <div id="queryList">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">網銀押匯提示</h1>
+        <div>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+            <span class="mdi mdi-cloud-download"></span>
+            下載電子檔
+          </button>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap">
+            <span class="mdi mdi-printer"></span>
+            列印
+          </button>
+          <span class="mx-1">|</span>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+            <span class="mdi mdi-cloud-download"></span>
+            下一個受益人
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="my-1">
+            <span class="hnb__text--green">受益人 中國鋼鐵股份有限公司 於 2025年4月14日14時51分47秒 提示完整下述信用狀項下押匯文件 ( 詳如附件 )，請處理！</span>
+            <br>
+            <span class="fw-bold">開狀行代碼：</span>0081050
+          </div>
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap">信用狀號碼</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">買受人名稱</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">求償匯票號碼</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">求償匯票金額</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">發票號碼</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">發票金額</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">
+                    099700041161011861
+                  </td>
+                  <td class="text-nowrap">
+                    鼎力金屬工業股份有限公司
+                  </td>
+                  <td class="text-center text-nowrap">
+                    P114000008
+                  </td>
+                  <td class="text-end text-nowrap">
+                    $ 282,125.00
+                  </td>
+                  <td class="text-center text-nowrap">
+                    UX11150001
+                  </td>
+                  <td class="text-end text-nowrap">
+                    $ 282,125.00
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4"></td>
+                  <td class="text-center text-nowrap hnb__text--red">
+                    同匯票小計
+                  </td>
+                  <td class="text-end text-nowrap">
+                    $ 282,125.00
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2"></td>
+                  <td class="text-center text-nowrap hnb__text--red">同信用狀小計</td>
+                  <td class="text-end text-nowrap">
+                    $ 282,125.00
+                  </td>
+                  <td class="text-center text-nowrap hnb__text--red">
+                    同信用狀小計
+                  </td>
+                  <td class="text-end text-nowrap">
+                    $ 282,125.00
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2"></td>
+                  <td class="text-center text-nowrap hnb__text--red">開狀行匯票總額</td>
+                  <td class="text-end text-nowrap">
+                    $ 282,125.00
+                  </td>
+                  <td class="text-center text-nowrap hnb__text--red">
+                    開狀行發票總額
+                  </td>
+                  <td class="text-end text-nowrap">
+                    $ 282,125.00
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="my-3">
+        <div class="text-end">
+          <span class="hnb__text--red">全部匯票總額：</span>NT$ 2,429,574
+          <span class="hnb__text--red"><span class="mx-1">/</span>全部發票總額：</span>NT$ 4,429,574
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+  </script>
+</body>
+
+</html>

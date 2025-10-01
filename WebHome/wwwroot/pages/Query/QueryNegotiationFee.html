@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 國內信用狀押匯手續費優待明細表 -->
+  <div id="QueryNegotiationFee" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">查詢作業</li>
+        <li class="breadcrumb-item active" aria-current="page">國內信用狀押匯手續費優待明細表</li>
+      </ol>
+    </nav>
+
+    <!-- 查詢國內信用狀押匯手續費優待明細表 -->
+    <div id="queryForm">
+      <form>
+        <h1 class="py-2 fs-4 fw-bolder">查詢國內信用狀押匯手續費優待明細表</h1>
+        <div class="mb-2 card">
+          <div class="card-body bg-light">
+            <div class="row py-2">
+              <div class="col-12 col-md-6 col-lg-6">
+                <div class="row">
+                  <label for="appDate" class="col-2 col-md-3 col-form-label text-end text-nowrap">押匯/承兌日期</label>
+                  <div class="col-10 col-md-9">
+                    <div class="d-flex align-items-center">
+                      <div class="input-group flex-nowrap">
+                        <input type="datetime-local" id="startDate" placeholder="請點選起日"
+                          class="form-control form-control-sm hnb__calendar">
+                        <label class="input-group-text py-1" for="startDate">
+                          <span class="mdi mdi-calendar-month"></span>
+                        </label>
+                      </div>
+                      <span class="px-2">~</span>
+                      <div class="input-group flex-nowrap">
+                        <input type="datetime-local" id="endDate" placeholder="請點選訖日"
+                          class="form-control form-control-sm hnb__calendar">
+                        <label class="input-group-text py-1" for="endDate">
+                          <span class="mdi mdi-calendar-month"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="pt-1 text-danger text-end text-nowrap">
+                      <span class="text-danger dateAlert pe-2 d-none pe-1">
+                        <span class="mdi mdi-close-thick"></span>
+                        結束日期須晚於開始日期
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-end py-1">
+                <button type="reset" id="reset" class="me-2 px-3 btn btn-sm hnb__btn--reset">重設</button>
+                <button type="button" id="searchBtn" class="px-3 btn btn-sm hnb__btn--default"
+                  onclick="searchHandler()">確定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 國內信用狀押匯手續費優待明細表清冊 -->
+    <div id="queryList" class="hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">國內信用狀押匯手續費優待明細表清冊</h1>
+        <div>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+            <span class="mdi mdi-cloud-download"></span>
+            下載電子檔
+          </button>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap">
+            <span class="mdi mdi-printer"></span>
+            列印
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd text-nowrap">押匯/承兌日期</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">開狀行</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">申請人</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">押匯行</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">受益人</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">信用狀號碼</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">押匯金額</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">入帳帳號</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">押匯手續費</th>
+                  <th scope="col" class="hnb__tbhd text-nowrap">押匯手續費優惠原因</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center">2005/06/29</td>
+                  <td class="text-center">100</td>
+                  <td class="text-nowrap">泰西企業股份有限公司</td>
+                  <td class="text-center">100</td>
+                  <td class="text-nowrap">優勢股份有限公司</td>
+                  <td class="text-center">099700049161000861</td>
+                  <td class="text-end">$ 500</td>
+                  <td class="text-center">100100310233</td>
+                  <td class="text-end">$ 500</td>
+                  <td>申請總行核准</td>
+                </tr>
+                <tr>
+                  <td class="text-center">2005/06/29</td>
+                  <td class="text-center">100</td>
+                  <td class="text-nowrap">泰西企業股份有限公司</td>
+                  <td class="text-center">100</td>
+                  <td class="text-nowrap">優勢股份有限公司</td>
+                  <td class="text-center">099700049161000862</td>
+                  <td class="text-end">$ 500</td>
+                  <td class="text-center">匯出匯款</td>
+                  <td class="text-end">$ 500</td>
+                  <td>本行授信戶</td>
+                </tr>
+                <tr>
+                  <td class="text-center">2005/06/29</td>
+                  <td class="text-center">100</td>
+                  <td class="text-nowrap">泰西企業股份有限公司</td>
+                  <td class="text-center">100</td>
+                  <td class="text-nowrap">優勢股份有限公司</td>
+                  <td class="text-center">099700049161000863</td>
+                  <td class="text-end">$ 500</td>
+                  <td class="text-center">100100310233</td>
+                  <td class="text-end">$ 500</td>
+                  <td>本行授信戶</td>
+                </tr>
+                <tr>
+                  <td class="text-center">2005/06/29</td>
+                  <td class="text-center">103</td>
+                  <td class="text-nowrap">泰西企業股份有限公司</td>
+                  <td class="text-center">103</td>
+                  <td class="text-nowrap">優勢股份有限公司</td>
+                  <td class="text-center">099700049161000864</td>
+                  <td class="text-end">$ 500</td>
+                  <td class="text-center">100100310233</td>
+                  <td class="text-end">$ 500</td>
+                  <td>本行授信戶</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 查詢控制項
+    const searchBtn = document.querySelector('#searchBtn');
+    const queryForm = document.querySelector('#queryForm');
+    const queryList = document.querySelector('#queryList');
+
+    // 查詢信用狀 searchHandler
+    function searchHandler() {
+      queryList.classList.remove('hnb__hide');
+    };
+
+    // 開啟列印視窗 printList
+    function printList() {
+      window.open(
+        '../Query/QueryPrint.html?page=QueryNegotiationFee',
+        'printList',
+        'scrollbars=yes'
+        //'width=800,height=600,scrollbars=yes'
+      );
+    };
+
+    // 月曆
+    const dateAlert = document.querySelector(".dateAlert");
+    const currentTime = new Date()
+    const config = {
+      locale: 'zh_tw',
+      //enableTime: true, //可選時與分
+      dateFormat: "Y/m/d", //時間格式
+      time_24hr: true, //24 時制
+      minuteIncrement: 15, //分鐘每次選擇間隔單位
+      allowInput: true, //可輸入控制
+      //minDate: "today", //可選最小時間，可直接接受 'today' 字串
+      //maxDate: currentTime.setMonth(currentTime.getMonth() + 1), //可選最大時間，從今天起一個月
+      onChange: function (selectedDates, dateStr, instance) {
+        console.log(`你現在點選的是 ${instance.input.id}，時間為 ${selectedDates} / ${dateStr}`);
+        checkDateTime(dateStr, instance.input.id);
+      }
+    };
+    flatpickr('#startDate, #endDate', config);
+
+    let startDateValue = null
+    let endDateValue = null
+
+    // 辨別結束日期須晚於開始日期
+    function checkDateTime(dateStr, id) {
+      if (id === "startDate") {
+        startDateValue = dateStr
+      }
+
+      if (id === "endDate") {
+        endDateValue = dateStr
+      }
+
+      if (startDateValue > endDateValue) {
+        dateAlert.classList.remove("d-none");
+        searchBtn.classList.add("disabled");
+      } else {
+        dateAlert.classList.add("d-none");
+        searchBtn.classList.remove("disabled");
+      }
+    };
+
+    // 日期選擇器 - 有效期限 / 最後交貨日期 / 限定押匯日期
+    flatpickr('#expDate, #deliveryDate, #draftDate', config);
+
+  </script>
+</body>
+
+</html>

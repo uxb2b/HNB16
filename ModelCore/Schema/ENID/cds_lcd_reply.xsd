@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Lu, Troy (UxB2B) -->
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Daphne Deng (Universal Exchange Inc) -->
+<xs:schema targetNamespace="http://www.uxcds.com/xmlschema/cds" xmlns:cds="http://www.uxcds.com/xmlschema/cds" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="cds_lcd_type.xsd"/>
+	<xs:element name="CDSLcdReply">
+		<xs:annotation>
+			<xs:documentation>
+CDS國內信用狀回覆訊息
+version:版本號碼
+</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="lcReplyInfo" type="cds:LcdReplyInfoType"/>
+				<xs:element name="lcReplyData" type="cds:LcdReplyDataType"/>
+			</xs:sequence>
+			<xs:attribute name="version" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

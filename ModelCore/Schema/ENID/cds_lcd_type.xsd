@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Lu, Troy (UxB2B) -->
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Daphne Deng (Universal Exchange Inc) -->
+<xs:schema targetNamespace="http://www.uxcds.com/xmlschema/cds" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cds="http://www.uxcds.com/xmlschema/cds" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="cds_lcd_conditions.xsd"/>
+	<xs:complexType name="BankType">
+		<xs:annotation>
+			<xs:documentation>
+CDS銀行類型
+name:銀行名稱
+code:銀行代碼
+branchName:分行名稱
+branchCode:分行代碼
+address:地址
+phone:電話
+</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="code" type="xs:string" use="required"/>
+		<xs:attribute name="branchName" type="xs:string" use="required"/>
+		<xs:attribute name="branchCode" type="xs:string" use="required"/>
+		<xs:attribute name="address" type="xs:string" use="required"/>
+		<xs:attribute name="phone" type="xs:string" use="required"/>
+		<xs:attribute name="changed" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="true"/>
+					<xs:enumeration value="false"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="CompanyType">
+		<xs:annotation>
+			<xs:documentation>
+CDS公司類型
+name:公司名稱
+regNo:統一編號
+address:地址
+phone:電話
+chiefName:負責人名稱
+chiefTitle:負責人職稱
+chiefEmail:負責人電子信箱
+changedField:指示曾經變更的欄位
+</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="nameChanged" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="true"/>
+					<xs:enumeration value="false"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="regNo" type="xs:string" use="required"/>
+		<xs:attribute name="address" type="xs:string" use="required"/>
+		<xs:attribute name="addressChanged" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="true"/>
+					<xs:enumeration value="false"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="phone" type="xs:string" use="required"/>
+		<xs:attribute name="phoneChanged" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="true"/>
+					<xs:enumeration value="false"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="chiefName" type="xs:string" use="optional"/>
+		<xs:attribute name="chiefNameChanged" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="true"/>
+					<xs:enumeration value="false"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="chiefTitle" type="xs:string" use="optional"/>
+		<xs:attribute name="chiefTitleChanged" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="true"/>
+					<xs:enumeration value="false"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="chiefEmail" type="xs:string" use="optional"/>
+		<xs:attribute name="chiefEmailChanged" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="true"/>
+					<xs:enumeration value="false"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="AmountType">
+		<xs:annotation>
+			<xs:documentation>
+CDS金額類型
+value:金額數值
+chinese:中文大寫金額
+</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="value" type="xs:string" use="required"/>
+		<xs:attribute name="chinese" type="xs:string" use="optional"/>
+		<xs:attribute name="changed" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="true"/>
+					<xs:enumeration value="false"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="CurrencyType">
+		<xs:annotation>
+			<xs:documentation>
+CDS幣別類型
+code:幣別縮寫
+name:幣別名稱
+</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="code" type="xs:string" use="required"/>
+		<xs:attribute name="name" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="RejectType">
+		<xs:annotation>
+			<xs:documentation>
+CDS拒絕類型
+code:拒絕代碼
+desc:拒絕原因
+
+</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="code" type="xs:string" use="optional"/>
+		<xs:attribute name="desc" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="CPType">
+		<xs:annotation>
+			<xs:documentation>CDS本票類型</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cpNo" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>本票號碼</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="issuingDate" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>開票日期</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dueDate" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>本票到期日</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="issuingBank" type="cds:BankType">
+				<xs:annotation>
+					<xs:documentation>開票銀行</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cpAccount" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>開票帳戶</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="payingBank" type="cds:BankType">
+				<xs:annotation>
+					<xs:documentation>付款銀行</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="payer" type="cds:CompanyType">
+				<xs:annotation>
+					<xs:documentation>開票人</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="payerUndertaker" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>開票公司負責人</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="beneficiary" type="cds:CompanyType">
+				<xs:annotation>
+					<xs:documentation>受益人</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="amount" type="cds:AmountType">
+				<xs:annotation>
+					<xs:documentation>本票金額</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currency" type="cds:CurrencyType">
+				<xs:annotation>
+					<xs:documentation>幣別</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="signet" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>本票印鑑</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LcdType">
+		<xs:annotation>
+			<xs:documentation>CDS國內信用狀本文資料類型</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="lcTitle" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>信用狀名稱</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lcType">
+				<xs:annotation>
+					<xs:documentation>信用狀類型</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="sight"/>
+						<xs:enumeration value="usance"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lcHeader" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>信用狀起始說明</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lcNo" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>信用狀號碼</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="issuingDate" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>開狀日期</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="issuingBank" type="cds:BankType">
+				<xs:annotation>
+					<xs:documentation>開狀銀行</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="advisingBank" type="cds:BankType">
+				<xs:annotation>
+					<xs:documentation>通知銀行</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="advisingDate" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>通知日期</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="advisingBankNo" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>通知銀行編號</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="payingBank" type="cds:BankType">
+				<xs:annotation>
+					<xs:documentation>付款銀行</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="applicant" type="cds:CompanyType">
+				<xs:annotation>
+					<xs:documentation>申請人</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="beneficiary" type="cds:CompanyType">
+				<xs:annotation>
+					<xs:documentation>受益人</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="amount" type="cds:AmountType">
+				<xs:annotation>
+					<xs:documentation>金額</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currency" type="cds:CurrencyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>幣別</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expiryDate">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation>有效期限</xs:documentation>
+					</xs:annotation>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="changed" use="optional">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="true"/>
+										<xs:enumeration value="false"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="lcConditions" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>信用狀條款</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="lcCond" type="xs:string" minOccurs="0" maxOccurs="100"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="lcAdditionalConditions" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>特別指示條款</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="lcAddCond" type="xs:string" minOccurs="0" maxOccurs="100"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="cds:conditions" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>信用狀條款及特別指示條款</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lcTail" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>信用狀結尾說明</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="advisingBankNotes" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>通知銀行記載</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LcdDataType">
+		<xs:annotation>
+			<xs:documentation>CDS國內信用狀控制資料類型</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="payment">
+				<xs:annotation>
+					<xs:documentation>付款期限</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="term">
+							<xs:annotation>
+								<xs:documentation>
+atSight:見票即付
+atDaysAfterSight:見票後定期付款
+atDaysAfterDate:發票日後定期付款
+onDate:定期付款
+atDaysAfterBLDate:提單日期後定期付款
+</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="atSight"/>
+									<xs:enumeration value="atDaysAfterSight"/>
+									<xs:enumeration value="atDaysAfterDate"/>
+									<xs:enumeration value="onDate"/>
+									<xs:enumeration value="atDaysAfterBLDate"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="days" type="xs:string" minOccurs="0"/>
+						<xs:element name="date" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="isPartialShipment">
+				<xs:annotation>
+					<xs:documentation>是否分批交貨</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="true"/>
+						<xs:enumeration value="false"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="isCSCConditions">
+				<xs:annotation>
+					<xs:documentation>是否為中鋼之電子押匯特別指示條款</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="true"/>
+						<xs:enumeration value="false"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CSCSalesDept" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>中鋼業務單位</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LcdInfoType">
+		<xs:annotation>
+			<xs:documentation>
+CDS國內信用狀資料類型
+appNo:國內信用狀申請書編號
+</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="appNo" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="LcdAppInfoType">
+		<xs:annotation>
+			<xs:documentation>
+CDS國內信用狀申請書資料類型
+appNo:國內信用狀申請書編號
+appDate:國內信用狀申請日期
+</xs:documentation>
+		</xs:annotation>
+    <xs:sequence>
+      <xs:element name="lcaTitle" type="xs:string" minOccurs="0">
+      	<xs:annotation>
+      		<xs:documentation>開狀申請書標題</xs:documentation>
+      	</xs:annotation>
+      </xs:element>
+      <xs:element name="lcaHeader" type="xs:string" minOccurs="0">
+      	<xs:annotation>
+      		<xs:documentation>開狀申請書起始說明</xs:documentation>
+      	</xs:annotation>
+      </xs:element>
+      <xs:element ref="cds:conditions" minOccurs="0" >
+      	<xs:annotation>
+      		<xs:documentation>開狀申請書條款</xs:documentation>
+      	</xs:annotation>
+      </xs:element>
+      <xs:element name="lcaTail" type="xs:string" minOccurs="0" >
+      	<xs:annotation>
+      		<xs:documentation>開狀申請書結尾說明</xs:documentation>
+      	</xs:annotation>
+      </xs:element>
+    </xs:sequence>
+		<xs:attribute name="appNo" type="xs:string" use="required"/>
+		<xs:attribute name="appDate" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="LcdAmendInfoType">
+		<xs:annotation>
+			<xs:documentation>
+CDS國內信用狀修改申請書資料類型
+appNo:國內信用狀申請書編號amendNo:國內信用狀修改申請書編號
+amendCount:修改次數
+amendDate:國內信用狀修改申請日期
+</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="appNo" type="xs:string" use="required"/>
+		<xs:attribute name="amendNo" type="xs:string" use="required"/>
+		<xs:attribute name="amendCount" type="xs:string" use="required"/>
+		<xs:attribute name="amendDate" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="LcdAmendItemType">
+		<xs:annotation>
+			<xs:documentation>CDS國內信用狀修改資料類型</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="itemName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>項目名稱</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oldValue" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>修改前資料</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="newValue" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>修改後資料</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LcdAmendmentsType">
+		<xs:annotation>
+			<xs:documentation>CDS國內信用狀修改資料類型</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="lcAmendmentItem" type="cds:LcdAmendItemType" maxOccurs="100">
+				<xs:annotation>
+					<xs:documentation>CDS國內信用狀修改資料項目</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LcdAdvInfoType">
+		<xs:annotation>
+			<xs:documentation>
+CDS國內信用狀修改通知書資料類型
+appNo:國內信用狀申請書編號
+amendNo:國內信用狀修改申請書編號
+amendCount:修改次數
+advNo:修改編號
+advDate:修改日期
+</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="appNo" type="xs:string" use="required"/>
+		<xs:attribute name="amendNo" type="xs:string" use="required"/>
+		<xs:attribute name="amendCount" type="xs:string" use="required"/>
+		<xs:attribute name="advNo" type="xs:string" use="required"/>
+		<xs:attribute name="advDate" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="LcdCancDataType">
+		<xs:annotation>
+			<xs:documentation>CDS國內信用狀註銷資料類型</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="availableAmount" type="cds:AmountType">
+				<xs:annotation>
+					<xs:documentation>可用餘額</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currency" type="cds:CurrencyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>幣別</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="promiser" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>立切結書人</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="undertaker" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>公司負責人</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LcdCancInfoType">
+		<xs:annotation>
+			<xs:documentation>
+CDS國內信用狀註銷切結書資料類型
+appNo:國內信用狀申請書編號
+cancNo:註銷切結書編號
+cancDate:註銷日期
+</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="appNo" type="xs:string" use="required"/>
+		<xs:attribute name="cancNo" type="xs:string" use="required"/>
+		<xs:attribute name="cancDate" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="LcdReplyInfoType">
+		<xs:annotation>
+			<xs:documentation>
+CDS國內信用狀回覆資料類型
+appNo:信用狀申請書編號lcNo:信用狀號碼
+amendNo:信用狀修改申請書編號
+cancNo:信用狀註銷切結書編號
+
+</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="type" type="xs:string" use="required"/>
+		<xs:attribute name="appNo" type="xs:string" use="optional"/>
+		<xs:attribute name="lcNo" type="xs:string" use="optional"/>
+		<xs:attribute name="amendNo" type="xs:string" use="optional"/>
+		<xs:attribute name="cancNo" type="xs:string" use="optional"/>
+		<xs:attribute name="advNo" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="LcdReplyDataType">
+		<xs:annotation>
+			<xs:documentation>CDS國內信用狀回覆狀態資料類型</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="status" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>回覆狀態</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reject" type="cds:RejectType">
+				<xs:annotation>
+					<xs:documentation>拒絕資料</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

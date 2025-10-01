@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CDSLcdApplication xmlns="http://www.uxcds.com/xmlschema/cds" xmlns:cds="http://www.uxcds.com/xmlschema/cds" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.uxcds.com/xmlschema/cds cds_lcd_application.xsd" version="1.0">
+	<lcAppInfo appDate="2025/06/06" appNo="ENID114000012"/>
+	<lcDoc>
+		<lcTitle>不可撤銷信用狀</lcTitle>
+		<lcType>sight</lcType>
+		<lcHeader>敬啟者：  　　本行茲徇右列申請人之請求開發  本信用狀，本信用狀規定如有未盡事  宜適用國際商會所訂現行「信用狀統  一慣例與實務」之規定。</lcHeader>
+		<lcNo/>
+		<issuingDate/>
+		<issuingBank address="台北市松江路222號2F" branchCode="1083" branchName="城東分行" code="008" name="華南商業銀行" phone="02-25512111"/>
+		<advisingBank address="台北市民生東路四段54號" branchCode="1267" branchName="新的民生分行" changed="false" code="008" name="華南商業銀行" phone="02-27155011"/>
+		<advisingBankNo/>
+		<payingBank address="台北市松江路222號2F" branchCode="1083" branchName="城東分行" changed="false" code="008" name="華南商業銀行" phone="02-25512111"/>
+		<applicant address="測試市測試路1號" addressChanged="false" name="鈞元鋼鐵" nameChanged="false" phone="321654987" regNo="90000001"/>
+		<beneficiary address="高雄市仁武區竹後里水管路１００號" addressChanged="false" chiefEmail="" chiefEmailChanged="false" chiefName="林某某" chiefNameChanged="false" chiefTitle="董事長" chiefTitleChanged="false" name="臺灣塑Ｏ工Ｏ股份有限公司" nameChanged="false" phone="02222222" phoneChanged="false" regNo="75708007"/>
+		<amount changed="false" chinese="壹萬陸仟元整" value="16000"/>
+		<currency code="1" name="新臺幣"/>
+		<expiryDate changed="false">2025/07/31</expiryDate>
+		<lcConditions>
+			<lcCond>本信用狀可由上開受益人在不超過上開金額範圍內，依本信用狀規定條件簽發匯票洽請承兌/付款：  一、匯票之條件：       甲、付款人：華南商業銀行城東分行     乙、付款期限：見票即付。                    (本信用狀匯票墊款利息由買方負擔者，本行依受益人簽發、提示之匯票即期付款)     丙、金額：須與相關發票上所開列金額一致或依照本信用狀其他提示。  二、應檢附之單證如下：     1.      2.      3. 其他：        上項單證應載明申請人向受益人購買下列貨品：                  PVC</lcCond>
+		</lcConditions>
+		<lcAdditionalConditions>
+			<lcAddCond>特別指示：    2. 分批交貨：　  3. 最後交貨日期：民國 114年 03月 27日　  4. 限定押匯日期： 自民國 　年　月　日起始可押匯　  5. 承兌手續費：由　□買方   ■賣方　負擔　  7. 押匯電子文件透過網址: https://ecrm.fpg.com.tw提示　  8. 其他：</lcAddCond>
+		</lcAdditionalConditions>
+		<conditions>
+			<condition changed="false" name="groupId" present="general" type="textBlank" used="true">
+				<title>非中鋼申請書格式</title>
+				<description>判斷是否為台塑網格式或其他客戶信用狀格式</description>
+				<textBlank name="groupIdBlank">
+					<blank name="groupId">FPG</blank>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="applySource" present="general" type="singleChoice" used="true">
+				<title>來源</title>
+				<description>判斷是從網銀或臨櫃開狀：true：臨櫃、false：網銀</description>
+				<singleChoice name="applySourceSingle">
+					<item checked="true" itemValue="true" name="applySourceSingle"/>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="beneficiaryDeptId" present="general" type="textBlank" used="true">
+				<title>受益人事業部</title>
+				<description>受益人事業部</description>
+				<textBlank name="deptIdBlank">
+					<blank name="deptId">A 塑膠部</blank>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="beneficiaryCustomerNo" present="general" type="textBlank" used="true">
+				<title>客戶編號</title>
+				<description>客戶編號</description>
+				<textBlank name="customerNoBlank">
+					<blank name="customerNo">001001</blank>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="applContact" present="general" type="textBlank" used="true">
+				<title>申請人聯絡人姓名</title>
+				<description>申請人聯絡人姓名</description>
+				<textBlank name="applContactNameBlank">
+					<blank name="applContactName">吳小安 </blank>
+					<messageSegment>(職稱)</messageSegment>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="applContactPhone" present="general" type="textBlank" used="true">
+				<title>申請人聯絡人電話</title>
+				<description>申請人聯絡人電話：</description>
+				<textBlank name="applContactTelNoBlank">
+					<blank name="applContactTelNo">321654987</blank>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="PaymentTerm" present="general" type="singleChoice" used="true">
+				<title>付款期限</title>
+				<description>付款期限方式</description>
+				<singleChoice name="PaymentTermSingle">
+					<item checked="true" itemValue="atSight" name="Sight">見票即付</item>
+					<item checked="false" itemValue="atDaysAfterDate" name="Usance">發票日後定日付款</item>
+					<item checked="false" itemValue="dueDateSpecified" name="Specify">指定到期日</item>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="DueDateSpecified" present="specify" type="textBlank" used="false">
+				<title>指定到期日</title>
+				<description>指定到期日</description>
+				<prefixMessage>指定到期日</prefixMessage>
+				<textBlank name="DueDateSpecifiedBlank">
+					<blank name="DueDateSpecified"/>
+					<messageSegment>。</messageSegment>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="AtDaysAfterDate" present="usance" type="textBlank" used="false">
+				<title>發票日後定日付款</title>
+				<description>填寫買方到期日</description>
+				<prefixMessage>以「定日付款」方式填寫到期日，其到期日為自匯票或(統一)發票之發票日起算</prefixMessage>
+				<textBlank name="AtDaysBlank">
+					<blank name="AtDays"/>
+					<messageSegment>天。</messageSegment>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="UsanceAppendix" present="usance" type="singleChoice" used="false">
+				<title>發票日單據</title>
+				<description>匯票或統一發票</description>
+				<singleChoice name="UsanceAppendixSingle">
+					<item checked="" itemValue="draft" name="Draft">匯票</item>
+					<item checked="" itemValue="invoice" name="Invoice">統一發票</item>
+					<item checked="" itemValue="others" name="Others">其他</item>
+					<messageSegment/>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="IsNormalInvoice" present="general" type="singleChoice" used="true">
+				<title>發票或統一發票</title>
+				<description>發票或統一發票</description>
+				<singleChoice name="PaymentTermSingle">
+					<item checked="false" itemValue="true" name="normalInvoice1">發票</item>
+					<item checked="true" itemValue="false" name="normalInvoice2">統一發票</item>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="OtherAppendix" present="general" type="textArea" used="true">
+				<title>其他</title>
+				<description>其他(請註明)</description>
+				<textArea name="OtherAppendixArea">
+					<area name="OtherAppendix"/>
+				</textArea>
+			</condition>
+			<condition changed="false" name="GoodsName" present="general" type="textArea" used="true">
+				<title>貨物名稱</title>
+				<description>填寫貨物名稱</description>
+				<textArea name="GoodsNameArea">
+					<area name="GoodsName">PVC</area>
+				</textArea>
+			</condition>
+			<condition changed="false" name="FPGNegotiationSpecialClause" present="general" type="singleChoice" used="true">
+				<title>台塑之電子押匯特別指示條款</title>
+				<description>台塑之電子押匯特別指示條款，並自行填寫電子押匯特別指示條款</description>
+				<prefixMessage>1.匯票及匯票付款申請書使用受益人所訂格式，由受益人單獨簽章或使用數位憑證有效。</prefixMessage>
+				<prefixMessage>或自行填寫電子押匯特別指示條款</prefixMessage>
+				<textOnly name="FPGNegotiationSpecialClause">
+					<messageSegment>1. 匯票及匯票付款申請書使用受益人所訂格式，由受益人單獨簽章或使用數位憑證有效。</messageSegment>
+				</textOnly>
+			</condition>
+			<condition changed="false" name="IsBatchDeliverGoods" present="general" type="singleChoice" used="true">
+				<title>交貨方式</title>
+				<description>選擇是否可分批交貨</description>
+				<prefixMessage>分批交貨：</prefixMessage>
+				<textOnly name="IsBatchDeliverGoodsText">
+					<messageSegment>2. 貨物可以分批交貨。</messageSegment>
+				</textOnly>
+			</condition>
+			<condition changed="false" name="IsUsanceLcInterestPayByBuyer" present="usance" type="singleChoice" used="false">
+				<title>遠期信用狀利息</title>
+				<description>遠期信用狀利息由買方負擔或賣方負擔</description>
+				<prefixMessage>遠期信用狀利息：</prefixMessage>
+				<singleChoice name="IsUsanceLcInterestPayByBuyerSingle">
+					<item checked="true" itemValue="true" name="Yes">買方</item>
+					<item checked="false" itemValue="false" name="No">賣方</item>
+					<messageSegment>負擔(未填者視為由買方負擔)</messageSegment>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="LastDateOfDelivery" present="general" type="textBlank" used="true">
+				<title>最後交貨日期</title>
+				<description>最後交貨日期</description>
+				<prefixMessage>最後交貨日期</prefixMessage>
+				<textBlank name="LastDateOfDeliveryBlank">
+					<blank name="LastDateOfDelivery">2025/03/27</blank>
+					<messageSegment>(未填者自開狀日起三個月視為最後交貨日)</messageSegment>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="IsAcceptanceChargePayByBuyer" present="usance" type="singleChoice" used="true">
+				<title>承兌手續費</title>
+				<description>選擇承兌手續費由買方或賣方負擔</description>
+				<prefixMessage>承兌手續費：</prefixMessage>
+				<singleChoice name="IsAcceptanceChargePayByBuyerSingle">
+					<item checked="false" itemValue="true" name="Yes">買方</item>
+					<item checked="true" itemValue="false" name="No">賣方</item>
+					<messageSegment>負擔(未填者視為由買方負擔)</messageSegment>
+				</singleChoice>
+			</condition>
+			<condition changed="false" name="InvoiceEarlyNotice" present="general" type="textOnly" used="true">
+				<title>發票日期</title>
+				<description>發票日期早於開狀日期可以接受</description>
+				<textOnly name="InvoiceEarlyNoticeText">
+					<messageSegment>發票日期早於開狀日期可以接受。</messageSegment>
+				</textOnly>
+			</condition>
+			<condition changed="false" name="DraftAmountNotice" present="general" type="textOnly" used="true">
+				<title>發票金額</title>
+				<description>發票金額大於開狀金額或匯票金額可以接受</description>
+				<textOnly name="DraftAmountNoticeText">
+					<messageSegment>發票金額大於開狀金額或匯票金額可以接受。</messageSegment>
+				</textOnly>
+			</condition>
+			<condition changed="false" name="BeneficiaryCompanyNotice" present="general" type="textOnly" used="true">
+				<title>受益人所屬分公司</title>
+				<description>受益人所屬分公司押匯可以接受</description>
+				<textOnly name="BeneficiaryCompanyNoticeText">
+					<messageSegment>以受益人所屬分公司或分廠名義開立之發票押匯可以接受。</messageSegment>
+				</textOnly>
+			</condition>
+			<condition changed="false" name="LcNotice" present="general" type="textOnly" used="true">
+				<title>信用狀版本</title>
+				<description>本信用狀適用eUCP2.0版</description>
+				<textOnly name="LcNoticeText">
+					<messageSegment>本信用狀適用eUCP2.0版。</messageSegment>
+				</textOnly>
+			</condition>
+			<condition changed="false" name="BeneficiaryDraftNotice" present="general" type="textOnly" used="true">
+				<title>受益人押匯方式</title>
+				<description>允許受益人以匯票、匯票付款申請書及發票電子檔方式押匯</description>
+				<textOnly name="BeneficiaryDraftNoticeText">
+					<messageSegment>允許受益人以匯票、匯票付款申請書及發票電子檔方式押匯。</messageSegment>
+				</textOnly>
+			</condition>
+			<condition changed="false" name="NegoDocNotice" present="general" type="textOnly" used="true">
+				<title>押匯文件提示</title>
+				<description>押匯電子文件透過網址: https://ecrm.fpg.com.tw提示</description>
+				<textOnly name="NegoDocNoticeText">
+					<messageSegment>押匯電子文件透過網址: https://ecrm.fpg.com.tw提示</messageSegment>
+				</textOnly>
+			</condition>
+			<condition changed="false" name="OtherSpecialClause" present="general" type="textArea" used="true">
+				<title>其他特別指示條款</title>
+				<description>填寫其他特別指示條款</description>
+				<textArea name="OtherSpecialClauseArea">
+					<area name="OtherSpecialClause"/>
+				</textArea>
+			</condition>
+			<condition changed="false" name="NegotiateDate" present="general" type="textBlank" used="true">
+				<title>限定押匯日期</title>
+				<description>限定押匯日期</description>
+				<prefixMessage>限定押匯日期</prefixMessage>
+				<textBlank name="NegotiateDateBlank">
+					<blank name="NegotiateDate"/>
+					<messageSegment>起始可押匯。(未填寫者視為未限定押匯日期)</messageSegment>
+				</textBlank>
+			</condition>
+			<condition changed="false" name="InvoiceDate" present="general" type="textBlank" used="true">
+				<title>發票起始開立日期</title>
+				<description>發票起始開立日期</description>
+				<prefixMessage>發票起始開立日期</prefixMessage>
+				<textBlank name="InvoiceDateBlank">
+					<blank name="InvoiceDate"/>
+					<messageSegment>。(未填寫者視為未限制發票開立日期)</messageSegment>
+				</textBlank>
+			</condition>
+		</conditions>
+		<lcTail>    　　上述匯票須載明本信用狀之日期及編號並限於  有效期限內向本行辦理提示請求承兌╱付款。上述  單證經審查結果核與本信用狀規定條款相符時，本  行保證上開依規定簽發、提示之匯票必能如約獲得  承兌╱付款。    </lcTail>
+	</lcDoc>
+	<lcData>
+		<payment>
+			<term>atSight</term>
+		</payment>
+		<isPartialShipment>true</isPartialShipment>
+		<isCSCConditions>false</isCSCConditions>
+		<CSCSalesDept/>
+	</lcData>
+</CDSLcdApplication>  

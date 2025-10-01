@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body>
+  <!-- 查詢代辦事項資料 -->
+  <div id="TodoList" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="Home.html">首頁</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">待辦事項</li>
+      </ol>
+    </nav>
+    <h1 class="fs-4 fw-bolder">待辦事項列表</h1>
+    <div class="table-responsive">
+      <div class="list-group">
+        <a href="javascript:void(0)" onclick="processHandler('Review', 'ReviewLcApp')"
+          class="list-group-item list-group-item-action hnb__list">
+          <span class="mdi mdi-play"></span>
+          <span class="">開狀申請待審核 2 筆</span>
+        </a>
+        <a href="javascript:void(0)" onclick="processHandler('Review', 'ReviewAmendApp')"
+          class="list-group-item list-group-item-action hnb__list">
+          <span class="mdi mdi-play"></span>
+          <span class="">修改申請待審核 3 筆</span>
+        </a>
+        <a href="javascript:void(0)" onclick="processHandler('Review', 'ReviewCancelApp')"
+          class="list-group-item list-group-item-action hnb__list">
+          <span class="mdi mdi-play"></span>
+          <span class="">註銷申請待審核 3 筆</span>
+        </a>
+        <a href="javascript:void(0)" onclick="processHandler('Review', 'ReviewDraftApp')"
+          class="list-group-item list-group-item-action hnb__list">
+          <span class="mdi mdi-play"></span>
+          <span class="">押匯作業待審核 3 筆</span>
+        </a>
+        <a href="javascript:void(0)" onclick="processHandler('Amend', 'ChargeLc')"
+          class="list-group-item list-group-item-action hnb__list">
+          <span class="mdi mdi-play"></span>
+          <span class="">補收開狀手續費待審核 3 筆</span>
+        </a>
+        <a href="javascript:void(0)" onclick="processHandler('Review', 'ReviewInterestRate')"
+          class="list-group-item list-group-item-action hnb__list">
+          <span class="mdi mdi-play"></span>
+          <span class="">利率改貸申請待審核 3 筆</span>
+        </a>
+        <a href="javascript:void(0)" onclick="processHandler('Amend', 'ChargeAmendLc')"
+          class="list-group-item list-group-item-action hnb__list">
+          <span class="mdi mdi-play"></span>
+          <span class="">沖正及更正交易類作業 3 筆</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- 查詢代辦事項資料 -->
+  <script src="../assets/js/page.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    function processHandler(menu, subMenu) {
+      const tabItem = window.parent.document.querySelector(`button[data-bs-target="#${menu}"]`);
+      const tabContent = window.parent.document.querySelector(`#${menu}`);
+      const subTab = window.parent.document.querySelector(`#${subMenu}`);
+      const parentNode = window.parent.document.querySelector('#main-content');
+      if (tabItem) {
+        // 初始化 Accordion
+        window.parent.clearAccordionAction();
+        if (tabItem) {
+          tabItem.classList.add('collapsed');
+          tabContent.classList.add('show');
+        };
+
+        // 初始化選項 active，再指定項目
+        window.parent.clearAction();
+        subTab.classList.add('active');
+        parentNode.src = `./pages/${menu}/${subMenu}.html`;
+      };
+    };
+  </script>
+</body>
+
+</html>

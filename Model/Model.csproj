@@ -1,0 +1,117 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <AssemblyKeyContainerName />
+    <AssemblyOriginatorKeyFile />
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject />
+    <WebReference_EnableSQLTypes>false</WebReference_EnableSQLTypes>
+    <WebReference_EnableLegacyEventingModel>true</WebReference_EnableLegacyEventingModel>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile />
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn />
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <CodeAnalysisRuleSet>SecurityRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile />
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn />
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Update="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Update="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Update="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="netstandard-System.Data.Linq" Version="1.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="DataModel\LcEntity.cs">
+      <DependentUpon>LcEntity.dbml</DependentUpon>
+    </Compile>
+    <Compile Update="DataModel\LcEntity.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LcEntity.dbml</DependentUpon>
+    </Compile>
+    <Compile Update="Schema\ToCDS.cs">
+      <DependentUpon>ToCDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Schema\UXCDS\ARCredit.cs">
+      <DependentUpon>ARCredit.xsd</DependentUpon>
+    </Compile>
+    <None Update="DataModel\LcEntity.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>LcEntity.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="DataModel\LcEntity.dbml.layout">
+      <DependentUpon>LcEntity.dbml</DependentUpon>
+    </None>
+    <None Update="Schema\eAuth.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>eAuth.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Schema\ToCDS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Schema\UXCDS\ARCredit.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Schema\UXCDS\CDSLC.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Schema\UXCDS\Invoice.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Schema\UXCDS\Invoices.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <WebReferences Include="Web References\" />
+    <WebReferenceUrl Include="http://localhost/CDS/service/ws/negoclient.asmx">
+      <RelPath>Web References\WS_NegoClient\</RelPath>
+      <UrlBehavior>Static</UrlBehavior>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLib.Core\CommonLib.Core.csproj" />
+    <ProjectReference Include="..\EAI\EAI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Service\Nego\" />
+    <Folder Include="Web References\" />
+  </ItemGroup>
+</Project>

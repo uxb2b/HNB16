@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 3 U (http://www.xmlspy.com) by Daphne Deng (Universal Exchange Inc) -->
+<xs:schema targetNamespace="http://www.uxcds.com/xmlschema/cds" xmlns:cds="http://www.uxcds.com/xmlschema/cds" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:complexType name="CompanyInfoType">
+    <xs:annotation>
+      <xs:documentation>
+CDS公司資料類型
+actionType:動作類別
+regNo:公司統一編號
+bankCode:銀行代碼
+
+
+oldBranchCode:舊分行代碼
+
+
+newBranchCode:新分行代碼
+
+
+</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="actionType" type="xs:string" use="required"/>
+    <xs:attribute name="regNo" type="xs:string" use="required"/>
+    <xs:attribute name="bankCode" type="xs:string" use="optional"/>
+    <xs:attribute name="oldBranchCode" type="xs:string" use="optional"/>
+    <xs:attribute name="newBranchCode" type="xs:string" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="CompanyDataType">
+    <xs:annotation>
+      <xs:documentation>CDS公司基本資料類型</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>公司代碼</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="regNo" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>統一編號</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- <xs:element name="regNo">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{8}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element> -->
+      <xs:element name="chineseName" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>公司名稱</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="englishName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>公司英文名稱</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="addr" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>地址</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="englishAddr" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>英文地址</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="regAddr" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>註冊地址</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="regEnglishAddr" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>英文註冊地址</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="telNo" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>電話</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="faxNo" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>傳真</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="chiefName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>負責人姓名</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="chiefId" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>負責人身分證字號</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="contactName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>聯絡人姓名</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="contactTel" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>聯絡人電話</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="contactEmail" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>聯絡人電子信箱</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="products" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>產品</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CompanyCASerialNoType">
+    <xs:annotation>
+      <xs:documentation>CDS公司憑證序號資料類型</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="caSerialNo" type="xs:string" maxOccurs="100">
+        <xs:annotation>
+          <xs:documentation>公司憑證序號資料</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CompanyAccountType">
+    <xs:annotation>
+      <xs:documentation>CDS公司銀行帳戶資料類型</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="accountItem" type="cds:CompanyAccountItemType" maxOccurs="100">
+        <xs:annotation>
+          <xs:documentation>公司銀行帳戶資料</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CompanyAccountItemType">
+    <xs:annotation>
+      <xs:documentation>CDS公司銀行帳戶資料類型</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="regNo" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>公司統編</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="totalAmount" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>總額度</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="needCP" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>是否必須檢附本票</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="cpAccount" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>本票帳號</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="cpSignet" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>本票印鑑</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BankInfoType">
+    <xs:annotation>
+      <xs:documentation>
+CDS銀行資料類型
+
+
+actionType:動作類別
+code:銀行代碼
+
+
+name:銀行名稱
+
+
+regNo:銀行統編
+
+
+</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="actionType" type="xs:string" use="required"/>
+    <xs:attribute name="code" type="xs:string" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="regNo" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="BankCustomerInfoType">
+    <xs:annotation>
+      <xs:documentation>
+CDS銀行客戶帳戶資料類型
+
+
+actionType:動作類別
+code:銀行代碼
+
+
+name:銀行名稱
+
+
+regNo:銀行統編
+
+
+</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="actionType" type="xs:string" use="required"/>
+    <xs:attribute name="code" type="xs:string" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="regNo" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="BankBranchItemType">
+    <xs:annotation>
+      <xs:documentation>CDS銀行分行資料類型</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="branchCode" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>分行代碼</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="branchName" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>分行名稱</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="address" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>地址</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="phone" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>電話</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="contactName" type="xs:string" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>聯絡人姓名</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BankBranchType">
+    <xs:annotation>
+      <xs:documentation>CDS銀行分行資料類型</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="branchItem" type="cds:BankBranchItemType" maxOccurs="100">
+        <xs:annotation>
+          <xs:documentation>分行資料</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

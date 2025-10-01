@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- Client連線狀態 -->
+  <div id="QueryClientConnect" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">申請作業</li>
+        <li class="breadcrumb-item active" aria-current="page">Client連線狀態</li>
+      </ol>
+    </nav>
+
+    <!-- Client連線狀態 -->
+    <div id="queryList">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">Client連線狀態</h1>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd">編號</th>
+                  <th scope="col" class="hnb__tbhd">分行名稱</th>
+                  <th scope="col" class="hnb__tbhd">帳號</th>
+                  <th scope="col" class="hnb__tbhd">角色</th>
+                  <th scope="col" class="hnb__tbhd">IP</th>
+                  <th scope="col" class="hnb__tbhd">登入時間</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">1</td>
+                  <td class="text-center text-nowrap"></td>
+                  <td class="text-center text-nowrap">susanoff</td>
+                  <td class="text-center text-nowrap">總行</td>
+                  <td class="text-center text-nowrap">192.168.201.107</td>
+                  <td class="text-center text-nowrap">
+                    2025/06/05 14:57:23
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+  </script>
+</body>
+
+</html>

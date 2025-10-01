@@ -1,0 +1,47 @@
+﻿<!-- 信用狀申請書 視窗 -->
+<div class="modal fade" id="lcAppDetailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="lcAppDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+        <form id="accountManagerForm">
+            <div id="lcAppModalContent" class="modal-content hnb__modal">
+                <!-- 內容將由 AJAX 載入 -->
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+
+        // 開狀申請書類別變更(即期 / 遠期) changeLcType
+        function changeLcType(type) {
+            debugger;
+          // const lcType = document.querySelector('#lcType');
+          // const lcTypeDate = document.querySelector('#lcTypeDate');
+          // lcType.textContent = type;
+          // if (type === '遠期') {
+          //   lcTypeDate.textContent = '以「定日付款」方式填寫到期日，期到期日為自匯票發票日起不超過 120 天。';
+          // } else {
+          //   lcTypeDate.textContent = '見票即付。';
+          // };
+        }
+
+    $('#lcAppDetailModal').on('shown.bs.modal', function (e) {
+        // 這裡用 AJAX 載入內容，改為 POST 並帶入 lcno
+        $.ajax({
+            url: '../LcApp/Module/LcAppDetailModalContent',
+            type: 'POST',
+            data: { lcno: currentDataRow.lcno },
+            success: function (data) {
+                $('#lcAppModalContent').html(data);
+            },
+            error: function () {
+                $('#lcAppModalContent').html('<div class="p-4 text-danger">載入明細失敗，請稍後再試。</div>');
+            }
+        });
+    });
+
+    $('#lcAppDetailModal').on('hidden.bs.modal', function (e) {
+        // 清空內容
+        $('#lcAppModalContent').html('');
+        currentLcNo = null;
+    });
+</script>

@@ -1,0 +1,254 @@
+﻿@{
+    Layout = "~/Views/LcApp/LcAppTemplate.cshtml";
+}
+    <!-- 填寫開狀申請書-CDS -->
+<div id="lcForCdsAppList">
+    <h1 class="py-2 fs-4 fw-bolder">填寫開狀申請書</h1>
+    <div class="mb-2 card">
+        <div class="card-body bg-light">
+            <form id="lcForCdsAppForm">
+                <div class="table-responsive">
+                    <table class="table table-sm hnb__table hnb__bg--white">
+                        <tbody>
+                            <tr>
+                                <th class="hnb__tbhd2" style="width: 200px">開狀銀行：</th>
+                                <td style="width:35%">
+                                    華南商業銀行 高雄分行
+                                </td>
+                                <th class="hnb__tbhd2" style="width: 150px">通知銀行：</th>
+                                <td>
+                                    <select id="noticeBranch" class="form-select form-select-sm">
+                                        <option value="0" selected="">= 請選擇 =</option>
+                                        <option>華南銀行彰化分行</option>
+                                        <option>華南銀行桃園分行</option>
+                                        <option>華南銀行南港分行</option>
+                                        <option>華南銀行台北分行</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2" style="width: 200px">信用狀別：</th>
+                                <td>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="lcTypeOptions" id="rate1" value="lcType1">
+                                        <label class="form-check-label" for="lcType1">即期</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="lcTypeOptions" id="rate2" value="lcType2">
+                                        <label class="form-check-label" for="lcType2">遠期</label>
+                                    </div>
+                                </td>
+                                <th class="hnb__tbhd2" style="width: 150px">付款銀行：</th>
+                                <td>
+                                    華南商業銀行 高雄分行
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">金額：</th>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <select id="noticeBranch" class="form-select form-select-sm me-2" style="max-width: 100px">
+                                            <option value="0" selected>新台幣</option>
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="payment">
+                                        <span class="mx-1 text-nowrap">元整</span>
+                                    </div>
+                                </td>
+                                <th class="hnb__tbhd2">
+                                    有效期限：
+                                </th>
+                                <td>
+                                    <div class="input-group flex-nowrap">
+                                        <input type="datetime-local" id="expDate" placeholder="請點選日期"
+                                               class="form-control form-control-sm hnb__calendar" style="max-width: 180px" readonly>
+                                        <label class="input-group-text py-1" for="expDate">
+                                            <span class="mdi mdi-calendar-month"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人名稱：</th>
+                                <td colspan="3">
+                                    中國鋼鐵股份有限公司
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人地址：</th>
+                                <td colspan="3">
+                                    高雄市小港區中鋼路1號
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人Email：</th>
+                                <td colspan="3">
+                                    <input type="text" class="form-control form-control-sm" id="beneEmail">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人電話：</th>
+                                <td colspan="3">
+                                    <input type="text" class="form-control form-control-sm" id="benePhone">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2" style="width: 200px">申請人：</th>
+                                <td colspan="3">
+                                    <input type="text" class="form-control form-control-sm" id="appName" value="林大華">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">申請人統一編號：</th>
+                                <td colspan="3">
+                                    <div class="d-flex">
+                                        <input type="text" class="form-control form-control-sm" id="appNo" value="12345678">
+                                        <button type="button" class="ms-2 px-3 btn btn-sm hnb__btn--default text-nowrap">
+                                            查詢
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">申請人地址：</th>
+                                <td colspan="3">
+                                    <input type="text" class="form-control form-control-sm" id="address" value="台北市中正區羅斯福路一段120號">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">付款期限：</th>
+                                <td colspan="3">
+                                    見票即付。
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">貨物名稱：</th>
+                                <td colspan="3">
+                                    <textarea class="form-control form-control-sm" id="exampleFormControlTextarea1"
+                                              rows="3">鋼捲2捆</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">電子押匯之特別指示條款：</th>
+                                <td colspan="3">
+                                    <div class="container-fluid">
+                                        <div class="row align-items-center">
+                                            <div class="col-12 my-1">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="noteOptions" id="note1"
+                                                           value="option1">
+                                                    <label class="form-check-label fw-bold" for="note1">中鋼之電子押匯特別指示條款</label>
+                                                    <ol class="hnb__list--ol">
+                                                        <li>
+                                                            賣方所提供鋼品之一部或全部，可能產自中國鋼鐵股份有限公司或中龍鋼鐵股份有限公司(下稱中龍公司)，視實際出貨狀況而定。如產自中龍公司，賣方就其鋼品品質，負賣方責任，至如約定價格，各交易條件及優惠措施均不受影響。
+                                                        </li>
+                                                        <li>匯票及匯票付款申請書使用中鋼格式，由受益人單獨簽章或使用數位憑證有效。</li>
+                                                        <li>貨物可以分批交貨。</li>
+                                                        <li>貨物明細以發票為準。</li>
+                                                        <li>發票金額大於匯票金額及發票內容備註「受託代銷」字樣可以接受。</li>
+                                                        <li>本信用狀適用 eUCP2.0 版。</li>
+                                                        <li>允許受益人以匯票、匯票付款申請書及發票電子檔(包含電子發票證明聯等)方式押匯，另「受益人完整提示通知」得附加於匯票付款申請書之最後。</li>
+                                                        <li>押匯電子文件透過網址：HTTPS://CDSLC.UXCDS.COM/CDSLC/ 提示。</li>
+                                                    </ol>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="noteOptions" id="note2"
+                                                           value="option2">
+                                                    <label class="form-check-label fw-bold" for="note2">或自行填寫電子押匯特別指示條款</label>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <textarea name="textarea1" class="form-control form-control-sm" rows="7" disabled>
+1.賣方所提供鋼品之一部或全部，可能產自中國鋼鐵股份有限公司或中龍鋼鐵股份有限公司(下稱中龍公司)，視實際出貨狀況而定。如產自中龍公司，賣方就其鋼品品質，負賣方責任，至如約定價格，各交易條件及優惠措施均不受影響。  
+2.匯票及匯票付款申請書使用中鋼格式，由受益人單獨簽章或使用數位憑證有效。
+3.貨物可以分批交貨。
+4.貨物明細以發票為準。
+5.發票金額大於匯票金額及發票內容備註「受託代銷」字樣可以接受。
+6.本信用狀適用 eUCP2.0 版。
+7.允許受益人以匯票、匯票付款申請書及發票電子檔(包含電子發票證明聯等)方式押匯，另「受益人完整提示通知」得附加於匯票付款申請書之最後。
+8.押匯電子文件透過網址：HTTPS://CDSLC.UXCDS.COM/CDSLC/ 提示。
+                              </textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                <span class="fw-bold">檢附單據：</span>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="deliverOptions" id="deliver1"
+                                                           value="option1">
+                                                    <label class="form-check-label" for="deliver1">匯票付款申請書乙份</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="deliverOptions" id="deliver2"
+                                                           value="option2">
+                                                    <label class="form-check-label" for="deliver2">統一發票</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="deliverOptions" id="deliver3"
+                                                           value="option3">
+                                                    <label class="form-check-label" for="deliver2">
+                                                        其他
+                                                    </label>
+                                                </div>
+                                                <div class="ps-3">
+                                                    <textarea name="textarea" class="form-control form-control-sm"
+                                                              rows="3">~請填寫其他應檢附之單據~</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                <span class="fw-bold">特別指示條款：</span><br>
+                                                <span>分批交貨：</span>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="rateOptions" id="rate1" value="option1"
+                                                           checked>
+                                                    <label class="form-check-label" for="rate1">可以</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="rateOptions" id="rate2"
+                                                           value="option2">
+                                                    <label class="form-check-label" for="rate2">不可以</label>
+                                                </div>
+                                                ( 未填者視為得分批交貨 )。
+                                            </div>
+                                            <div class="col-12 my-1 d-flex align-items-center">
+                                                <span class="fw-bold">最後交貨日期：</span>
+                                                <div class="mx-2 input-group flex-nowrap d-inline-flex" style="width:200px;">
+                                                    <input type="datetime-local" id="deliveryDate" placeholder="請點選日期"
+                                                           class="form-control form-control-sm hnb__calendar" readonly>
+                                                    <label class="input-group-text py-1" for="deliveryDate">
+                                                        <span class="mdi mdi-calendar-month"></span>
+                                                    </label>
+                                                </div>
+                                                ( 未填者自開狀日起三個月視為最後交貨日 )。
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                <span class="fw-bold">其他：</span>
+                                                <textarea class="form-control form-control-sm" name="otherNote" placeholder="~ 其他特別指示條款 ~"
+                                                          rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" data-bs-toggle="modal"
+                            data-bs-target="#promptModal">
+                        取消
+                    </button>
+                    <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap" data-bs-toggle="modal"
+                            data-bs-target="#reviewCdsLcAppModal">
+                        預覽
+                    </button>
+                    <span class="mx-2">|</span>
+                    <button type="reset" class="m-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap">
+                        重填
+                    </button>
+                    <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap"
+                            onclick="confirmReview();">
+                        確定
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

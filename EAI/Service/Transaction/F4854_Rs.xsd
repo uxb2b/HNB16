@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:tw.org.ba="http://www.ba.org.tw" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.ifxforum.org" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="IFX">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="EAIHeader">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TxnID" type="xs:string" />
+							<xs:element name="RecID" type="xs:string" />
+							<xs:element name="DomID" type="xs:string" />
+							<xs:element name="SrcSystemID" type="xs:string" />
+							<xs:element name="TraceID" type="xs:string" />
+							<xs:element name="PmtID" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="LogTxn">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TxnID" type="xs:string" />
+							<xs:element name="PrcDt" type="xs:string" />
+							<xs:element name="PmtID" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EAIBody">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="MsgRs">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Header">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="TxnId" type="xs:string" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="SvcRs">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="UID" type="xs:string" />
+													<xs:element name="UUID" type="xs:string" />
+													<xs:element name="SESSIONID" type="xs:string" />
+													<xs:element name="ERRCODE" type="xs:string" />
+													<xs:element name="ERRTEXT" type="xs:string" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

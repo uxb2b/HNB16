@@ -1,0 +1,465 @@
+﻿@{
+    Layout = "~/Views/LcApp/LcAppTemplate.cshtml";
+}
+    <!-- 填寫開狀申請書-台塑 -->
+<div id="lcAppList">
+    <h1 class="py-2 fs-4 fw-bolder">填寫開狀申請書</h1>
+    <div class="mb-2 card">
+        <div class="card-body bg-light">
+            <form id="lcAppForm">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <div class="col-12 py-1 hnb__bankName text-center">
+                            開發國內不可撤銷信用狀申請書
+                        </div>
+                        <div class="py-1 col-12 text-center">
+                            114 年 5 月 10 日
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm hnb__table hnb__bg--white">
+                        <tbody>
+                            <tr>
+                                <th class="hnb__tbhd2" style="width: 200px">開狀銀行：</th>
+                                <td style="width:35%">
+                                    華南商業銀行 高雄分行
+                                </td>
+                                <th class="hnb__tbhd2" style="width: 150px">通知銀行：</th>
+                                <td>
+                                    <select id="noticeBranch" class="form-select form-select-sm">
+                                        <option value="0" selected="">= 請選擇 =</option>
+                                        <option>華南銀行彰化分行</option>
+                                        <option>華南銀行桃園分行</option>
+                                        <option>華南銀行南港分行</option>
+                                        <option>華南銀行台北分行</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2" style="width: 200px">信用狀別：</th>
+                                <td>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="lcTypeOptions" id="rate1" value="lcType1">
+                                        <label class="form-check-label" for="lcType1">即期</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="lcTypeOptions" id="rate2" value="lcType2">
+                                        <label class="form-check-label" for="lcType2">遠期</label>
+                                    </div>
+                                </td>
+                                <th class="hnb__tbhd2" style="width: 150px">付款銀行：</th>
+                                <td>
+                                    華南商業銀行 高雄分行
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">金額：</th>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="mx-1 text-nowrap">新台幣</span>
+                                        <input type="text" class="form-control form-control-sm" id="payment">
+                                        <span class="mx-1 text-nowrap">元整</span>
+                                    </div>
+                                </td>
+                                <th class="hnb__tbhd2">
+                                    有效期限至：
+                                    <br>
+                                    ( 未填者自開狀日三個月視為最後有效期限 )
+                                </th>
+                                <td>
+                                    <div class="input-group flex-nowrap">
+                                        <input type="datetime-local" id="expDate" placeholder="請點選日期"
+                                               class="form-control form-control-sm hnb__calendar" style="max-width: 180px" readonly>
+                                        <label class="input-group-text py-1" for="expDate">
+                                            <span class="mdi mdi-calendar-month"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">通知銀行：</th>
+                                <td colspan="3">
+                                    <div class="d-flex">
+                                        <select id="noticeBranch" class="form-select form-select-sm me-2" style="max-width: 120px">
+                                            <option value="0" selected="">= 請選擇 =</option>
+                                            <option>華南銀行彰化分行</option>
+                                            <option>華南銀行桃園分行</option>
+                                            <option>華南銀行南港分行</option>
+                                            <option>華南銀行台北分行</option>
+                                        </select>
+                                        <label class="form-label text-nowrap align-self-center">非必要欄位</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人：</th>
+                                <td colspan="3">
+                                    <div class="container-fluid">
+                                        <div class="row align-items-center">
+                                            <div class="col-12 my-1">
+                                                <select id="beneCorp" class="form-select form-select-sm">
+                                                    <option value="0" selected="">= 請選擇受益人名稱 =</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 my-1 d-flex align-items-center">
+                                                <div class=" text-nowrap me-2 text-end" style="width: 80px;">統一編號：</div>
+                                                <div id="beneNo1" class="flex-grow-1"></div>
+                                            </div>
+                                            <div class="col-12 my-1 d-flex align-items-center">
+                                                <div class=" text-nowrap me-2 text-end" style="width: 80px;">名稱：</div>
+                                                <div id="beneName1" class="flex-grow-1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人之負責人：</th>
+                                <td>
+                                    洪OO
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">負責人職稱：</th>
+                                <td>
+                                    董事長
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人地址：</th>
+                                <td>
+                                    彰化縣彰O市中O里OO路3段OO號
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人電話：</th>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="phone">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人電子信箱：</th>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="email">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人事業部：</th>
+                                <td>
+                                    <select id="dep" class="form-select form-select-sm">
+                                        <option value="0" selected="">= 請選擇 =</option>
+                                        <option>W工務部</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">客戶編號：</th>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="cNo">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="fw-bold">
+                                    本信用狀可由上開受益人在不超過上開金額範圍內，依本信用狀規定條件簽發匯票洽請洽兌/付款：
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="fw-bold">
+                                    一、匯票之條件：
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">甲、付款人：</th>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        華南商業銀行 台北分行
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">乙、付款期限：</th>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentDate" id="imd">
+                                        <label class="form-check-label" for="imd">
+                                            見票即付。
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentDate" id="payDate">
+                                        <label class="form-check-label" for="payDate">
+                                            以「 定日付款 」方式填寫到期日，其到期日為：
+                                        </label>
+                                    </div>
+                                    <div class="ms-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paymentExpDate" id="paymentExpDate1">
+                                            <label class="form-check-label" for="paymentExpDate1">
+                                                匯票發票日
+                                            </label>
+                                        </div>
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="radio" name="paymentExpDate" id="paymentExpDate2">
+                                            <label class="px-2 form-check-label d-flex align-items-center" for="paymentExpDate2">
+                                                ( 統一 )發票日
+                                            </label>
+                                        </div>
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="radio" name="paymentExpDate" id="paymentExpDate3">
+                                            <label class="px-2 form-check-label d-flex align-items-center" for="paymentExpDate3">
+                                                其他：
+                                                <input type="text" class="mx-1 form-control form-control-sm" id="payDate"
+                                                       style="width:200px">
+                                            </label>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            起算
+                                            <input type="text" class="mx-1 form-control form-control-sm" id="payDate" style="width:30px">
+                                            天內。
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">丙、金額：</th>
+                                <td>
+                                    須與相關發票上所列開金額一致。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="fw-bold">
+                                    二、應檢附之單證如下：
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2"></th>
+                                <td>
+                                    <div class="container-fluid">
+                                        <div class="row align-items-center">
+                                            <div class="col-12 my-1">
+                                                1. 匯票承兌/付款申請書乙份。
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                2.
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="invoiceOptions" id="invoice1"
+                                                           value="option1">
+                                                    <label class="form-check-label" for="invoice1">發票</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="invoiceOptions" id="invoice2"
+                                                           value="option2">
+                                                    <label class="form-check-label" for="invoice2">統一發票</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                3. 其他 ( 請註明 )：
+                                                <textarea class="form-control form-control-sm" id="exampleFormControlTextarea1"
+                                                          rows="3"></textarea>
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                4. 上項單據應載明申請人向受益人購買下列產品：
+                                                <textarea class="form-control form-control-sm" id="exampleFormControlTextarea1"
+                                                          rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">特別指示：</th>
+                                <td>
+                                    <div class="container-fluid">
+                                        <div class="row align-items-center">
+                                            <div class="col-12 my-1">
+                                                1. 匯票承兌/付款申請書使用
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="userOptions" id="user1"
+                                                           value="option1">
+                                                    <label class="form-check-label" for="user1">貴行</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="userOptions" id="user2"
+                                                           value="option2">
+                                                    <label class="form-check-label" for="user2">受益人</label>
+                                                </div>
+                                                所訂格式，申請書上信用狀申請人所蓋印鑑應與原留印鑑相符。
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                2. 分批交貨：
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="deliverOptions" id="deliver1"
+                                                           value="option1" checked>
+                                                    <label class="form-check-label" for="deliver1">可以</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="deliverOptions" id="deliver2"
+                                                           value="option2">
+                                                    <label class="form-check-label" for="deliver2">不可以</label>
+                                                </div>
+                                                ( 未填者視為得分批交貨 )。
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                3.
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="rateOptions" id="rate1"
+                                                           value="option1" checked>
+                                                    <label class="form-check-label" for="rate1">匯票墊款利息由買方負擔</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="rateOptions" id="rate2"
+                                                           value="option2">
+                                                    <label class="form-check-label" for="rate2">匯票貼現利息由賣方負擔</label>
+                                                </div>
+                                                ( 未填者視為由買方負擔 )。
+                                            </div>
+                                            <div class="col-12 my-1 d-flex align-items-center">
+                                                4. 最後交貨日期：
+                                                <div class="mx-2 input-group flex-nowrap d-inline-flex" style="width:200px;">
+                                                    <input type="datetime-local" id="deliveryDate" placeholder="請點選日期"
+                                                           class="form-control form-control-sm hnb__calendar" readonly>
+                                                    <label class="input-group-text py-1" for="deliveryDate">
+                                                        <span class="mdi mdi-calendar-month"></span>
+                                                    </label>
+                                                </div>
+                                                ( 未填者自開狀日起三個月視為最後交貨日，惟不得超過信用狀有效期限 )。
+                                            </div>
+                                            <div class="col-12 my-1 d-flex align-items-center">
+                                                5. 限定押匯日期：自
+                                                <div class="mx-2 input-group flex-nowrap d-inline-flex" style="width:200px;">
+                                                    <input type="datetime-local" id="draftDate" placeholder="請點選日期"
+                                                           class="form-control form-control-sm hnb__calendar" readonly>
+                                                    <label class="input-group-text py-1" for="draftDate">
+                                                        <span class="mdi mdi-calendar-month"></span>
+                                                    </label>
+                                                </div>
+                                                起始可押匯。
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                6. 承兌手續費由
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="feeOptions" id="fee1" value="option1"
+                                                           checked>
+                                                    <label class="form-check-label" for="fee1">買方</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="feeOptions" id="fee2" value="option2">
+                                                    <label class="form-check-label" for="fee2">賣方</label>
+                                                </div>
+                                                負擔 ( 未填者視為由買方負擔 )。
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                7. 受益人押匯時，匯票承兌/付款申請書
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="stampOptions" id="stamp1" value="option1"
+                                                           checked>
+                                                    <label class="form-check-label" for="stamp1">可以</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="stampOptions" id="stamp2" value="option2">
+                                                    <label class="form-check-label" for="stamp2">不可以</label>
+                                                </div>
+                                                僅由受益人單方蓋章。
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                8. 押匯文件透過華南商業銀行之櫃台提示。
+                                            </div>
+                                            <div class="col-12 my-1">
+                                                9. 其他：
+                                                <div class="ps-3">
+                                                    <textarea name="textarea" class="form-control form-control-sm"
+                                                              rows="3">~請填寫其他特別指示條款~</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <p class="mb-0">
+                                        <span class="fw-bold">利率條款：</span>
+                                        貴行依本申請書開發信用狀所墊付之款項，申請人同意依貴我雙方所訂之利率訂價方式，按月計付利息。
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-sm hnb__table hnb__bg--white">
+                        <tbody>
+                            <tr>
+                                <th class="hnb__tbhd2">
+                                    國內信用狀額(限)度
+                                </th>
+                                <td>
+                                    36,000,000
+                                </td>
+                                <th class="hnb__tbhd2">
+                                    國內信用狀餘額(含本件)
+                                </th>
+                                <td>
+                                    37,100,000
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">
+                                    國內交易外幣信用狀額(限)度
+                                </th>
+                                <td></td>
+                                <th class="hnb__tbhd2">
+                                    國內交易外幣信用狀餘額(含本件)
+                                </th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">
+                                    擔保條件
+                                </th>
+                                <td>
+                                    信保10%
+                                </td>
+                                <th class="hnb__tbhd2">
+                                    額(限)度到期日
+                                </th>
+                                <td>
+                                    民國115年12月31日
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">
+                                    存入保證金比率(%)
+                                </th>
+                                <td>
+                                    10.00
+                                </td>
+                                <th class="hnb__tbhd2">
+                                    承兌手續費
+                                </th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">
+                                    開狀手續費
+                                </th>
+                                <td>
+                                    500
+                                </td>
+                                <th class="hnb__tbhd2">
+                                    放款帳號
+                                </th>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer justify-content-center border-top-0">
+                    <button type="button" class="my-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" data-bs-dismiss="modal">
+                        關閉
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

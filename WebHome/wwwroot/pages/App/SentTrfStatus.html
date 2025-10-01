@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>華南銀行 - 國內信用狀系統</title>
+  <link rel="stylesheet" href="../../assets/MaterialDesign-Webfont/css/materialdesignicons.min.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/custom.css">
+
+  <!-- flatpick plugin -->
+  <link rel="stylesheet" href="../../assets/flatpickr/flatpickr.min.css">
+  <script src="../../assets/flatpickr/flatpickr.js"></script>
+  <script src="../../assets/flatpickr/zh-tw.js"></script>
+</head>
+
+<body>
+  <!-- 傳送已轉帳狀態 -->
+  <div id="ExpiredLc" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">申請作業</li>
+        <li class="breadcrumb-item active" aria-current="page">傳送已轉帳狀態</li>
+      </ol>
+    </nav>
+
+    <!-- 查詢 傳送已轉帳狀態 -->
+    <div id="queryForm">
+      <form>
+        <h1 class="py-2 fs-4 fw-bolder">請選擇查詢方式</h1>
+        <div class="mb-2 card">
+          <div class="card-body bg-light">
+            <div class="row">
+              <div class="py-1 col-12 d-flex">
+                <div class="pt-2 form-check" style="width:25px;">
+                  <input class="form-check-input" type="radio" name="formGroup" id="check1">
+                </div>
+                <div class="row mx-0 flex-grow-1">
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <div class="row align-items-center">
+                      <label for="lcNo" class="col-2 col-md-3 col-form-label text-end text-nowrap">信用狀號碼</label>
+                      <div class="py-1 col-10 col-md-9">
+                        <input type="text" class="form-control form-control-sm" id="lcNo">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-1 border border-0 border-top border-secondary">
+            <div class="py-1 col-12 d-flex">
+              <div class="pt-2 form-check" style="width:25px;">
+                <input class="form-check-input" type="radio" name="formGroup" id="check3">
+              </div>
+              <div class="row mx-0 flex-grow-1">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="row align-items-center">
+                    <label for="beneInNo" class="col-2 col-md-3 col-form-label text-end text-nowrap">受益人統編</label>
+                    <div class="py-1 col-10 col-md-9">
+                      <select id="branchNo" class="form-select form-select-sm">
+                        <option selected>= 請選擇 =</option>
+                        <option>68387705 奇美實業股份有限公司</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="row align-items-center">
+                    <label for="appDate" class="col-2 col-md-3 col-form-label text-end text-nowrap">押匯日期</label>
+                    <div class="py-1 col-10 col-md-9">
+                      <div class="d-flex align-items-center">
+                        <div class="input-group flex-nowrap">
+                          <input type="datetime-local" id="startDate" placeholder="請點選起日"
+                            class="form-control form-control-sm hnb__calendar">
+                          <label class="input-group-text py-1" for="startDate">
+                            <span class="mdi mdi-calendar-month"></span>
+                          </label>
+                        </div>
+                        <span class="px-2">~</span>
+                        <div class="input-group flex-nowrap">
+                          <input type="datetime-local" id="endDate" placeholder="請點選訖日"
+                            class="form-control form-control-sm hnb__calendar">
+                          <label class="input-group-text py-1" for="endDate">
+                            <span class="mdi mdi-calendar-month"></span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="pt-1 text-danger text-end text-nowrap">
+                        <span class="text-danger dateAlert pe-2 d-none pe-1">
+                          <span class="mdi mdi-close-thick"></span>
+                          結束日期須晚於開始日期
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-end py-1">
+                <button type="reset" id="resetBtn" class="me-2 px-3 btn btn-sm hnb__btn--reset">重設</button>
+                <button type="button" id="searchBtn" class="px-3 btn btn-sm hnb__btn--default text-nowrap"
+                  onclick="searchHandler()">確定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 傳送已轉帳狀態清冊 -->
+    <div id="queryList" class="hnb__hide">
+      <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">傳送已轉帳狀態清冊</h1>
+      </div>
+      <div class="card">
+        <div class="card-body bg-light">
+          <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+              <thead>
+                <tr>
+                  <th scope="col" class="hnb__tbhd">編號</th>
+                  <th scope="col" class="hnb__tbhd">匯票號碼</th>
+                  <th scope="col" class="hnb__tbhd">受益人</th>
+                  <th scope="col" class="hnb__tbhd">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center text-nowrap">
+                    1
+                  </td>
+                  <td class="text-center text-nowrap">
+                    H970000002
+                  </td>
+                  <td class="text-nowrap">
+                    網際測試股份有限公司
+                  </td>
+                  <td class="text-center">
+                    <button type="button" class="editItem my-1 px-3 btn btn-sm hnb__btn--default text-nowrap"
+                      data-bs-toggle="modal" data-bs-target="#draftDataModal">
+                      匯票資料
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <nav class="mt-3 d-flex align-items-center justify-content-between">
+        <div class="d-flex text-nowrap">
+          <ul class="pagination pagination-sm">
+            <li class="page--item hnb__page--item disabled">
+              <a class="page-link">第一頁</a>
+            </li>
+            <li class="page--item hnb__page--item disabled">
+              <a class="page-link">
+                <span class="mdi mdi-chevron-left"></span>
+              </a>
+            </li>
+            <li class="page--item hnb__page--item active"><a class="page-link" href="#">1</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">2</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">3</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">4</a></li>
+            <li class="page--item hnb__page--item"><a class="page-link" href="#">5</a></li>
+            <li class="page--item hnb__page--item">
+              <a class="page-link" href="#">
+                <span class="mdi mdi-chevron-right"></span>
+              </a>
+            </li>
+            <li class="page--item hnb__page--item">
+              <a class="page-link" href="#">最後一頁</a>
+            </li>
+          </ul>
+          <div class="input-group input-group-sm ms-2 mb-3 text-nowrap page-width">
+            <span class="input-group-text" id="inputGroup-sizing-sm">第</span>
+            <input type="text" class="form-control" value="">
+            <span class="input-group-text" id="inputGroup-sizing-sm">頁</span>
+            <button class="btn hnb__btn--default" type="button" id="button-addon2">前往</button>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="text-end">
+            <span class="hnb__text--red">總筆數：</span>3 ，<span class="hnb__text--red">總金額：</span>NT$ 522,664
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- 匯票資料 視窗 -->
+  <div class="modal fade" id="draftDataModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="draftDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <form id="lcForCdsAppForm">
+        <div class="modal-content hnb__modal">
+          <div class="modal-header py-2 border-bottom-0">
+            <h5 class="modal-title fs-5 fw-bolder text--hnb" id="draftDataModalLabel">
+              匯票資料
+            </h5>
+            <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal"
+              aria-label="Close">
+              <span class="mdi mdi-close"></span>
+            </button>
+          </div>
+          <div class="modal-body bg-light">
+            <div class="table-responsive">
+              <table class="mx-auto mb-0 table table-sm hnb__table hnb__bg--white">
+                <tbody>
+                  <tr>
+                    <th class="hnb__tbhd2">匯票號碼：</th>
+                    <td>1264000001</td>
+                  </tr>
+                  <tr>
+                    <th class="hnb__tbhd2">匯票金額：</th>
+                    <td class="text-end">
+                      1000
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="hnb__tbhd2">押匯日期：</th>
+                    <td>2025/11/10</td>
+                  </tr>
+                  <tr>
+                    <th class="hnb__tbhd2">信用狀號碼：</th>
+                    <td>112108006120090015</td>
+                  </tr>
+                  <tr>
+                    <th class="hnb__tbhd2">受益人：</th>
+                    <td>68387705 網際O業</td>
+                  </tr>
+                  <tr>
+                    <th class="hnb__tbhd2">匯款匯費：</th>
+                    <td>
+                      <input type="number" step="0.1" class="form-control form-control-sm" id="remFee" name="remFee">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center border-top-0">
+            <button type="button" class="my-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" data-bs-dismiss="modal">
+              取消
+            </button>
+            <button type="button" id="confirmBtn" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap disabled"
+              onclick="confirmHandler();">
+              確定
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 訊息 視窗 -->
+  <div class="modal fade" id="messageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content hnb__modal">
+        <div class="modal-header py-2 border-bottom-0">
+          <h5 class="modal-title fs-5 fw-bolder text--hnb" id="messageModalLabel">
+            作業訊息
+          </h5>
+          <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div id="msgBody" class="modal-body bg-light"></div>
+        <div id="msgFooter" class="modal-footer justify-content-center border-top-0"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/page.js"></script>
+  <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/jquery-3.7.1.js"></script>
+  <script>
+    // 查詢控制項
+    const searchBtn = document.querySelector('#searchBtn');
+    const queryForm = document.querySelector('#queryForm');
+    const queryList = document.querySelector('#queryList');
+
+    // 確認 訊息及按鈕
+    const remFee = document.querySelector('#remFee');
+    const confirmBtn = document.querySelector('#confirmBtn');
+    const messageModalLabel = document.querySelector('#messageModalLabel');
+    const msgBody = document.querySelector('#msgBody');
+    const msgFooter = document.querySelector('#msgFooter');
+
+    // 查詢CDS 過期案件主動註銷 searchHandler
+    function searchHandler() {
+      queryList.classList.remove('hnb__hide');
+    };
+
+    // 開啟比對視窗 openCreditComparModal
+    function openCreditComparModal() {
+      window.open(
+        '../Query/QueryCompare.html',
+        'creditCompare',
+        'width=800,height=600,scrollbars=yes'
+      );
+    };
+
+
+    remFee.addEventListener('keyup', (event) => {
+      const elValue = event.target.value;
+      checkRemFee(elValue);
+    });
+
+    remFee.addEventListener('click', (event) => {
+      const elValue = event.target.value;
+      checkRemFee(elValue);
+      console.log({ elValue })
+    });
+
+    function checkRemFee(value) {
+      if (value === '') {
+        if (!confirmBtn.classList.contains('disabled')) {
+          confirmBtn.classList.add('disabled')
+        }
+      } else {
+        confirmBtn.classList.remove('disabled');
+      }
+    };
+
+    function confirmHandler() {
+      $('#draftDataModal').modal('hide');
+
+      messageModalLabel.textContent = '作業訊息';
+      msgBody.innerHTML = `<p class="fw-bold hnb__text--green text-center">
+          作業已完成！
+        </p>`;
+
+      msgFooter.innerHTML = `<button type="button" class="my-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" data-bs-dismiss="modal">
+        關閉
+      </button>`;
+
+      $('#messageModal').modal('show');
+    };
+
+
+
+    // 取消
+    function cancelHandler() {
+      queryForm.classList.remove('hnb__hide');
+      queryList.classList.remove('hnb__hide');
+    };
+
+    // 月曆
+    const dateAlert = document.querySelector(".dateAlert");
+    const currentTime = new Date()
+    const config = {
+      locale: 'zh_tw',
+      //enableTime: true, //可選時與分
+      dateFormat: "Y/m/d", //時間格式
+      time_24hr: true, //24 時制
+      minuteIncrement: 15, //分鐘每次選擇間隔單位
+      allowInput: true, //可輸入控制
+      //minDate: "today", //可選最小時間，可直接接受 'today' 字串
+      //maxDate: currentTime.setMonth(currentTime.getMonth() + 1), //可選最大時間，從今天起一個月
+      onChange: function (selectedDates, dateStr, instance) {
+        console.log(`你現在點選的是 ${instance.input.id}，時間為 ${selectedDates} / ${dateStr}`);
+        checkDateTime(dateStr, instance.input.id);
+      }
+    };
+    flatpickr('#startDate, #endDate', config);
+
+    let startDateValue = null
+    let endDateValue = null
+
+    // 辨別結束日期須晚於開始日期
+    function checkDateTime(dateStr, id) {
+      if (id === "startDate") {
+        startDateValue = dateStr
+      }
+
+      if (id === "endDate") {
+        endDateValue = dateStr
+      }
+
+      if (startDateValue > endDateValue) {
+        dateAlert.classList.remove("d-none");
+      } else {
+        dateAlert.classList.add("d-none");
+      }
+    };
+
+    // 有效期限 / 最後交貨日期 / 限定押匯日期 - 日期選擇器
+    flatpickr('#expDate, #deliveryDate, #draftDate', config);
+
+  </script>
+</body>
+
+</html>

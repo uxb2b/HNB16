@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Invoice" targetNamespace="http://cdslc.uxcds.com/CDSLC#draft" elementFormDefault="qualified" xmlns="http://cdslc.uxcds.com/CDSLC#draft" xmlns:mstns="http://cdslc.uxcds.com/CDSLC#draft" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="invoiceItem" >
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="invoiceDate" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="dtInvoiceDate" type="xs:dateTime" maxOccurs="1" minOccurs="0" nillable="true" />
+				<xs:element name="buyer" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="postCode" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="address" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="0" />
+						</xs:sequence>
+						<xs:attribute name="receiptNo" type="xs:string" use="required" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="taxNo" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="dispatchmentAdviceNo" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="checkNo" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="orderNo" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="ladingNo" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="lcNo" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="piece" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+				<xs:element name="weight" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+				<xs:element name="freightAmount" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+				<xs:element name="costAmount" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+				<xs:element name="freightCostAmount" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+				<xs:element name="dutiable" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="zeroTaxRate" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="dutyFree" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="salesTax" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+				<xs:element name="grandAmount" type="xs:decimal" maxOccurs="1" minOccurs="0" nillable="true" />
+				<xs:element name="chineseGrandAmount" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="discount" type="xs:decimal" maxOccurs="1" minOccurs="0" nillable="true" />
+				<xs:element name="adjustment" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+				<xs:element name="appendantPay" type="xs:decimal" minOccurs="0" />
+				<xs:element name="appendantSubtotalPreTax" type="xs:decimal" minOccurs="0" />
+				<xs:element name="calcSubtotal" type="xs:decimal" minOccurs="0" />
+				<xs:element name="calcDiscount" type="xs:decimal" minOccurs="0" />
+				<xs:element name="remark" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="undertaker" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="details" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="product" maxOccurs="unbounded">
+								<xs:complexType mixed="true">
+									<xs:sequence minOccurs="0">
+										<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="spec" type="xs:string" maxOccurs="1" minOccurs="0" />
+													<xs:element name="piece" maxOccurs="1" minOccurs="0">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:decimal">
+																	<xs:attribute name="unit" type="xs:string" use="optional" />
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="weight" maxOccurs="1" minOccurs="0">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:decimal">
+																	<xs:attribute name="unit" type="xs:string" use="optional" />
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="unitFreight" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+													<xs:element name="unitCost" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+													<xs:element name="freightAmount" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+													<xs:element name="costAmount" type="xs:decimal" maxOccurs="1" minOccurs="0" />
+													<xs:element name="originalPrice" type="xs:decimal" maxOccurs="1" minOccurs="0" nillable="true" />
+												</xs:sequence>
+												<xs:attribute name="No" type="xs:string" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="brief" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="invoiceSeal" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="uploadStatus" type="xs:int" maxOccurs="1" minOccurs="0" nillable="true" />
+				<xs:element name="interestRate" type="xs:decimal" maxOccurs="1" minOccurs="0" nillable="true" />
+				<xs:element name="goodsRemark" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="orderItemNo" type="xs:string" maxOccurs="1" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="No" type="xs:string" use="required" />
+			<xs:attribute name="draftNo" type="xs:string" />
+			<xs:attribute name="poNo" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

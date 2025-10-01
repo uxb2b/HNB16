@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cds="http://www.uxcds.com/xmlschema/cds" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.uxcds.com/xmlschema/cds" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="CDSLcdApplication">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="lcAppInfo">
+					<xs:complexType>
+						<xs:attribute name="appDate" type="xs:string" use="required" />
+						<xs:attribute name="appNo" type="xs:string" use="required" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="lcDoc">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="lcTitle" type="xs:string" />
+							<xs:element name="lcType" type="xs:string" />
+							<xs:element name="lcHeader" type="xs:string" />
+							<xs:element name="lcNo" />
+							<xs:element name="issuingDate" />
+							<xs:element name="issuingBank">
+								<xs:complexType>
+									<xs:attribute name="address" type="xs:string" use="required" />
+									<xs:attribute name="branchCode" type="xs:string" use="required" />
+									<xs:attribute name="branchName" type="xs:string" use="required" />
+									<xs:attribute name="code" type="xs:string" use="required" />
+									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="phone" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="advisingBank">
+								<xs:complexType>
+									<xs:attribute name="address" type="xs:string" use="required" />
+									<xs:attribute name="branchCode" type="xs:string" use="required" />
+									<xs:attribute name="branchName" type="xs:string" use="required" />
+									<xs:attribute name="changed" type="xs:boolean" use="required" />
+									<xs:attribute name="code" type="xs:string" use="required" />
+									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="phone" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="advisingBankNo" />
+							<xs:element name="payingBank">
+								<xs:complexType>
+									<xs:attribute name="address" type="xs:string" use="required" />
+									<xs:attribute name="branchCode" type="xs:string" use="required" />
+									<xs:attribute name="branchName" type="xs:string" use="required" />
+									<xs:attribute name="changed" type="xs:boolean" use="required" />
+									<xs:attribute name="code" type="xs:string" use="required" />
+									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="phone" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="applicant">
+								<xs:complexType>
+									<xs:attribute name="address" type="xs:string" use="required" />
+									<xs:attribute name="addressChanged" type="xs:boolean" use="required" />
+									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="nameChanged" type="xs:boolean" use="required" />
+									<xs:attribute name="phone" type="xs:string" use="required" />
+									<xs:attribute name="regNo" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="beneficiary">
+								<xs:complexType>
+									<xs:attribute name="address" type="xs:string" use="required" />
+									<xs:attribute name="addressChanged" type="xs:boolean" use="required" />
+									<xs:attribute name="chiefEmail" type="xs:string" use="required" />
+									<xs:attribute name="chiefEmailChanged" type="xs:boolean" use="required" />
+									<xs:attribute name="chiefName" type="xs:string" use="required" />
+									<xs:attribute name="chiefNameChanged" type="xs:boolean" use="required" />
+									<xs:attribute name="chiefTitle" type="xs:string" use="required" />
+									<xs:attribute name="chiefTitleChanged" type="xs:boolean" use="required" />
+									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="nameChanged" type="xs:boolean" use="required" />
+									<xs:attribute name="phone" type="xs:string" use="required" />
+									<xs:attribute name="phoneChanged" type="xs:boolean" use="required" />
+									<xs:attribute name="regNo" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="amount">
+								<xs:complexType>
+									<xs:attribute name="changed" type="xs:boolean" use="required" />
+									<xs:attribute name="chinese" type="xs:string" use="required" />
+									<xs:attribute name="value" type="xs:decimal" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="currency">
+								<xs:complexType>
+									<xs:attribute name="code" type="xs:unsignedShort" use="required" />
+									<xs:attribute name="name" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="expiryDate">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="changed" type="xs:boolean" use="required" />
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="lcConditions">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="lcCond" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="lcAdditionalConditions">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="lcAddCond" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="conditions">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" name="condition">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="title" type="xs:string" />
+													<xs:element name="description" type="xs:string" />
+													<xs:element minOccurs="0" name="textArea">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="area">
+																	<xs:complexType>
+																		<xs:simpleContent>
+																			<xs:extension base="xs:string">
+																				<xs:attribute name="name" type="xs:string" use="required" />
+																			</xs:extension>
+																		</xs:simpleContent>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="name" type="xs:string" use="required" />
+														</xs:complexType>
+													</xs:element>
+													<xs:element minOccurs="0" maxOccurs="unbounded" name="prefixMessage" type="xs:string" />
+													<xs:element minOccurs="0" name="textOnly">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="messageSegment" type="xs:string" />
+															</xs:sequence>
+															<xs:attribute name="name" type="xs:string" use="required" />
+														</xs:complexType>
+													</xs:element>
+													<xs:element minOccurs="0" name="singleChoice">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element maxOccurs="unbounded" name="item">
+																	<xs:complexType>
+																		<xs:simpleContent>
+																			<xs:extension base="xs:string">
+																				<xs:attribute name="checked" type="xs:string" use="required" />
+																				<xs:attribute name="itemValue" type="xs:string" use="required" />
+																				<xs:attribute name="name" type="xs:string" use="required" />
+																			</xs:extension>
+																		</xs:simpleContent>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element minOccurs="0" name="messageSegment" type="xs:string" />
+															</xs:sequence>
+															<xs:attribute name="name" type="xs:string" use="required" />
+														</xs:complexType>
+													</xs:element>
+													<xs:element minOccurs="0" name="textBlank">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="blank">
+																	<xs:complexType>
+																		<xs:simpleContent>
+																			<xs:extension base="xs:string">
+																				<xs:attribute name="name" type="xs:string" use="required" />
+																			</xs:extension>
+																		</xs:simpleContent>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element minOccurs="0" name="messageSegment" type="xs:string" />
+															</xs:sequence>
+															<xs:attribute name="name" type="xs:string" use="required" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="changed" type="xs:boolean" use="required" />
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="present" type="xs:string" use="required" />
+												<xs:attribute name="type" type="xs:string" use="required" />
+												<xs:attribute name="used" type="xs:boolean" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="lcTail" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="lcData">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="payment">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="term" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="isPartialShipment" type="xs:boolean" />
+							<xs:element name="isCSCConditions" type="xs:boolean" />
+							<xs:element name="CSCSalesDept" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="version" type="xs:decimal" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
