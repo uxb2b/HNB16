@@ -1,0 +1,22 @@
+@model WebHome.Models.CancelAppQueryResultModel
+
+<div class="py-2 d-flex align-items-center justify-content-between">
+  <h1 class="mb-0 fs-4 fw-bolder">«H¥Îª¬²M¥U</h1>
+</div>
+
+@* Render the table from a dedicated partial *@
+<div>
+  @await Html.PartialAsync("~/Views/CancelApp/Module/QueryLcTable.cshtml", Model)
+</div>
+
+@{
+    var pagingModel = new WebHome.Models.PagingViewModel {
+        PageIndex = Model.PageIndex,
+        PageSize = Model.PageSize,
+        TotalCount = Model.TotalCount,
+        TotalAmount = Model.TotalAmount,
+        PageAction = "goToPage",
+        PageParam = ""
+    };
+}
+@await Html.PartialAsync("~/Views/Shared/_PagingControl.cshtml", pagingModel)

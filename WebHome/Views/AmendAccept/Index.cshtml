@@ -1,0 +1,181 @@
+﻿@{
+    Layout = "~/Views/AmendAccept/AmendAcceptTemplate.cshtml";
+}
+        <!-- 修改接受註記清冊 -->
+<div id="queryList">
+    <div class="py-2 d-flex align-items-center justify-content-between">
+        <h1 class="mb-0 fs-4 fw-bolder">臨櫃或網銀之信用狀修改申請待接受註記清冊</h1>
+    </div>
+    <form>
+        <div class="card">
+            <div class="card-body bg-light">
+                <div class="table-responsive">
+                    @await Html.PartialAsync("~/Views/AmendAccept/Module/QueryAmendAcceptTable.cshtml")
+                </div>
+            </div>
+        </div>
+        @{
+            // 假設有一個 PagingViewModel 物件，命名為 pagingModel
+            var pagingModel = new WebHome.Models.PagingViewModel
+            {
+                PageIndex = 1, // TODO: 改為實際頁數
+                PageSize = 10, // TODO: 改為實際每頁筆數
+                TotalCount = 3456, // TODO: 改為實際總筆數
+                TotalAmount = 522664, // TODO: 改為實際總金額
+                PageAction = "goToPage", // TODO: 實作 goToPage JS function
+                PageParam = "" // TODO: 傳遞查詢參數
+            };
+        }
+        @await Html.PartialAsync("~/Views/Shared/_PagingControl.cshtml", pagingModel)        <hr class="my-0 mb-1 border border-0 border-top border-secondary">
+        <div class="my-3 text-center">
+            <button type="reset" id="resetBtn" class="me-2 px-3 btn btn-sm hnb__btn--reset">重設</button>
+            <button type="button" id="setTypeBtn" class="px-3 btn btn-sm hnb__btn--default text-nowrap"
+                    onclick="checkHandler()">
+                確定
+            </button>
+        </div>
+    </form>
+</div>
+
+@{
+    await Html.RenderPartialAsync("~/Views/LcApp/LcDetailModal.cshtml");
+    await Html.RenderPartialAsync("~/Views/LcApp/NoticeModal.cshtml");
+}
+
+<!-- 離開選擇訊息 視窗 -->
+<div class="modal fade" id="promptModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="promptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content hnb__modal">
+            <div class="modal-header py-2 border-bottom-0">
+                <h5 class="modal-title fs-5 fw-bolder text--hnb" id="promptModalLabel">
+                    作業訊息
+                </h5>
+                <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <div class="modal-body bg-light">
+                <p class="fw-bold hnb__text--green text-center">
+                    離開不會儲存此筆資料，您確認要離開嗎？
+                </p>
+            </div>
+            <div class="modal-footer justify-content-center border-top-0">
+                <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" data-bs-dismiss="modal"
+                        onclick="cancelHandler()">
+                    確定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        const queryList = document.querySelector('#queryList');
+        const lcForCdsAppList = document.querySelector('#lcForCdsAppList');
+        const lcAppList = document.querySelector('#lcAppList');
+        const lcforOtherAppList = document.querySelector('#lcforOtherAppList');
+
+        // 查詢押匯申請 searchHandler
+        function searchHandler() {
+            queryList.classList.remove('hnb__hide');
+        };
+
+        // 檢視開狀申請書
+        function reviewLcApp() {
+            queryList.classList.add('hnb__hide');
+            lcAppList.classList.remove('hnb__hide');
+        };
+
+        // 信用狀類別變更(即期 / 遠期) changeLcType
+        function changeLcType(type) {
+            const lcType = document.querySelector('#lcType');
+            const lcTypeDate = document.querySelector('#lcTypeDate');
+            lcType.textContent = type;
+            if (type === '遠期') {
+                lcTypeDate.textContent = '以「定日付款」方式填寫到期日，期到期日為自匯票發票日起不超過 120 天。';
+            } else {
+                lcTypeDate.textContent = '見票即付。';
+            };
+        };
+
+        // 確認 訊息及按鈕
+        const msgBody = document.querySelector('#msgBody');
+        const msgFooter = document.querySelector('#msgFooter');
+
+        function checkHandler() {
+            fetch('../AmendAccept/PreviewCheckHandler', {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(response => response.text())
+            .then(html => {
+                $('body').append(html);
+            });
+        };
+
+        function confirmHandler() {
+            fetch('../AmendAccept/ConfirmHandler', {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(response => response.text())
+            .then(html => {
+                $('body').append(html);
+            });
+
+        };
+
+        // 取消
+        function cancelHandler() {
+            queryList.classList.remove('hnb__hide');
+            lcAppList.classList.add('hnb__hide');
+        };
+
+        // 月曆
+        const dateAlert = document.querySelector(".dateAlert");
+        const currentTime = new Date()
+        const config = {
+            locale: 'zh_tw',
+            //enableTime: true, //可選時與分
+            dateFormat: "Y/m/d", //時間格式
+            time_24hr: true, //24 時制
+            minuteIncrement: 15, //分鐘每次選擇間隔單位
+            allowInput: true, //可輸入控制
+            //minDate: "today", //可選最小時間，可直接接受 'today' 字串
+            //maxDate: currentTime.setMonth(currentTime.getMonth() + 1), //可選最大時間，從今天起一個月
+            onChange: function (selectedDates, dateStr, instance) {
+                console.log(`你現在點選的是 ${instance.input.id}，時間為 ${selectedDates} / ${dateStr}`);
+                checkDateTime(dateStr, instance.input.id);
+            }
+        };
+        flatpickr('#startDate, #endDate', config);
+
+        let startDateValue = null
+        let endDateValue = null
+
+        // 辨別結束日期須晚於開始日期
+        function checkDateTime(dateStr, id) {
+            if (id === "startDate") {
+                startDateValue = dateStr
+            }
+
+            if (id === "endDate") {
+                endDateValue = dateStr
+            }
+
+            if (startDateValue > endDateValue) {
+                dateAlert.classList.remove("d-none");
+            } else {
+                dateAlert.classList.add("d-none");
+            }
+        };
+
+        // 匯票到期日 / 匯票發票日 - 日期選擇器
+        flatpickr('#draftDate, #invoiceDate', config);
+    </script>
+}

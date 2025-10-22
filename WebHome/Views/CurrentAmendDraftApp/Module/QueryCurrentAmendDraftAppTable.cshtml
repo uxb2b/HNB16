@@ -1,0 +1,29 @@
+<table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+    <thead>
+        <tr>
+            <th scope="col" class="hnb__tbhd text-nowrap">編號</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">匯票號碼</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">申請人名稱</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">申請人統編</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">信用狀號碼</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">信用狀餘額</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">有效期限</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">押匯日期</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">押匯金額</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">受益人</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            await Html.RenderPartialAsync("~/Views/CurrentAmendDraftApp/Module/QueryCurrentAmendDraftAppItems.cshtml");
+        }
+    </tbody>
+</table>
+<script>
+    // optional: ensure any client-side attachment is applied when this partial is loaded via AJAX
+    $(function(){
+      // placeholder for any JS initialization if needed
+        attachRowData();
+        attachEditHandler();
+    });
+</script>

@@ -1,0 +1,19 @@
+﻿@model WebHome.Models.CancelAppQueryResultModel
+
+@foreach (var item in Model.Items)
+{
+    <tr data-lcno="@item.LcNo" data-benetype="@item.BeneType">
+        <td class="text-center text-nowrap">
+            <a href="#" class="hnb__link--text" data-bs-toggle="modal" data-bs-target="#lcDetailModal" onclick="changeLcType('@item.LcType')">@item.LcNo</a>
+        </td>
+        <td class="text-center text-nowrap">@item.Bank</td>
+        <td class="text-center">@item.IssueDate?.ToString("yyyy/MM/dd")</td>
+        <td class="text-end text-nowrap">@String.Format("$ {0:N2}", item.Amount)</td>
+        <td class="text-end text-nowrap">@String.Format("$ {0:N2}", item.AvailableAmount)</td>
+        <td class="text-center text-nowrap">@item.BeneInNo</td>
+        <td class="text-center text-nowrap">@item.Status</td>
+        <td class="text-center">
+            <button type="button" class="editItem my-1 px-3 btn btn-sm hnb__btn--default text-nowrap">註銷申請/切結書</button>
+        </td>
+    </tr>
+}

@@ -1,0 +1,20 @@
+@{
+    Layout = "~/Views/Shared/_MessageModalLayout.cshtml";
+    var lcNo = ViewData["lcNo"] as string ?? string.Empty;
+    var authType = ViewData["authType"] as string ?? string.Empty;
+    var revertStatus = ViewData["revertStatus"] as bool? ?? false;
+}
+
+@section MsgBody {
+    <p class="fw-bold hnb__text--green text-center">您確定要沖正此筆資料嗎？</p>
+}
+
+@section MsgFooter
+{
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+    <form id="confirmReviewForm" data-action="../CurrentAmendDraftApp/ConfirmHandler" class="d-inline">
+        <input type="hidden" name="lcNo" value="@lcNo" />
+        <input type="hidden" name="revertStatus" value="@revertStatus" />
+        <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="confirmHandler();">確定</button>
+    </form>
+}

@@ -1,0 +1,414 @@
+﻿@{ Layout = "~/Views/Shared/_MainLayout.cshtml"; }
+
+@section Headers {
+    <!-- flatpick plugin -->
+    <link rel="stylesheet" href="~/assets/flatpickr/flatpickr.min.css">
+    <script src="~/assets/flatpickr/flatpickr.js"></script>
+    <script src="~/assets/flatpickr/zh-tw.js"></script>
+}
+
+<!-- 押匯申請當日調整帳務 -->
+<div id="DraftAdjustment" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb fs-6">
+        <li class="breadcrumb-item">
+          <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+        </li>
+        <li class="breadcrumb-item">申請作業</li>
+        <li class="breadcrumb-item">當日調整帳務</li>
+        <li class="breadcrumb-item active" aria-current="page">押匯申請當日調整帳務</li>
+      </ol>
+    </nav>
+
+    <!-- 押匯申請當日調整帳務清冊 -->
+    @{
+        await Html.RenderPartialAsync("~/Views/DraftAdjustment/Module/QueryList.cshtml");
+    }
+
+  </div>
+
+  <!-- 授信資料預覽 視窗 -->
+  <div class="modal fade" id="creditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="creditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+      <div class="modal-content hnb__modal">
+        <div class="modal-header py-2 border-bottom-0">
+          <h5 class="modal-title fs-5 fw-bolder text--hnb" id="creditModalLabel">
+            押匯申請-授信資料
+          </h5>
+          <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+            <span class="mdi mdi-close"></span>
+          </button>
+        </div>
+        <div class="modal-body bg-light">
+          <div class="card my-3 mx-auto shadow-sm" style="max-width: 750px">
+            <div class="card-body p-4">
+              <h5 class="card-subtitle fw-bold mb-2 hnb__text--red">押匯方式：</h5>
+              <div class="my-2 fw-bold hnb__text--green">押匯</div>
+              <div>
+                <div class="fw-bold text-nowrap">撥款方式：</div>
+                <div class="d-flex align-items-center">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="draftRadio11" id="pay1" disabled>
+                  </div>
+                  <div>
+                    <div class="d-flex align-items-center">
+                      <div class="d-flex align-items-center flex-wrap">
+                        <div class="text-end" style="width:110px">本行-轉入帳號：</div>
+                        <span>--</span>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center flex-wrap">
+                      <div class="text-end" style="width:110px">戶名：</div>
+                      <span>台灣塑膠工業股份有限公司</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="draftRadio11" id="pay2" disabled>
+                  </div>
+                  <div>
+                    <div class="my-2">
+                      跨行-付款內容詳受益人匯出匯款申請書
+                    </div>
+                    <div class="d-flex align-items-center flex-wrap">
+                      <div>匯入銀行：</div>
+                      <span>--</span>
+                      <div class="ms-4">銀行名稱：</div>
+                      <span>--</span>
+                      <div class="ms-4">匯款帳號：</div>
+                      <span>--</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-start">
+                  <div class="py-2 form-check">
+                    <input class="form-check-input" type="radio" name="draftRadio11" id="pay3" checked disabled>
+                  </div>
+                  <div class="d-flex align-items-start flex-wrap">
+                    <div class="py-2 text-nowrap">轉入科目：</div>
+                    <div class="py-2">
+                      <div class="d-flex align-items-center">
+                        <span class="text-nowrap">轉入會計科目：</span>
+                        <span>00000-999：過度科目</span>
+                      </div>
+                      <div class=" d-flex align-items-center">
+                        <span class="text-nowrap">轉入銷帳序號：</span>
+                        <span>111101</span>
+                      </div>
+                      <div class=" d-flex align-items-center">
+                        <span class="text-nowrap">轉入科目金額：</span>
+                        <span>100000.0</span>
+                      </div>
+                      <div class=" d-flex align-items-center">
+                        <span class="text-nowrap">轉入科目摘要：</span>
+                        <span>國內信用狀押匯台灣塑膠工業股份有限公司</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center flex-wrap">
+                  <div>押匯手續費：</div>
+                  <span>300.0</span>
+                  <div>是否扣印花稅：</div>
+                  <span>是</span>
+                </div>
+              </div>
+              <h5 class="card-subtitle fw-bold my-3 hnb__text--red">費用付款方式：</h5>
+              <div class="my-2">
+                <div class="d-flex align-items-start">
+                  <div class="py-2 form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="check21" checked disabled>
+                  </div>
+                  <div class="py-2">
+                    現金
+                  </div>
+                </div>
+                <div class="d-flex align-items-start">
+                  <div class="py-2 form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="check22" disabled>
+                  </div>
+                  <div class="py-1 d-flex align-items-center">
+                    <span class="text-nowrap">支存帳號：</span>
+                    <span>--</span>
+                    <span class="text-nowrap">支票號碼：</span>
+                    <span>--</span>
+
+                  </div>
+                </div>
+                <div class="d-flex align-items-start">
+                  <div class="py-2 form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="check23" disabled>
+                  </div>
+                  <div class="py-1 d-flex align-items-center">
+                    <span class="text-nowrap">活存帳號：</span>
+                    <span>--</span>
+
+                  </div>
+                </div>
+                <div class="d-flex align-items-start">
+                  <div class="py-2 form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="check24" disabled>
+                  </div>
+                  <div class="py-2 d-flex align-items-center">
+                    <span class="text-nowrap">內扣</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-start">
+                  <div class="py-2 form-check">
+                    <input class="form-check-input" type="radio" name="radio2" id="check24" disabled>
+                  </div>
+                  <div class="d-flex">
+                    <span class="py-2 text-nowrap">轉出科目：</span>
+                    <div class="py-2">
+                      <div class="d-flex align-items-center">
+                        <span class="text-nowrap">轉出會計科目：</span>
+                        <span>00000-999：過度科目</span>
+                      </div>
+                      <div class="d-flex align-items-center">
+                        <span class="text-nowrap">轉出銷帳序號：</span>
+                        <span>--</span>
+                      </div>
+                      <div class="d-flex align-items-center">
+                        <span class="text-nowrap">轉出科目金額：</span>
+                        <span>55000.0</span>
+                      </div>
+                      <div class="d-flex align-items-center">
+                        <span class="text-nowrap">轉出科目摘要：</span>
+                        <span>押匯/承兌費用台灣塑膠工業股份有限公司</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h5 class="card-subtitle fw-bold my-3 hnb__text--red">押匯手續費優惠：</h5>
+              <div class="my-2">
+                <div class="d-flex align-items-start">
+                  <div class="py-2 form-check">
+                    <input class="form-check-input" type="checkbox" name="check1" id="check31" disabled>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <span class="py-2 text-nowrap">押匯手續費優惠</span>
+                    <div class="d-flex align-items-center">
+                      <span class="text-nowrap">優惠原因：</span>
+                      <span>申請總行核准</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 mb-1 text-center">
+            <span class="hnb__text--red">若無法正常顯示，請洽系統管理人員</span>
+          </div>
+          <div class="d-flex align-items-center justify-content-center">
+            <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" onclick="cancelHandler()">
+              取消
+            </button>
+            <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap">
+              列印
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    @{
+        await Html.RenderPartialAsync("~/Views/DraftAdjustment/Module/MessageModal.cshtml");
+        await Html.RenderPartialAsync("~/Views/DraftAdjustment/Module/PromptModal.cshtml");
+    }
+
+@section Scripts {
+    <script>
+      const queryList = document.querySelector('#queryList');
+      const lcForCdsAppList = document.querySelector('#lcForCdsAppList');
+      const creditListBh = document.querySelector('#creditListBh');
+      const creditListBs = document.querySelector('#creditListBs');
+      const lcforOtherAppList = document.querySelector('#lcforOtherAppList');
+      let status = '';
+
+      // 確認 訊息及按鈕
+      const messageModalLabel = document.querySelector('#messageModalLabel');
+      const msgBody = document.querySelector('#msgBody');
+      const msgFooter = document.querySelector('#msgFooter');
+      const creditBhList = document.querySelectorAll('.creditBh');
+      const creditBsList = document.querySelectorAll('.creditBs');
+
+      // 不同權限切換顯示欄位
+      if (authType === 'BH') {
+        creditBsList.forEach(item => item.classList.add('hnb__hide'));
+      };
+
+      if (authType === 'BS') {
+        creditBhList.forEach(item => item.classList.add('hnb__hide'));
+      };
+
+      // 查詢押匯申請 searchHandler
+      function searchHandler() {
+        queryList.classList.remove('hnb__hide');
+      };
+
+      // 經辦 - 檢視授信資料 - 從後端載入內容
+      function reviewCreditForBH() {
+        try {
+              var postData = {
+              lcNo: currentDataRow.lcno
+                  };
+
+          $('#creditListBh').remove();
+          doPost('../DraftAdjustment/CreditListBh',postData,function(data){
+              queryList.classList.add('hnb__hide');
+              $(queryList).after(data);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      // 主管 - 檢視授信資料 - 從後端載入內容
+      function reviewCreditForBS() {
+        try {
+              var postData = {
+              lcNo: currentDataRow.lcno
+                  };
+
+          $('#creditListBs').remove();
+          doPost('../DraftAdjustment/CreditListBs',postData,function(data){
+              queryList.classList.add('hnb__hide');
+              $(queryList).after(data);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      // 信用狀類別變更(即期 / 遠期) changeLcType
+      function changeLcType(type) {
+        const lcType = document.querySelector('#lcType');
+        const lcTypeDate = document.querySelector('#lcTypeDate');
+        lcType.textContent = type;
+        if (type === '遠期') {
+          lcTypeDate.textContent = '以「定日付款」方式填寫到期日，期到期日為自匯票發票日起不超過 120 天。';
+        } else {
+          lcTypeDate.textContent = '見票即付。';
+        };
+      };
+
+      // 當日帳務調整 adjAccountHandler
+      function adjAccountHandler() {
+        try {
+          var postData = {
+            lcNo: currentDataRow ? currentDataRow.lcno : '',
+            authType: authType || '',
+            adjustStatus: true
+          };
+
+          doPost('../DraftAdjustment/ConfirmReview', postData, function (html) {
+              $('body').append(html);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      // 不調整 notAdjAccountHandler
+      function notAdjAccountHandler() {
+        try {
+          var postData = {
+            lcNo: currentDataRow ? currentDataRow.lcno : '',
+            authType: authType || '',
+            adjustStatus: false
+          };
+
+          doPost('../DraftAdjustment/ConfirmReview', postData, function (html) {
+            const container = document.createElement('div');
+            container.innerHTML = html;
+            document.body.appendChild(container);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      function confirmHandler() {
+        try {
+          const form = document.querySelector('#confirmReviewForm');
+          if (!form) return;
+
+          var lcNoInput = form.querySelector('input[name="lcNo"]');
+          var adjustInput = form.querySelector('input[name="adjustStatus"]');
+
+          var postData = {
+              lcNo: lcNoInput ? lcNoInput.value : '',
+              adjustStatus: adjustInput ? (adjustInput.value === 'True' || adjustInput.value === 'true' || adjustInput.value === '1') : false
+          };
+
+          doPost('../DraftAdjustment/ConfirmHandler', postData, function (html) {
+              if (window.hideCurrent) window.hideCurrent();
+              $('body').append(html);
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      // 取消
+      function cancelHandler() {
+        queryList.classList.remove('hnb__hide');
+        if (authType === 'BH') {
+          $('#creditListBh').remove();
+        };
+        if (authType === 'BS') {
+            $('#creditListBS').remove();
+        };
+      };
+
+      // 月曆
+      const dateAlert = document.querySelector(".dateAlert");
+      const currentTime = new Date()
+      const config = {
+        locale: 'zh_tw',
+        //enableTime: true, //可選時與分
+        dateFormat: "Y/m/d", //時間格式
+        time_24hr: true, //24 時制
+        minuteIncrement: 15, //分鐘每次選擇間隔單位
+        allowInput: true, //可輸入控制
+        //minDate: "today", //可選最小時間，可直接接受 'today' 字串
+        //maxDate: currentTime.setMonth(currentTime.getMonth() + 1), //可選最大時間，從今天起一個月
+        onChange: function (selectedDates, dateStr, instance) {
+          console.log(`你現在點選的是 ${instance.input.id}，時間為 ${selectedDates} / ${dateStr}`);
+          checkDateTime(dateStr, instance.input.id);
+        }
+      };
+      flatpickr('#startDate, #endDate', config);
+
+      let startDateValue = null
+      let endDateValue = null
+
+      // 辨別結束日期須晚於開始日期
+      function checkDateTime(dateStr, id) {
+        if (id === "startDate") {
+          startDateValue = dateStr
+        }
+
+        if (id === "endDate") {
+          endDateValue = dateStr
+        }
+
+        if (startDateValue > endDateValue) {
+          dateAlert.classList.remove("d-none");
+        } else {
+          dateAlert.classList.add("d-none");
+        }
+      };
+
+      // 匯票到期日 / 匯票發票日 - 日期選擇器
+      flatpickr('#draftDate, #invoiceDate', config);
+
+    </script>
+    @{
+        await Html.RenderPartialAsync("~/Views/MainPage/Module/PrepareQuery.cshtml");
+    }
+}}

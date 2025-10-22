@@ -1,0 +1,373 @@
+﻿@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml"; 
+}
+
+@section Headers {
+    <!-- flatpick plugin -->
+    <link rel="stylesheet" href="~/assets/flatpickr/flatpickr.min.css">
+    <script src="~/assets/flatpickr/flatpickr.js"></script>
+    <script src="~/assets/flatpickr/zh-tw.js"></script>
+}
+
+<!-- 註銷申請當日調整帳務 -->
+<div id="CancelAdjustment" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb fs-6">
+            <li class="breadcrumb-item">
+                <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+            </li>
+            <li class="breadcrumb-item">申請作業</li>
+            <li class="breadcrumb-item">當日調整帳務</li>
+            <li class="breadcrumb-item active" aria-current="page">註銷申請當日調整帳務</li>
+        </ol>
+    </nav>
+
+    <!-- 註銷申請當日調整帳務清冊 -->
+    @{
+        await Html.RenderPartialAsync("~/Views/CancelAdjustment/Module/QueryList.cshtml");
+    }
+
+</div>
+
+<!-- 授信資料預覽 視窗 -->
+<div class="modal fade" id="creditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="creditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
+        <div class="modal-content hnb__modal">
+            <div class="modal-header py-2 border-bottom-0">
+                <h5 class="modal-title fs-5 fw-bolder text--hnb" id="creditModalLabel">
+                    註銷申請/切結書-授信資料
+                </h5>
+                <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <div class="modal-body bg-light">
+                <div class="my-3 mx-auto" style="width:650px">
+                    <div class="py-2 d-flex">
+                        <div class="text-nowrap text-end" style="width:120px">未退還保證金：</div>
+                        <div>55000.0</div>
+                    </div>
+                    <div class="py-2 d-flex">
+                        <div class="text-nowrap text-end" style="width:120px">退還保證金：</div>
+                        <div>55000.0</div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="py-2 text-nowrap text-end" style="width:120px">退還保證金方式：</div>
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" name="radioGroup1" type="radio" id="ra01" value="radiobutton1"
+                                      disabled>
+                                </div>
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <span>入帳帳號：</span>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-top">
+                                <div class="py-2 form-check">
+                                    <input class="form-check-input" name="radioGroup1" type="radio" id="ra02" value="radiobutton2"
+                                      checked disabled>
+                                </div>
+                                <div class="d-flex align-items-top flex-wrap">
+                                    <span class="py-2">轉入科目：</span>
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-nowrap">轉入會計科目：</span>
+                                            <span>13097-099：其他應收款-雜項</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-nowrap">轉入銷帳序號：</span>
+                                            <span></span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-nowrap">轉入科目金額：</span>
+                                            <span>55000.0</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-nowrap">轉入科目摘要：</span>
+                                            <span>信用狀保證金梅石股份有限公司</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 container-fluid">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+                                <span class="mdi mdi-cloud-download"></span>
+                                下載電子檔
+                            </button>
+                            <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap">
+                                <span class="mdi mdi-printer"></span>
+                                列印
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-top-0">
+                <button type="button" class="my-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" data-bs-dismiss="modal">
+                    關閉
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 預覽註銷申請 / 切結書 視窗 -->
+<div class="modal fade" id="reviewCancelModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editLcAppModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+        <div class="modal-content hnb__modal">
+            <div class="modal-header py-2 border-bottom-0">
+                <h5 class="modal-title fs-5 fw-bolder text--hnb" id="editLcAppModalLabel">
+                    註銷申請 / 切結書
+                </h5>
+                <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <div class="modal-body bg-light">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <div class="col-12 py-0 lh-1 hnb__bankName text-center">
+                            華南銀行
+                        </div>
+                        <div class="col-12 py-0 hnb__bankName text-center">
+                            信用狀註銷申請書 / 認證單
+                        </div>
+                        <div class="col-12 py-2 text-center">
+                            中華民國 114 年 04 月 26 日
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm hnb__table hnb__bg--white">
+                        <tr>
+                            <td class="p-3">
+                                <p>茲請　貴行註銷下列信用狀，其未用餘額，受益人已不再利用，嗣後倘因該信用狀之受益人仍有出貨及押匯等情事，以致發生任何糾紛並使 貴行遭受損失時，一經
+                                    貴行通知，本公司當即依照前所提及之開發國內不可撤銷信用狀申請書及其他相關約定事項，負責清償，絕不拖延。</P>
+                                <p class="text-end">單位：新台幣元</p>
+                                <table class="mx-auto table table-sm hnb__table hnb__bg--white">
+                                    <thead>
+                                        <tr>
+                                            <th class="hnb__tbhd">信用狀號碼</th>
+                                            <th class="hnb__tbhd">申請人</th>
+                                            <th class="hnb__tbhd">受益人</th>
+                                            <th class="hnb__tbhd">信用狀金額</th>
+                                            <th class="hnb__tbhd">未押匯金額</th>
+                                            <th class="hnb__tbhd">信用狀到期日</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">008LLCt2</td>
+                                            <td id="appName" class="text-center">石梅股份有限公司</td>
+                                            <td id="beneName" class="text-center">台灣塑膠工業股份有限公司</td>
+                                            <td class="text-center">70000000</td>
+                                            <td class="text-center">70000000</td>
+                                            <td class="text-center">民國 114 年 05 月 26 日</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-top-0">
+                <button type="button" class="my-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" data-bs-dismiss="modal">
+                    關閉
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 授信資料預覽 視窗 -->
+@{
+    await Html.RenderPartialAsync("~/Views/LcApp/LcDetailModal.cshtml");
+    await Html.RenderPartialAsync("~/Views/LcApp/NoticeModal.cshtml");
+}
+
+<!-- 信用狀申請書 視窗 -->
+@{
+        await Html.RenderPartialAsync("~/Views/LcApp/LcAppDetailModal.cshtml");
+}   
+
+<!-- 訊息 視窗 -->
+<div class="modal fade" id="messageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content hnb__modal">
+            <div class="modal-header py-2 border-bottom-0">
+                <h5 class="modal-title fs-5 fw-bolder text--hnb" id="messageModalLabel">
+                    作業訊息
+                </h5>
+                <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="mdi mdi-close"></span>
+                </button>
+    </div>
+    <div id="msgBody" class="modal-body bg-light"></div>
+    <div id="msgFooter" class="modal-footer justify-content-center border-top-0"></div>
+    </div>
+</div>
+</div>
+
+<!-- 離開選擇訊息 視窗 -->
+<div class="modal fade" id="promptModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="promptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content hnb__modal">
+            <div class="modal-header py-2 border-bottom-0">
+                <h5 class="modal-title fs-5 fw-bolder text--hnb" id="promptModalLabel">
+                    作業訊息
+                </h5>
+                <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="mdi mdi-close"></span>
+                    </button>
+        </div>
+        <div class="modal-body bg-light">
+            <p class="fw-bold hnb__text--green text-center">
+                離開不會儲存此筆資料，您確認要離開嗎？
+            </p>
+        </div>
+        <div class="modal-footer justify-content-center border-top-0">
+            <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+            <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" data-bs-dismiss="modal"
+                onclick="cancelHandler()">確定</button>
+        </div>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    <script>
+        const queryList = document.querySelector('#queryList');
+        const lcForCdsAppList = document.querySelector('#lcForCdsAppList');
+        const creditListBh = document.querySelector('#creditListBh');
+        const creditListBs = document.querySelector('#creditListBs');
+        const lcforOtherAppList = document.querySelector('#lcforOtherAppList');
+
+        let status = '';
+
+        // 確認 訊息及按鈕
+        const messageModalLabel = document.querySelector('#messageModalLabel');
+        const msgBody = document.querySelector('#msgBody');
+        const msgFooter = document.querySelector('#msgFooter');
+        const creditBhList = document.querySelectorAll('.creditBh');
+        const creditBsList = document.querySelectorAll('.creditBs');
+
+        // 不同權限切換顯示欄位
+        if (authType === 'BH') {
+          creditBsList.forEach(item => item.classList.add('hnb__hide'));
+        };
+
+        if (authType === 'BS') {
+          creditBhList.forEach(item => item.classList.add('hnb__hide'));
+        };
+
+
+        // 經辦 - 檢視授信資料 - 從後端載入內容
+        function reviewCreditForBH() {
+          try {
+                var postData = {
+                lcNo: currentDataRow.lcno
+                    };
+
+            $('#creditListBh').remove();
+            doPost('../CancelAdjustment/CreditListBh',postData,function(data){
+                queryList.classList.add('hnb__hide');
+                $(queryList).after(data);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+
+        // 主管 - 檢視授信資料 - 從後端載入內容
+        function reviewCreditForBS() {
+          try {
+                var postData = {
+                lcNo: currentDataRow.lcno
+                    };
+
+            $('#creditListBs').remove();
+            doPost('../CancelAdjustment/CreditListBs',postData,function(data){
+                queryList.classList.add('hnb__hide');
+                $(queryList).after(data);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+
+        // 當日帳務調整 adjAccountHandler
+        function adjAccountHandler() {
+          try {
+            var postData = {
+              lcNo: currentDataRow ? currentDataRow.lcno : '',
+              authType: authType || '',
+              adjustStatus: true
+            };
+
+            doPost('../CancelAdjustment/ConfirmReview', postData, function (html) {
+                $('body').append(html);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+
+        // 不調整 notAdjAccountHandler
+        function notAdjAccountHandler() {
+          try {
+            var postData = {
+              lcNo: currentDataRow ? currentDataRow.lcno : '',
+              authType: authType || '',
+              adjustStatus: false
+            };
+
+            doPost('../CancelAdjustment/ConfirmReview', postData, function (html) {
+              const container = document.createElement('div');
+              container.innerHTML = html;
+              document.body.appendChild(container);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+
+        function confirmHandler() {
+          try {
+            const form = document.querySelector('#confirmReviewForm');
+            if (!form) return;
+
+            var lcNoInput = form.querySelector('input[name="lcNo"]');
+            var adjustInput = form.querySelector('input[name="adjustStatus"]');
+
+            var postData = {
+                lcNo: lcNoInput ? lcNoInput.value : '',
+                adjustStatus: adjustInput ? (adjustInput.value === 'True' || adjustInput.value === 'true' || adjustInput.value === '1') : false
+            };
+
+            doPost('../CancelAdjustment/ConfirmHandler', postData, function (html) {
+                if (window.hideCurrent) window.hideCurrent();
+                $('body').append(html);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+        // 取消
+        function cancelHandler() {
+          $('#creditList').remove();
+        };
+
+    </script>
+}

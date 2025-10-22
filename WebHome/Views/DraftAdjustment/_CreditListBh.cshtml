@@ -1,0 +1,215 @@
+<!-- 經辦 - 授信資料 -->
+<div id="creditListBh">
+  <h1 class="py-2 fs-4 fw-bolder">押匯申請-授信資料</h1>
+  <div class="mb-2 card">
+    <div class="card-body bg-light">
+      <div class="card-body p-4">
+        <div class="my-3 p-4 mx-auto border border-success" style="max-width:1000px">
+          <h5 class="card-subtitle fw-bold mb-2 hnb__text--red">押匯方式：</h5>
+          <div class="my-2 fw-bold hnb__text--green">押匯</div>
+          <div>
+            <div class="fw-bold text-nowrap">撥款方式：</div>
+            <div class="d-flex align-items-start">
+              <div class="py-2 form-check">
+                <input class="form-check-input" type="radio" name="draftRadio1" id="pay1">
+              </div>
+              <div class="d-flex flex-column">
+                <div class="d-flex align-items-center">
+                  <div class="d-flex align-items-center flex-wrap">
+                    <div class="text-end" style="width:110px">本行-轉入帳號：</div>
+                    <input type="text" class="mx-1 form-control form-control-sm" name="input1" value=""
+                      style="width:200px">
+                  </div>
+                  <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+                    查詢帳號戶名
+                  </button>
+                </div>
+                <div class="my-1 d-flex align-items-center flex-wrap">
+                  <div class="text-end" style="width:110px">戶名：</div>
+                  <input type="text" class="mx-1 form-control form-control-sm" name="input1" value="台灣塑膠工業股份有限公司"
+                    style="width:200px">
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-start">
+              <div class="py-2 form-check">
+                <input class="form-check-input" type="radio" name="draftRadio1" id="pay2">
+              </div>
+              <div class="d-flex flex-column">
+                <div class="py-2">
+                  跨行-付款內容詳受益人匯出匯款申請書
+                </div>
+                <div class="d-flex flex-wrap">
+                  <div class="my-1 d-flex align-items-center">
+                    <div>匯入銀行：</div>
+                    <input type="text" class="mx-1 me-4 form-control form-control-sm" name="input1" value=""
+                      style="width:200px">
+                  </div>
+                  <div class="my-1 d-flex align-items-center">
+                    <div>銀行名稱：</div>
+                    <input type="text" class="mx-1 me-4 form-control form-control-sm" name="input1" value=""
+                      style="width:200px">
+                  </div>
+                  <div class="my-1 d-flex align-items-center">
+                    <div>匯款帳號：</div>
+                    <input type="text" class="mx-1 form-control form-control-sm" name="input1" value=""
+                      style="width:200px">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-start">
+              <div class="py-2 form-check">
+                <input class="form-check-input" type="radio" name="draftRadio1" id="pay3" checked>
+              </div>
+              <div class="d-flex align-items-start flex-wrap">
+                <div class="py-2 text-nowrap">轉入科目：</div>
+                <div>
+                  <div class="d-flex align-items-center">
+                    <span class="text-nowrap">轉入會計科目：</span>
+                    <select name="select1" class="mx-1 my-1 form-select form-select-sm">
+                      <option>=請選擇=</option>
+                      <option>13097-099：其他應收款-雜項</option>
+                      <option selected>00000-999：過度科目</option>
+                    </select>
+                  </div>
+                  <div class=" d-flex align-items-center">
+                    <span class="text-nowrap">轉入銷帳序號：</span>
+                    <input type="text" class="mx-1 my-1 form-control form-control-sm" value="111101">
+                  </div>
+                  <div class=" d-flex align-items-center">
+                    <span class="text-nowrap">轉入科目金額：</span>
+                    <input type="text" class="mx-1 my-1 form-control form-control-sm" value="100000.0">
+                  </div>
+                  <div class=" d-flex align-items-center">
+                    <span class="text-nowrap">轉入科目摘要：</span>
+                    <input type="text" class="mx-1 my-1 form-control form-control-sm" value="國內信用狀押匯台灣塑膠工業股份有限公司">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center flex-wrap">
+              <div>押匯手續費：</div>
+              <input type="text" class="mx-1 form-control form-control-sm" name="input1" value="300.0"
+                style="width:100px">
+              <div>是否扣印花稅：</div>
+              <select name="select1" class="mx-1 my-1 form-select form-select-sm" style="width:80px">
+                <option selected>--</option>
+                <option>是</option>
+                <option>否</option>
+              </select>
+            </div>
+          </div>
+          <h5 class="card-subtitle fw-bold my-3 hnb__text--red">費用付款方式：</h5>
+          <div class="my-2">
+            <div class="d-flex align-items-start">
+              <div class="py-2 form-check">
+                <input class="form-check-input" type="radio" name="draftRadio2" id="check21" checked>
+              </div>
+              <div class="py-2">
+                現金
+              </div>
+            </div>
+            <div class="d-flex align-items-start">
+              <div class="py-2 form-check">
+                <input class="form-check-input" type="radio" name="draftRadio2" id="check22">
+              </div>
+              <div class="d-flex flex-wrap">
+                <div class="py-1 d-flex align-items-center">
+                  <span class="text-nowrap">支存帳號：</span>
+                  <input type="text" class="mx-1 me-4 form-control form-control-sm" name="input1" value=""
+                    style="width:200px">
+                </div>
+                <div class="py-1 d-flex align-items-center">
+                  <span class="text-nowrap">支票號碼：</span>
+                  <input type="text" class="mx-1 form-control form-control-sm" name="input1" value=""
+                    style="width:200px">
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-start">
+              <div class="py-2 form-check">
+                <input class="form-check-input" type="radio" name="draftRadio2" id="check23">
+              </div>
+              <div class="py-1 d-flex align-items-center">
+                <span class="text-nowrap">活存帳號：</span>
+                <input type="text" class="mx-1 form-control form-control-sm" name="input1" value=""
+                  style="width:200px">
+              </div>
+            </div>
+            <div class="d-flex align-items-start">
+              <div class="py-2 form-check">
+                <input class="form-check-input" type="radio" name="draftRadio2" id="check24">
+              </div>
+              <div class="py-2 d-flex align-items-center">
+                <span class="text-nowrap">內扣</span>
+              </div>
+            </div>
+            <div class="d-flex align-items-start">
+              <div class="py-2 form-check">
+                <input class="form-check-input" type="radio" name="draftRadio2" id="check24">
+              </div>
+              <div class="d-flex">
+                <span class="py-2 text-nowrap">轉出科目：</span>
+                <div>
+                  <div class="d-flex align-items-center">
+                    <span class="text-nowrap">轉出會計科目：</span>
+                    <select name="select1" class="mx-1 my-1 form-select form-select-sm">
+                      <option>=請選擇=</option>
+                      <option>13097-099：其他應收款-雜項</option>
+                      <option selected>00000-999：過度科目</option>
+
+                    </select>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <span class="text-nowrap">轉出銷帳序號：</span>
+                    <input type="text" class="mx-1 my-1 form-control form-control-sm" value="">
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <span class="text-nowrap">轉出科目金額：</span>
+                    <input type="text" class="mx-1 my-1 form-control form-control-sm" value="55000.0">
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <span class="text-nowrap">轉出科目摘要：</span>
+                    <input type="text" class="mx-1 my-1 form-control form-control-sm" value="押匯/承兌費用台灣塑膠工業股份有限公司">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h5 class="card-subtitle fw-bold my-3 hnb__text--red">押匯手續費優惠：</h5>
+          <div class="my-2">
+            <div class="d-flex align-items-start">
+              <div class="py-2 form-check">
+                <input class="form-check-input" type="checkbox" name="check1" id="check31">
+              </div>
+              <div class="d-flex flex-column">
+                <span class="py-2 text-nowrap">押匯手續費優惠</span>
+                <div class="d-flex align-items-center">
+                  <span class="text-nowrap">優惠原因：</span>
+                  <select name="select1" class="mx-1 form-select form-select-sm">
+                    <option>=請選擇=</option>
+                    <option selected>申請總行核准</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-center">
+        <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" onclick="cancelHandler()">
+          取消
+        </button>
+        <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--print text-nowrap" data-bs-toggle="modal"
+          data-bs-target="#creditModal">
+          預覽
+        </button>
+        <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap" onclick="confirmHandler();">
+          確定
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

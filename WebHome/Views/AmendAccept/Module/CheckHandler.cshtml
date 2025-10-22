@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/Shared/_MessageModalLayout.cshtml";
+}
+<!-- 訊息 視窗 -->
+@section MsgBody
+{
+    <p class="fw-bold hnb__text--green">
+        確定接受下列信用狀的修正嗎？
+    </p>
+    <p>
+        信用狀號碼：09970017151000888<br>
+        信用狀號碼：09970017151000889
+    </p>
+}
+
+@section MsgFooter
+{
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="window.hideCurrent(); confirmHandler()">確定</button>
+}

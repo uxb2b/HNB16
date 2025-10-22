@@ -1,0 +1,409 @@
+﻿<!-- 經辦 - 授信資料 -->
+<div id="creditListBh">
+    <h1 class="py-2 fs-4 fw-bolder">開狀申請書-授信資料</h1>
+    <div class="mb-2 card">
+        <div class="card-body bg-light">
+            <div class="table-responsive">
+                <table class="table table-sm hnb__table hnb__bg--white">
+                    <tbody>
+                        <tr>
+                            <th width="20%" scope="col" class="hnb__tbhd2 text-nowrap" rowspan="4">定價指標</th>
+                            <td colspan="3">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="fixedPricePointer" type="radio" id="ra01" value="1"
+                                          checked>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap">
+                                        按貴行之基準利率加碼年率
+                                        <div class="my-1 mx-2 input-group input-group-sm" style="width:120px">
+                                            <input type="text" class="form-control" name="interestRate1" value="0.0100000">
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                        計息，嗣後貴行基準利率每
+                                        <div class="my-1 mx-2 input-group input-group-sm flex-nowrap" style="width:120px">
+                                            <select name="adjMonth" class="form-select">
+                                                <option>--</option>
+                                                <option selected>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                                <option>6</option>
+                                                <option>7</option>
+                                                <option>8</option>
+                                                <option>9</option>
+                                                <option>10</option>
+                                                <option>11</option>
+                                                <option>12</option>
+                                            </select>
+                                            <span class="input-group-text">個月</span>
+                                        </div>
+                                        調整時隨同調整，加碼幅度不變。
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="fixedPricePointer" type="radio" id="ra02" value="2">
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap">
+                                        固定利率，按年率
+                                        <div class="my-1 mx-2 input-group input-group-sm" style="width:120px">
+                                            <input type="text" class="form-control" name="interestRate2" value="">
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                        計息。
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="fixedPricePointer" type="radio" id="ra03" value="3">
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap">
+                                        按貴行之
+                                        <select name="MarketRateType" id="irr" class="my-1 mx-2 form-select form-select-sm"
+                                          style="width:150px">
+                                            <option>--</option>
+                                        </select>
+                                        <div class="my-1 mx-2 input-group input-group-sm flex-nowrap" style="width:130px">
+                                            <select name="loanRateDays" class="form-select">
+                                                <option selected>--</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>20</option>
+                                                <option>100</option>
+                                            </select>
+                                            <span class="input-group-text">天期</span>
+                                        </div>
+                                        均價利率
+                                        <div class="my-1 mx-2 input-group input-group-sm flex-nowrap" style="width:100px">
+                                            <select name="loanRatePlus" class="form-select">
+                                                <option selected>--</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                            </select>
+                                            <span class="input-group-text">碼</span>
+                                        </div>
+                                        <div class="my-1 mx-2 input-group input-group-sm" style="width:120px">
+                                            <input type="text" class="form-control" name="interestRate3" value="">
+                                            <span class="input-group-text">%</span>
+                                        </div> 計息，嗣後以貸放日後每滿
+                                        <div class="my-1 mx-2 input-group input-group-sm flex-nowrap" style="width:120px">
+                                            <select name="loanRateMonths" class="form-select">
+                                                <option>--</option>
+                                                <option selected>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                                <option>6</option>
+                                                <option>7</option>
+                                                <option>8</option>
+                                                <option>9</option>
+                                                <option>10</option>
+                                                <option>11</option>
+                                                <option>12</option>
+                                            </select>
+                                            <span class="input-group-text">個月</span>
+                                        </div>
+                                        之相對日為利率變動調整日，自調整日起隨同調整，加減碼幅度不變。
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="fixedPricePointer" type="radio" id="ra04" value="4">
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap">
+                                        其他：
+                                        <select name="loanRateOther" class="my-1 mx-2 form-select form-select-sm" style="width:200px">
+                                            <option selected>= 請選擇 =</option>
+                                            <option>原因 1</option>
+                                            <option>原因 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="20%" scope="col" class="hnb__tbhd2 text-nowrap">放款戶號</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="loanAccountId" value="1750161000861">
+                            </td>
+                            <th width="20%" scope="col" class="hnb__tbhd2 text-nowrap">信用狀金額</th>
+                            <td class="text-end">1,000,000</td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">開狀放款核號</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="lcApprovedNo" value="9900410000">
+                            </td>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">承兌放款核號</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="acceptApprovedNo" value="123456789">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">國內信用狀額(限)度</th>
+                            <td class="text-end">1,000,000</td>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">額(限)度到期日</th>
+                            <td>2025/12/10</td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">國內信用狀餘額(含本件)</th>
+                            <td class="text-end">500,000</td>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">貸放經理人ID</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="loanManagerId" value="G12345678">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">徵審主管 ID-A</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="approveManagerID1" value="G12345678">
+                            </td>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">徵審主管 ID-B</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="approveManagerID2" value="G12345678">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">開狀手續費</th>
+                            <td>
+                                <div>
+                                    <input type="text" class="form-control form-control-sm" name="lcProcedureExpense" value="1000">
+                                </div>
+                                <div class="my-1 input-group input-group-sm flex-nowrap">
+                                    <span class="input-group-text">是否扣印花稅：</span>
+                                    <select name="lcStampTaxFlag" class="form-select">
+                                        <option selected>--</option>
+                                        <option>是</option>
+                                        <option>否</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">承兌手續費</th>
+                            <td>
+                                <div>
+                                    <input type="text" class="form-control form-control-sm" name="acceptProcedureExpense" value="500">
+                                </div>
+                                <div class="my-1 input-group input-group-sm flex-nowrap">
+                                    <span class="input-group-text">是否扣印花稅：</span>
+                                    <select name="acceptStampTaxFlag" class="form-select">
+                                        <option selected>--</option>
+                                        <option>是</option>
+                                        <option>否</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">存入保證金比率(%)</th>
+                            <td>
+                                <div class="my-1 input-group input-group-sm">
+                                    <input type="text" class="form-control" name="guaranteeAmountRate" value="0.00">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </td>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">保證金</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="guaranteeAmount" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">批次案號</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="batchInsuranceApprovedNo" value="">
+                            </td>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">信保通知單編號</th>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" name="smegNoticeNo" value="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">收款方式</th>
+                            <td colspan="3">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="auhorizingDuductacFlagT" id="rate1" value="1" checked
+                                      disabled>
+                                    <div>有授權扣帳</div>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="auhorizingDuductacFlagT" id="rate1" value="0"
+                                      disabled>
+                                    <div>無授權扣帳</div>
+                                </div>
+                                <table class="table table-sm hnb__table hnb__bg--white">
+                                    <tbody>
+                                        <tr>
+                                            <th width="120" scope="col" class="hnb__tbhd2 text-nowrap">現金：</th>
+                                            <td class="text-end">100000</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col" class="hnb__tbhd2 text-nowrap" rowspan="2">支存轉帳：</th>
+                                            <td>
+                                                <div>
+                                                    <span class="fw-bold">支票存款帳號 1：</span>
+                                                    789465213798
+                                                </div>
+                                                <div>
+                                                    <span class="fw-bold">支票號碼 1：</span>
+                                                    132456987
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="fw-bold">金額 1：</span>
+                                                    <span>1,000</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <span class="fw-bold">支票存款帳號 2：</span>
+                                                    789465213798
+                                                </div>
+                                                <div>
+                                                    <span class="fw-bold">支票號碼 2：</span>
+                                                    132456987
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="fw-bold">金額 2：</span>
+                                                    <span>1,000</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col" class="hnb__tbhd2 text-nowrap">活存轉帳：</th>
+                                            <td>
+                                                <div>
+                                                    <span class="fw-bold">活期存款帳號： 2：</span>
+                                                    123546798123
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="fw-bold">第 1 張取款條金額：</span>
+                                                    <span>2,000</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="fw-bold">第 2 張取款條金額：</span>
+                                                    <span>1,600</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col" class="hnb__tbhd2 text-nowrap">轉出科目：</th>
+                                            <td>
+                                                <div>
+                                                    <span class="fw-bold">轉出會計科目：</span>
+                                                    <span>---</span>
+                                                </div>
+                                                <div>
+                                                    <span class="fw-bold">轉出銷帳序號：</span>
+                                                    <span>----</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="fw-bold">轉出科目金額：</span>
+                                                    <span>---</span>
+                                                </div>
+                                                <div>
+                                                    <span class="fw-bold">轉出科目摘要：</span>
+                                                    <span>---</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold">現金與轉帳收款金額合計：</span>
+                                    <span>300,000</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">擔保條件</th>
+                            <td colspan="3">XXXXXXX</td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">放款狀號</th>
+                            <td colspan="3">123456789012</td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">風險條件</th>
+                            <td colspan="3">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <span class="fw-bold">風險類別一：</span>
+                                            <span>B1 應收信用狀款-存款或存單</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">風險類別一百分比 %：</span>
+                                            <span>100</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">風險類別二 %：</span>
+                                            <span>--</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">風險類別二百分比 %：</span>
+                                            <span>--</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">風險類別三 %：</span>
+                                            <span>--</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">風險類別三百分比 %：</span>
+                                            <span>--</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">風險類別四 %：</span>
+                                            <span>--</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span class="fw-bold">風險類別四百分比 %：</span>
+                                            <span>--</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="hnb__tbhd2 text-nowrap">防制洗錢及打擊資恐作業</th>
+                            <td colspan="3">
+                                <div class="py-1 form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="status1" name="checkaml" value="Y" checked disabled>
+                                    <label class="form-check-label" for="status1">已確實於 AML
+                                        系統辦理線上姓名檢核並填製「新臺幣國內信用狀業務防制洗錢及打擊資恐作業檢核表」。</label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex align-items-center justify-content-center">
+                <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" onclick="cancelHandler()">
+                    取消
+                </button>
+                <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap"
+                  onclick="adjAccountHandler()">
+                    當日帳務調整
+                </button>
+                <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--red text-nowrap"
+                  onclick="notAdjAccountHandler()">
+                    不調整
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -395,7 +395,7 @@ function doPost(url, viewModel, done) {
         data: JSON.stringify(viewModel),
         type: "POST",
         //dataType: "json",
-        contentType: "application/json;charset=utf-8",
+        contentType: "application/json; charset=UTF-8",
         success: function (data) {
             hideLoading();
             if ($.isPlainObject(data)) {
@@ -418,6 +418,36 @@ function doPost(url, viewModel, done) {
             console.log(thrownError);
         }
     });
+}
+
+function doFetch(url, options = {}) {
+    const defaultOptions = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        }
+    };
+
+    const fetchOptions = { ...defaultOptions, ...options };
+
+    if (fetchOptions.body && typeof fetchOptions.body !== 'string') {
+        fetchOptions.body = JSON.stringify(fetchOptions.body);
+    }
+
+    return fetch(url, fetchOptions)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP 錯誤: ${response.status}`);
+            }
+
+            const contentType = response.headers.get("content-type");
+
+            if (contentType && contentType.includes("application/json")) {
+                return response.json();
+            } else {
+                return response.text();
+            }
+        });
 }
 
 function toArrayField(viewModel, field) {

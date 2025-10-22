@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "~/Views/Shared/_MessageModalLayout.cshtml";
+}
+<!-- 訊息 視窗 -->
+@section MsgBody
+{
+    <p class="fw-bold hnb__text--green text-center">
+        此筆押匯尚未完成 "信用狀修改接受註記" 作業！<br>請點選下方按鈕前往接受註記或取消
+    </p>
+}
+
+@section MsgFooter
+{
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="processHandler('Index', 'AmendAccept',{ 'lcNo':'lcNo12345678'});">前往接受註記</button>
+}

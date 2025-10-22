@@ -1,0 +1,30 @@
+<!-- 授信資料預覽 視窗 -->
+<div class="modal fade" id="creditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="creditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+        <div id="creditModalContent" class="modal-content hnb__modal">
+            <!-- 內容將由 AJAX 載入 -->
+        </div>
+    </div>
+</div>
+<script>
+    $('#creditModal').on('shown.bs.modal', function (e) {
+        // 這裡用 AJAX 載入內容
+        $.ajax({
+            url: '../AmendLcApp/CreditModalContent',
+            type: 'POST',
+            data: { lcno: currentDataRow.lcno },
+            success: function (data) {
+                $('#creditModalContent').html(data);
+            },
+            error: function () {
+                $('#creditModalContent').html('<div class="p-4 text-danger">載入明細失敗，請稍後再試。</div>');
+            }
+        });
+    });
+
+    $('#creditModal').on('hidden.bs.modal', function (e) {
+        // 清空內容
+        $('#creditModalContent').html('');
+    });
+</script>

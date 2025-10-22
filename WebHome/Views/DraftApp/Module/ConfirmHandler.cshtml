@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/Shared/_MessageModalLayout.cshtml";
+}
+<!-- 訊息 視窗 -->
+@section MsgBody
+{
+    <p class="fw-bold hnb__text--green text-center">
+        作業已完成！<br>
+        您的申請書號碼為<br>
+        099700031161000861-V-01
+    </p>
+}
+
+@section MsgFooter
+{
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default"
+            onclick="location.href = '../DraftApp/Index';">
+        回押匯申請
+    </button>
+}

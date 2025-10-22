@@ -1,0 +1,55 @@
+﻿@* QueryAmendAcceptTable.cshtml: 信用狀修改申請待接受註記清冊 Table *@
+<table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+    <thead>
+        <tr>
+            <th scope="col" class="hnb__tbhd text-nowrap">編號</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">
+                <div class="p-1">接受</div>
+                <button type="button"
+                        class="editItem my-1 px-3 btn btn-sm hnb__btn--select shadow-sm text-nowrap btn-select-all">
+                    全選
+                </button>
+            </th>
+            <th scope="col" class="hnb__tbhd text-nowrap">
+                <div class="p-1">不接受</div>
+                <button type="button"
+                        class="editItem my-1 px-3 btn btn-sm hnb__btn--select shadow-sm text-nowrap btn-select-all">
+                    全選
+                </button>
+            </th>
+            <th scope="col" class="hnb__tbhd text-nowrap">修改通知書號碼</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">信用狀號碼</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">信用狀別</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">開立日期</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">申請人</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">受益人</th>
+            <th scope="col" class="hnb__tbhd text-nowrap">通知銀行</th>
+        </tr>
+    </thead>
+    <tbody>
+        @await Html.PartialAsync("~/Views/AmendAccept/Module/QueryAmendAcceptItems.cshtml")
+    </tbody>
+</table>
+<script>
+    document.querySelectorAll(".btn-select-all").forEach((btn) => {
+        btn.dataset.selected = "false"; // 初始狀態
+
+        btn.addEventListener("click", () => {
+            const th = btn.closest("th");
+            const thIndex = Array.from(th.parentNode.children).indexOf(th);
+            const isSelected = btn.dataset.selected === "true";
+
+            document.querySelectorAll("tbody tr").forEach(row => {
+                const cell = row.children[thIndex];
+                const radio = cell.querySelector("input[type=radio]");
+                if (radio) {
+                    radio.checked = !isSelected; // 切換狀態
+                }
+            });
+
+            // 更新狀態
+            btn.dataset.selected = (!isSelected).toString();
+            btn.textContent = isSelected ? "全選" : "取消全選";
+        });
+    });
+</script>

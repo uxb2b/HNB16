@@ -1,0 +1,23 @@
+@{
+    Layout = "~/Views/Shared/_MessageModalLayout.cshtml";
+    var lcNo = ViewData["lcNo"] as string ?? string.Empty;
+    var revertStatus = ViewData["revertStatus"] as bool? ?? false;
+}
+
+@section MsgBody {
+    <p class="fw-bold hnb__text--green text-center">
+        作業已完成！<br />
+        @if (revertStatus)
+        {
+            <text>您的申請書號碼：@lcNo 已還原</text>
+        }
+        else
+        {
+            <text>您的申請書號碼：@lcNo 已沖正</text>
+        }
+    </p>
+}
+
+@section MsgFooter {
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="location.href = '../CurrentAmendApp/Index'">回修狀沖正(EC)清冊</button>
+}

@@ -1,0 +1,100 @@
+﻿@model WebHome.Models.CancelAppQueryModel
+@{
+    Layout = "~/Views/CancelApp/CancelAppTemplate.cshtml";
+}
+
+<!-- 註銷申請/切結書 -->
+<div id="lcAppList">
+  <h1 class="py-2 fs-4 fw-bolder">註銷申請 / 切結書</h1>
+  <div class="mb-2 card">
+    <div class="card-body bg-light">
+      <form id="lcForCdsAppForm">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-12 py-0 lh-1 hnb__bankName text-center">
+              華南銀行
+            </div>
+            <div class="col-12 py-0 hnb__bankName text-center">
+              信用狀註銷申請書 / 認證單
+            </div>
+            <div class="col-12 py-2 text-center">
+              中華民國 114 年 04 月 26 日
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm hnb__table hnb__bg--white">
+            <tr>
+              <td class="p-3">
+                <p>茲請　貴行註銷下列信用狀，其未用餘額，受益人已不再利用，嗣後倘因該信用狀之受益人仍有出貨及押匯等情事，以致發生任何糾紛並使 貴行遭受損失時，一經
+                  貴行通知，本公司當即依照前所提之開發國內不可撤銷信用狀申請書及其他相關約定事項，負責清償，絕不拖延。</P>
+                <p class="text-end">單位：新台幣元</p>
+                <table class="mx-auto table table-sm hnb__table hnb__bg--white">
+                  <thead>
+                    <tr>
+                      <th class="hnb__tbhd">信用狀號碼</th>
+                      <th class="hnb__tbhd">申請人</th>
+                      <th class="hnb__tbhd">受益人</th>
+                      <th class="hnb__tbhd">信用狀金額</th>
+                      <th class="hnb__tbhd">未押匯金額</th>
+                      <th class="hnb__tbhd">信用狀到期日</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center">008LLCt2</td>
+                      <td id="appName" class="text-center">石梅股份有限公司</td>
+                      <td id="beneName" class="text-center">台灣塑膠工業股份有限公司</td>
+                      <td class="text-center">70000000</td>
+                      <td class="text-center">70000000</td>
+                      <td class="text-center">民國 114 年 05 月 26 日</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" onclick="cancelHandler()">
+            取消
+          </button>
+          <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap" onclick="confirmReview()">
+            確定
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+@if(Model?.BeneType == "fpg")
+{
+    await Html.RenderPartialAsync("~/Views/CancelApp/Module/FpgCaution.cshtml");
+}
+<script>
+    // 取消
+    function cancelHandler() {
+        window.location.href = "../CancelApp/Index";
+    }
+    // 申請確認
+    function confirmReview() {
+        var dataRow = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+        doPost('../CancelApp/ConfirmReview', dataRow, function(data) {
+            $('body').append(data);
+        });
+    }
+
+    function confirmHandler() {
+        var dataRow = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model));
+        $.ajax({
+            url: '../CancelApp/ConfirmHandler',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(dataRow),
+            success: function(data) {
+                $("body").append(data);
+            }
+        });
+    }
+</script>
+

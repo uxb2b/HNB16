@@ -127,6 +127,7 @@
 @{
     await Html.RenderPartialAsync("~/Views/LcApp/LcAppDetailModal.cshtml");
     await Html.RenderPartialAsync("~/Views/LcApp/LcDetailModal.cshtml");
+    await Html.RenderPartialAsync("~/Views/LcApp/NoticeModal.cshtml");
 }
 <script>
 
@@ -160,28 +161,7 @@
             $('').launchDownload(url, payload);
         }
 
-    // 綁定所有 的 <a>，點擊時取得父 <tr> 的 data-*
-    var currentDataRow;
-    function attachRowData() {
-        const rows = queryList.querySelector('tbody').querySelectorAll('a')
-        rows.forEach(row => {
-            row.addEventListener('click', () => {
-                currentDataRow = row.closest('tr').dataset;
-            });
-        });
-    }
-
-        function attachEditHandler() {
-            const editButtons = queryList.querySelector('tbody').querySelectorAll('.editItem');
-            editButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    currentDataRow = row.dataset;
-                    console.log(currentDataRow);
-                    editHandler();
-                });
-            });
-        }
-
-
 </script>
+@{
+    await Html.RenderPartialAsync("~/Views/MainPage/Module/PrepareQuery.cshtml");
+}

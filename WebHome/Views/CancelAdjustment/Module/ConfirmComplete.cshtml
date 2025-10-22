@@ -1,0 +1,33 @@
+@{
+    Layout = "~/Views/Shared/_MessageModalLayout.cshtml";
+    var lcNo = ViewData["lcNo"] as string ?? string.Empty;
+    var authType = ViewData["authType"] as string ?? string.Empty;
+    var adjustStatus = ViewData["adjustStatus"] as bool? ?? false;
+}
+
+@section MsgBody {
+    <p class="fw-bold hnb__text--green text-center">
+        作業已完成！
+        @if (authType == "BH")
+        {
+            <text>待主管審核中</text>
+        }
+        else if (authType == "BS")
+        {
+            <br />
+            <text>您的申請書號碼：@lcNo</text>
+            @if (adjustStatus)
+            {
+                <text>已調整</text>
+            }
+            else
+            {
+                <text>不調整</text>
+            }
+        }
+    </p>
+}
+
+@section MsgFooter {
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="location.href = '../CancelAdjustment/Index'">回註銷申請當日調整帳務</button>
+}

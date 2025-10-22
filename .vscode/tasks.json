@@ -36,6 +36,18 @@
                 "${workspaceFolder}/TestConsole.sln"
             ],
             "problemMatcher": "$msCompile"
-        }
+        },
+        {
+            "label": "build-webhome",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/WebHome/WebHome.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
     ]
 }

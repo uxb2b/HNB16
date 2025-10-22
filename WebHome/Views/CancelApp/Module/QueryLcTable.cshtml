@@ -1,0 +1,35 @@
+﻿@model WebHome.Models.CancelAppQueryResultModel
+
+<div class="card">
+    <div class="card-body bg-light">
+        <div class="table-responsive">
+            <table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+                <thead>
+                    <tr>
+                        <th scope="col" class="hnb__tbhd">信用狀號碼</th>
+                        <th scope="col" class="hnb__tbhd">開狀銀行</th>
+                        <th scope="col" class="hnb__tbhd">開狀日期</th>
+                        <th scope="col" class="hnb__tbhd">總金額</th>
+                        <th scope="col" class="hnb__tbhd">可用餘額</th>
+                        <th scope="col" class="hnb__tbhd">受益人統編</th>
+                        <th scope="col" class="hnb__tbhd">狀態</th>
+                        <th scope="col" class="hnb__tbhd">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        await Html.RenderPartialAsync("~/Views/CancelApp/Module/QueryLcItems.cshtml", Model);
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    // optional: ensure any client-side attachment is applied when this partial is loaded via AJAX
+    $(function(){
+      // placeholder for any JS initialization if needed
+        attachRowData();
+        attachEditHandler();
+    });
+</script>

@@ -1,4 +1,4 @@
 {
-    "dotnet.defaultSolution": "TestConsole.sln",
+    "dotnet.defaultSolution": "HNBLLC.sln",
     "dotnet.preferCSharpExtension": true
 }

@@ -1,0 +1,17 @@
+﻿@{
+    Layout = "~/Views/Shared/_MessageModalLayout.cshtml";
+}
+<!-- 訊息 視窗 -->
+@section MsgBody
+{
+    <p>(一) 若註銷「未過期」信用狀，<span class="hnb__text--red">請務必確認已取得受益人同意書</span>，若未取得逕予註銷，恐遭受益人訴諸法律求償。</p>
+    <p>(二) 若<span class="hnb__text--red">「電子信用狀」</span>內容有誤 ( 受益人為<span class="hnb__text--red">中鋼</span>集團、<span class="hnb__text--red">台塑</span>集團、<span class="hnb__text--red">華新麗華</span>、<span class="hnb__text--red">奇美</span>集團、<span class="hnb__text--red">東和鋼鐵</span>等 )，<span class="hnb__text--red">請以修狀方式修正，切勿隨意以先註銷再重新開狀之方式辦理。</span></p>
+    <p>(三) 若註銷「電子信用狀」後，<span class="hnb__text--red">無法執行當日更正交易</span>。</p>
+    <p>(四) 輸入本次欲註銷之信用狀號碼：<input type="text" class="ms-1 form-control form-control-sm d-inline-block" value="12345678" style="max-width:200px"></p>
+}
+
+@section MsgFooter
+{
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="confirmHandler()">確定</button>
+}

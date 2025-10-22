@@ -1,0 +1,25 @@
+﻿<div class="py-2 d-flex align-items-center justify-content-between">
+    <h1 class="mb-0 fs-4 fw-bolder">修狀沖正(EC)清冊</h1>
+</div>
+<div class="card">
+    <div class="card-body bg-light">
+        <div class="table-responsive">
+            @{
+                await Html.RenderPartialAsync("~/Views/CurrentAmendApp/Module/QueryCurrentAmendAppTable.cshtml");
+            }
+        </div>
+    </div>
+</div>
+@{
+    // 假設有一個 PagingViewModel 物件，命名為 pagingModel
+    var pagingModel = new WebHome.Models.PagingViewModel
+    {
+        PageIndex = 1, // TODO: 改為實際頁數
+        PageSize = 10, // TODO: 改為實際每頁筆數
+        TotalCount = 3456, // TODO: 改為實際總筆數
+        TotalAmount = 522664, // TODO: 改為實際總金額
+        PageAction = "goToPage", // TODO: 實作 goToPage JS function
+        PageParam = "" // TODO: 傳遞查詢參數
+    };
+}
+@await Html.PartialAsync("~/Views/Shared/_PagingControl.cshtml", pagingModel)

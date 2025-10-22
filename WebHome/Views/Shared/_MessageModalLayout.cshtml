@@ -31,15 +31,13 @@
 
         $(modalElmt).on('hidden.bs.modal', function (e) {
           // 清空內容
-          document.removeChild(modalElmt);
+          modalElmt.parentNode.removeChild(modalElmt);
         });
 
         modal.show();
+
+        window.hideCurrent = function() {
+            modal.hide();
+        };
     });
-    // function showMessageModal(message, footerHtml) {
-    //     const modal = new bootstrap.Modal(document.getElementById('@modalID'));
-    //     document.getElementById('msgBody').innerHTML = message;
-    //     document.getElementById('msgFooter').innerHTML = footerHtml || '<button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" data-bs-dismiss="modal">確定</button>';
-    //     modal.show();
-    // }
 </script>

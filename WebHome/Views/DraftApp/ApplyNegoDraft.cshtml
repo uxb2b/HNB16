@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "~/Views/DraftApp/DraftAppTemplate.cshtml";
+}
+
+<!-- 填寫押匯申請資料 -->
+<div id="lcAppList">
+    <h1 class="py-2 fs-4 fw-bolder">押匯申請 - 填寫押匯申請資料</h1>
+    <div class="mb-2 card">
+        <div class="card-body bg-light">
+            <form id="lcForCdsAppForm" method="post" onsubmit="return submitDraftApp(event);">
+                <div class="table-responsive">
+                    <table class="mx-auto table table-sm hnb__table hnb__bg--white">
+                        <tbody>
+                            <tr>
+                                <th class="hnb__tbhd2">信用狀號碼：</th>
+                                <td><input type="text" name="LcNo" class="form-control form-control-sm" value="099700024161000861" readonly></td>
+                                <th class="hnb__tbhd2">信用狀可用餘額：</th>
+                                <td class="text-end">NT$ 200,000</td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">受益人名稱：</th>
+                                <td>網際測試股份有限公司</td>
+                                <th class="hnb__tbhd2">押匯/承兌金額：</th>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm" id="draftPayment" name="DraftPayment">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">押匯/承兌日期：</th>
+                                <td>2025/11/10</td>
+                                <th class="hnb__tbhd2">匯票到期日：</th>
+                                <td>2025/11/10</td>
+                            </tr>
+                            <tr>
+                                <th class="hnb__tbhd2">匯票發票日：</th>
+                                <td colspan="3">
+                                    <div class="mx-2 input-group flex-nowrap d-inline-flex" style="width:200px;">
+                                        <input type="datetime-local" id="invoiceDate" name="InvoiceDate" placeholder="請點選日期"
+                                               class="form-control form-control-sm hnb__calendar" readonly>
+                                        <label class="input-group-text py-1" for="invoiceDate">
+                                            <span class="mdi mdi-calendar-month"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" data-bs-toggle="modal"
+                            data-bs-target="#promptModal">
+                        取消
+                    </button>
+                    <button type="submit" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap">
+                        確定
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts 
+{
+<script>
+    // 提交表單
+    function submitDraftApp(event) {
+        event.preventDefault();
+        const form = document.getElementById('lcForCdsAppForm');
+        const formData = new FormData(form);
+        fetch('../DraftApp/ConfirmHandler', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(html => {
+            // 將回傳的 modal html 
+                $('body').append(html);
+        });
+        return false;
+    }
+</script>
+}

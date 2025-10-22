@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section Headers
+{
+    <!-- flatpick plugin -->
+    <link rel="stylesheet" href="../assets/flatpickr/flatpickr.min.css">
+    <script src="../assets/flatpickr/flatpickr.js"></script>
+    <script src="../assets/flatpickr/zh-tw.js"></script>
+}
+
+<!-- 修改接受註記 -->
+<div id="AmendAccept" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb fs-6">
+            <li class="breadcrumb-item">
+                <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+            </li>
+            <li class="breadcrumb-item">申請作業</li>
+            <li class="breadcrumb-item active" aria-current="page">修改接受註記</li>
+        </ol>
+    </nav>
+
+    @RenderBody()
+</div>
+
+@section Scripts
+{
+    @RenderSection("Scripts", required: false)
+}

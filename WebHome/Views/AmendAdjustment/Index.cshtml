@@ -1,0 +1,224 @@
+﻿@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml"; 
+}
+
+@section Headers {
+    <!-- flatpick plugin -->
+    <link rel="stylesheet" href="~/assets/flatpickr/flatpickr.min.css">
+    <script src="~/assets/flatpickr/flatpickr.js"></script>
+    <script src="~/assets/flatpickr/zh-tw.js"></script>
+}
+
+<!-- 修改申請當日調整帳務 -->
+<div id="AmendAdjustment" class="py-4 px-5">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb fs-6">
+            <li class="breadcrumb-item">
+                <a id="homePage" class="hnb__path" href="#" onclick="backHomeHandler()">首頁</a>
+            </li>
+            <li class="breadcrumb-item">申請作業</li>
+            <li class="breadcrumb-item">當日調整帳務</li>
+            <li class="breadcrumb-item active" aria-current="page">修改申請當日調整帳務</li>
+        </ol>
+    </nav>
+
+    <!-- 修改申請當日調整帳務清冊 -->
+    @{
+        await Html.RenderPartialAsync("~/Views/AmendAdjustment/Module/QueryList.cshtml");
+    }
+    <!-- 經辦 - 授信資料 (由後端產生並透過 AJAX 取得) -->
+    <div id="creditListBh" class="hnb__hide">
+    </div>
+
+    <!-- 主管 - 授信資料 (由後端產生並透過 AJAX 取得) -->
+    <div id="creditListBs" class="hnb__hide">
+    </div>
+</div>
+
+<!-- 授信資料預覽 視窗 -->
+@{
+    await Html.RenderPartialAsync("~/Views/LcApp/LcDetailModal.cshtml");
+    await Html.RenderPartialAsync("~/Views/LcApp/NoticeModal.cshtml");
+}
+
+<!-- 訊息 視窗 -->
+<div class="modal fade" id="messageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content hnb__modal">
+            <div class="modal-header py-2 border-bottom-0">
+                <h5 class="modal-title fs-5 fw-bolder text--hnb" id="messageModalLabel">
+                    作業訊息
+                </h5>
+                <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <div id="msgBody" class="modal-body bg-light"></div>
+            <div id="msgFooter" class="modal-footer justify-content-center border-top-0"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 離開選擇訊息 視窗 -->
+<div class="modal fade" id="promptModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="promptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content hnb__modal">
+            <div class="modal-header py-2 border-bottom-0">
+                <h5 class="modal-title fs-5 fw-bolder text--hnb" id="promptModalLabel">
+                    作業訊息
+                </h5>
+                <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <div class="modal-body bg-light">
+                <p class="fw-bold hnb__text--green text-center">
+                    離開不會儲存此筆資料，您確認要離開嗎？
+                </p>
+            </div>
+            <div class="modal-footer justify-content-center border-top-0">
+                <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" data-bs-dismiss="modal"
+                    onclick="cancelHandler()">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const queryList = document.querySelector('#queryList');
+        const lcForCdsAppList = document.querySelector('#lcForCdsAppList');
+        const creditListBh = document.querySelector('#creditListBh');
+        const creditListBs = document.querySelector('#creditListBs');
+        const lcforOtherAppList = document.querySelector('#lcforOtherAppList');
+        let status = '';
+
+        // 確認 訊息及按鈕
+        const messageModalLabel = document.querySelector('#messageModalLabel');
+        const msgBody = document.querySelector('#msgBody');
+        const msgFooter = document.querySelector('#msgFooter');
+        const creditBhList = document.querySelectorAll('.creditBh');
+        const creditBsList = document.querySelectorAll('.creditBs');
+
+        // 不同權限切換顯示欄位
+        if (authType === 'BH') {
+          creditBsList.forEach(item => item.classList.add('hnb__hide'));
+        };
+
+        if (authType === 'BS') {
+          creditBhList.forEach(item => item.classList.add('hnb__hide'));
+        };
+
+        // 查詢押匯申請 searchHandler
+        function searchHandler() {
+          queryList.classList.remove('hnb__hide');
+        };
+
+        // 經辦 - 檢視授信資料 - 從後端載入內容
+        function reviewCreditForBH() {
+          try {
+                var postData = {
+                lcNo: currentDataRow.lcno
+                    };
+
+            $('#creditListBh').remove();
+            doPost('../AmendAdjustment/CreditListBh',postData,function(data){
+                queryList.classList.add('hnb__hide');
+                $(queryList).after(data);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+
+        // 主管 - 檢視授信資料 - 從後端載入內容
+        function reviewCreditForBS() {
+          try {
+                var postData = {
+                lcNo: currentDataRow.lcno
+                    };
+
+            $('#creditListBs').remove();
+            doPost('../AmendAdjustment/CreditListBs',postData,function(data){
+                queryList.classList.add('hnb__hide');
+                $(queryList).after(data);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+
+        // 當日帳務調整 adjAccountHandler
+        function adjAccountHandler() {
+          try {
+            var postData = {
+              lcNo: currentDataRow ? currentDataRow.lcno : '',
+              authType: authType || '',
+              adjustStatus: true
+            };
+
+            doPost('../AmendAdjustment/ConfirmReview', postData, function (html) {
+                $('body').append(html);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+
+        // 不調整 notAdjAccountHandler
+        function notAdjAccountHandler() {
+          try {
+            var postData = {
+              lcNo: currentDataRow ? currentDataRow.lcno : '',
+              authType: authType || '',
+              adjustStatus: false
+            };
+
+            doPost('../AmendAdjustment/ConfirmReview', postData, function (html) {
+              const container = document.createElement('div');
+              container.innerHTML = html;
+              document.body.appendChild(container);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+
+        function confirmHandler() {
+          try {
+            const form = document.querySelector('#confirmReviewForm');
+            if (!form) return;
+
+            var lcNoInput = form.querySelector('input[name="lcNo"]');
+            var adjustInput = form.querySelector('input[name="adjustStatus"]');
+
+            var postData = {
+                lcNo: lcNoInput ? lcNoInput.value : '',
+                adjustStatus: adjustInput ? (adjustInput.value === 'True' || adjustInput.value === 'true' || adjustInput.value === '1') : false
+            };
+
+            doPost('../AmendAdjustment/ConfirmHandler', postData, function (html) {
+                if (window.hideCurrent) window.hideCurrent();
+                $('body').append(html);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+
+        // 取消
+        function cancelHandler() {
+          $('#queryList').remove();
+          if (authType === 'BH') {
+            creditListBh.classList.add('hnb__hide');
+          };
+          if (authType === 'BS') {
+            creditListBs.classList.add('hnb__hide');
+          };
+        };
+
+    </script>
+}

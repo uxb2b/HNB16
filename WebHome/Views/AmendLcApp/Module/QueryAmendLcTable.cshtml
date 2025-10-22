@@ -1,0 +1,29 @@
+﻿@* Partial for the query result table used by AmendLcApp Index *@
+<table class="mb-0 table table-striped table-sm hnb__table hnb__bg--white">
+    <thead>
+        <tr>
+            <th scope="col" class="hnb__tbhd">編號</th>
+            <th scope="col" class="hnb__tbhd">開狀申請書號碼</th>
+            <th scope="col" class="hnb__tbhd">信用狀別</th>
+            <th scope="col" class="hnb__tbhd">申請人</th>
+            <th scope="col" class="hnb__tbhd">通知銀行</th>
+            <th scope="col" class="hnb__tbhd">申請日期</th>
+            <th scope="col" class="hnb__tbhd">開狀日期</th>
+            <th scope="col" class="hnb__tbhd">總金額</th>
+            <th scope="col" class="hnb__tbhd">受益人</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            await Html.RenderPartialAsync("~/Views/AmendLcApp/Module/QueryAmendLcItems.cshtml");
+        }
+    </tbody>
+</table>
+<script>
+    // optional: ensure any client-side attachment is applied when this partial is loaded via AJAX
+    $(function(){
+      // placeholder for any JS initialization if needed
+        attachRowData();
+        attachEditHandler();
+    });
+</script>

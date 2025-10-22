@@ -1,0 +1,73 @@
+<!-- 主管 - 授信資料 -->
+<div id="creditList">
+    <h1 class="py-2 fs-4 fw-bolder">註銷申請/切結書-授信資料</h1>
+    <div class="mb-2 card">
+        <div class="card-body bg-light">
+            <div class="my-3 mx-auto" style="width:650px">
+                <div class="py-2 d-flex">
+                    <div class="text-nowrap text-end" style="width:120px">未退還保證金：</div>
+                    <div>55000.0</div>
+                </div>
+                <div class="py-2 d-flex">
+                    <div class="text-nowrap text-end" style="width:120px">退還保證金：</div>
+                    <div>55000.0</div>
+                </div>
+                <div class="d-flex">
+                    <div class="py-2 text-nowrap text-end" style="width:120px">退還保證金方式：</div>
+                    <div>
+                        <div class="d-flex align-items-center">
+                            <div class="form-check">
+                                <input class="form-check-input" name="radioGroup1" type="radio" id="ra01" value="radiobutton1"
+                                  disabled>
+                            </div>
+                            <div class="d-flex align-items-center flex-wrap">
+                                <span>入帳帳號：</span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-top">
+                            <div class="py-2 form-check">
+                                <input class="form-check-input" name="radioGroup1" type="radio" id="ra02" value="radiobutton2"
+                                  checked disabled>
+                            </div>
+                            <div class="d-flex align-items-top flex-wrap">
+                                <span class="py-2">轉入科目：</span>
+                                <div>
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-nowrap">轉入會計科目：</span>
+                                        <span>13097-099：其他應收款-雜項</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-nowrap">轉入銷帳序號：</span>
+                                        <span></span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-nowrap">轉入科目金額：</span>
+                                        <span>55000.0</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-nowrap">轉入科目摘要：</span>
+                                        <span>信用狀保證金梅石股份有限公司</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-center">
+                <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" onclick="cancelHandler()">
+                    取消
+                </button>
+                <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--default text-nowrap"
+                  onclick="adjAccountHandler()">
+                    當日帳務調整
+                </button>
+                <button type="button" class="m-1 px-3 btn btn-sm hnb__btn--red text-nowrap"
+                  onclick="notAdjAccountHandler()">
+                    不調整
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

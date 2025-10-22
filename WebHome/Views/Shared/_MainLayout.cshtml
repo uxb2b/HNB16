@@ -24,25 +24,9 @@
 
     <script>
         // 共用 processHandler - 由多個子頁共用
-        function processHandler(menu, subMenu) {
-          const tabItem = window.parent.document.querySelector(`button[data-bs-target="#${menu}"]`);
-          const tabContent = window.parent.document.querySelector(`#${menu}`);
-          const subTab = window.parent.document.querySelector(`#${subMenu}`);
-          const parentNode = window.parent.document.querySelector('#main-content');
-          if (tabItem) {
-            // 初始化 Accordion
-            window.parent.clearAccordionAction();
-            if (tabItem) {
-              tabItem.classList.add('collapsed');
-              tabContent.classList.add('show');
-            };
-
-            // 初始化選項 active，再指定項目
-            window.parent.clearAction();
-            subTab.classList.add('active');
-            parentNode.src = `./pages/${menu}/${subMenu}.html`;
-          };
-        };
+        function processHandler(action, controller, options) {
+            $('').launchDownload(`../${controller}/${(action ?? 'Index')}`, options);
+        }
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)

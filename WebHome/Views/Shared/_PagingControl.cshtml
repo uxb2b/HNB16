@@ -107,7 +107,7 @@
             .append($('<a></a>').addClass('page-link').attr('href', '#').text('最後一頁').on('click', function(){ goToPage(pagingModel.pageCount); return false; })));
         $left.append($ul);
         // 跳頁 input
-        var $inputGroup = $('<div class="input-group input-group-sm ms-2 mb-3 text-nowrap page-width"></div>');
+        var $inputGroup = $('<div class="input-group input-group-sm ms-2 mb-3 text-nowrap"></div>');
         $inputGroup.append('<span class="input-group-text" id="inputGroup-sizing-sm">第</span>');
         var $input = $('<input type="text" class="form-control" style="width:50px;">').val(pagingModel.pageIndex).attr('id', 'pagingInput');
         $inputGroup.append($input);

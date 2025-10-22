@@ -30,7 +30,7 @@ namespace WebHome.Controllers
             {
                 if (req.beneType == "cds")
                     next = Url.Action("ForCDS");
-                else if (req.beneType == "fpc")
+                else if (req.beneType == "fpg")
                     next = Url.Action("ForFPG");
                 else
                     next = Url.Action("ForOthers");

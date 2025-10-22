@@ -1,0 +1,27 @@
+@{
+    Layout = "~/Views/Shared/_MessageModalLayout.cshtml";
+    var lcNo = ViewData["lcNo"] as string ?? string.Empty;
+    var authType = ViewData["authType"] as string ?? string.Empty;
+    var adjustStatus = ViewData["adjustStatus"] as bool? ?? false;
+}
+
+@section MsgBody {
+    @if (adjustStatus)
+    {
+        <p class="fw-bold hnb__text--green text-center">您確定要調整此筆資料嗎？</p>
+    }
+    else
+    {
+        <p class="fw-bold hnb__text--green text-center">您確定要還原此筆資料嗎？</p>
+    }
+}
+
+@section MsgFooter
+{
+    <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--cancel" data-bs-dismiss="modal">取消</button>
+    <form id="confirmReviewForm" data-action="../CancelAdjustment/ConfirmHandler" class="d-inline">
+        <input type="hidden" name="lcNo" value="@lcNo" />
+        <input type="hidden" name="adjustStatus" value="@adjustStatus" />
+        <button type="button" class="px-3 btn btn-sm border-1 hnb__btn--default" onclick="confirmHandler();">確定</button>
+    </form>
+}

@@ -12,6 +12,7 @@ namespace WebHome.Models
         public string? beneType { get; set; }
         public string? bene { get; set; }
         public string? inputType { get; set; }
+        public string? LcNo { get; set; }
     }
 
 }

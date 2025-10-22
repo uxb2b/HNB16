@@ -12,6 +12,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using WebHome.Helper;
+using WebHome.Models;
 
 namespace WebHome.Controllers.Filters
 {
@@ -33,7 +34,7 @@ namespace WebHome.Controllers.Filters
 
                 ViewDataDictionary viewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
                 {
-                    Model = filterContext.Exception
+                    Model = new ErrorViewModel() { Exception = filterContext.Exception }
                 };
                 filterContext.Result = new ViewResult
                 {

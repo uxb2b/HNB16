@@ -1,0 +1,163 @@
+﻿@{
+    Layout = "~/Views/AmendApp/AmendAppTemplate.cshtml";
+}
+@section Headers
+{
+    <!-- flatpick plugin -->
+    <link rel="stylesheet" href="../assets/flatpickr/flatpickr.min.css">
+    <script src="../assets/flatpickr/flatpickr.js"></script>
+    <script src="../assets/flatpickr/zh-tw.js"></script>
+}
+
+<!-- 預覽修改申請書-CDS 視窗 -->
+<div class="modal fade" id="reviewCdsLcAppModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="reviewCdsLcAppModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">
+        <div class="modal-content hnb__modal">
+            <div class="modal-header py-2 border-bottom-0">
+                <h5 class="modal-title fs-5 fw-bolder text--hnb" id="reviewCdsLcAppModalLabel">
+                    信用狀修改申請書
+                </h5>
+                <button type="button" class="m-0 p-0 btn btn-link hnb__btn--close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <div class="modal-body bg-light">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <div class="col-12 py-1 hnb__bankName text-center">
+                            華南銀行 高雄分行
+                        </div>
+                        <div class="col-12 py-1 hnb__bankName text-center">
+                            國內信用狀修改申請書
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm hnb__table hnb__bg--white">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="container-fluid">
+                                        <div class="row align-items-center">
+                                            <div class="py-1 col-6">
+                                                <span class="fw-bold">修改編號：</span>第 1 次
+                                            </div>
+                                            <div class="py-1 col-6">
+                                                <span class="fw-bold">修改日期：</span>民國 114 年 3 月 25 日
+                                            </div>
+                                            <div class="py-1 col-6">
+                                                <span class="fw-bold">信用狀號碼：</span>099700049161000861
+                                            </div>
+                                            <div class="py-1 col-6">
+                                                <span class="fw-bold">金額：</span>新台幣 陸仟萬元整
+                                            </div>
+                                            <div class="py-1 col-6">
+                                                <span class="fw-bold">通知銀行：</span>華南商業銀行 台北分行
+                                            </div>
+                                            <div class="py-1 col-6">
+                                                <span class="fw-bold">通知銀行編號：</span>01
+                                            </div>
+                                            <div class="py-1 col-12">
+                                                <span class="fw-bold">受益人：</span>中鴻鋼鐵股份有限公司
+                                            </div>
+                                            <div class="py-1 col-6">
+                                                <span class="fw-bold">地址：</span>高雄縣橋頭鄉芋寮村芋寮路317號
+                                            </div>
+                                            <div class="py-1 col-6">
+                                                <span class="fw-bold">有效期限至：</span>至民國 114 年 3 月 31 日
+                                            </div>
+                                            <div class="py-1 col-6">
+                                                <span class="fw-bold">Email：</span>a1b2c3d4e5@example.com
+                                            </div>
+                                            <div class="py-1 col-12">
+                                                <span class="fw-bold">申請修改事項：</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="50%" class="text-center">
+                                    <span class="fw-bold">原規定情形</span>
+                                </td>
+                                <td width="50%" class="text-center">
+                                    <span class="fw-bold">修改情形</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        <span class="fw-bold">金額：</span>
+                                        <br>
+                                        新台幣 陸仟萬元整
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold">有效期限：</span>
+                                        <br>
+                                        114/04/30
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold">受益人地址：</span><br>
+                                        高雄市小港區中鋼路10號
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold">貨物名稱：</span><br>
+                                        測試鐵架一組
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        <span class="fw-bold">金額：</span>
+                                        <br>
+                                        新台幣 陸仟壹佰萬元整
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold">有效期限：</span><br>
+                                        114/05/31
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold">受益人地址：</span><br>
+                                        高雄市小港區中鋼路100號
+                                    </p>
+                                    <p>
+                                        <span class="fw-bold">貨物名稱：</span><br>
+                                        測試鐵架二組
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <span class="me-2 fw-bold">申請人：</span>林大華<br>
+                                                <span class="me-2 fw-bold">地址：</span>台北市羅斯福路一段100號<br>
+                                                <span class="me-2 fw-bold">電話：</span>02-12345678<br>
+                                                <span class="me-2 fw-bold">日期：</span>民國 114 年 3 月 25 日
+                                            </div>
+                                            <div class="col-4 text-center">
+                                                <span class="px-3">
+                                                    <img src="../assets/images/cds_03.gif">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-top-0">
+                <button type="button" class="my-1 px-3 btn btn-sm hnb__btn--cancel text-nowrap" data-bs-dismiss="modal">
+                    關閉
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+}
