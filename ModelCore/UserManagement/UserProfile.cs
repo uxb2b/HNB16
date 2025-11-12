@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 
 
 using CommonLib.Utility;
@@ -58,10 +58,6 @@ namespace ModelCore.UserManagement
         public static UserProfile CreateInstance(string pid)
         {
             ModelSource models = new ModelSource();
-            DataLoadOptions options = new DataLoadOptions();
-            options.LoadWith<BankUser>(u => u.BankUserBranch);
-            options.LoadWith<BankUserBranch>(b => b.BankData);
-            models.DataContext.LoadOptions = options;
 
             var user = models.GetTable<BankUser>()
                             .FirstOrDefault(u => u.PID == pid);

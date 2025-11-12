@@ -1,4 +1,4 @@
-﻿using CommonLib.DataAccess;
+﻿using CommonLib.Core.DataWork;
 using CommonLib.Utility;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Bibliography;
@@ -42,24 +42,24 @@ namespace ModelCore.Schema.ENID
 
         private static CreditApplicationDocumentary CheckCreditApplication(string appNo, DateTime appDate, LcdType lcDoc, LcdDataType lcData, bool overTheCounter, ModelStateDictionary modelState)
         {
-            using GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>();
+            using GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>();
 
-            // 受益人
+            // BeneficiaryID
             var beneID = CheckBeneficiary(lcDoc?.beneficiary, modelState);
             BeneficiaryData bene = models.GetTable<BeneficiaryData>()
-                .Where(b => b.BeneID == beneID)
+                .Where(b => b.OrganizationID == beneID)
                 .FirstOrDefault();
             if (bene == null)
             {
                 modelState.AddModelError("company", "信用狀受益人資料錯誤");
                 return null;
             }
-            // 申請人
+            // ApplicantID
             var issuingBank = lcDoc?.issuingBank?.branchCode;
             var applicantID = CheckApplicant(lcDoc?.applicant, issuingBank, modelState);
             CustomerOfBranch cust = models.GetTable<CustomerOfBranch>()
                             .Where(b => b.BankCode == issuingBank
-                                && b.CompanyID == applicantID)
+                                && b.OrganizationID == applicantID)
                             .FirstOrDefault();
 
             CreditApplicationDocumentary item = models.GetTable<CreditApplicationDocumentary>()
@@ -77,10 +77,10 @@ namespace ModelCore.Schema.ENID
                         DocType = (int)Naming.DocumentTypeDefinition.開狀申請書,
                         SysDocID = "LLC",
                     },
-                    LcItem = new LcItem
+                    LcItems = new LcItems
                     {
                     },
-                    SpecificNote = new SpecificNote
+                    SpecificNotes = new SpecificNotes
                     {
                     },
                     AttachableDocument = new AttachableDocument { },
@@ -88,7 +88,7 @@ namespace ModelCore.Schema.ENID
                 };
 
                 // 其他初始化依需求補充
-                models.GetTable<CreditApplicationDocumentary>().InsertOnSubmit(item);
+                models.GetTable<CreditApplicationDocumentary>().Add(item);
             }
 
             BankData advisingBank = null;
@@ -111,7 +111,7 @@ namespace ModelCore.Schema.ENID
 
                 if (advisingBank == null)
                 {
-                    modelState.AddModelError("AdvisingBank", "通知銀行不存在");
+                    modelState.AddModelError("AdvisingBankCodeNavigation", "通知銀行不存在");
                 }
                 else
                 {
@@ -120,34 +120,34 @@ namespace ModelCore.Schema.ENID
                             .FirstOrDefault();
                     if (DisabledBranch != null)
                     {
-                        modelState.AddModelError("AdvisingBank", "通知行已裁撤，請再重新選取!");
+                        modelState.AddModelError("AdvisingBankCodeNavigation", "通知行已裁撤，請再重新選取!");
                     }
                 }
 
                 DateTime dateValue;
                 // 付款方式判斷
-                item.LcItem.PaymentTerms = $"{lcData?.payment?.term}";
+                item.LcItems.PaymentTerms = $"{lcData?.payment?.term}";
                 switch (lcData?.payment?.term)
                 {
                     case LcdDataTypePaymentTerm.atSight:
-                        item.見票即付 = true;
-                        item.定日付款 = 0;
+                        item.AtSight = true;
+                        item.UsanceDays = 0;
                         break;
 
                     case LcdDataTypePaymentTerm.atDaysAfterDate:
                     case LcdDataTypePaymentTerm.atDaysAfterSight:
                     case LcdDataTypePaymentTerm.atDaysAfterBLDate:
                         int usanceDay = 0;
-                        item.見票即付 = false;
-                        item.定日付款 = int.TryParse(lcData?.payment?.days, out usanceDay) ? usanceDay : 0;
+                        item.AtSight = false;
+                        item.UsanceDays = int.TryParse(lcData?.payment?.days, out usanceDay) ? usanceDay : 0;
                         break;
 
                     case LcdDataTypePaymentTerm.onDate:
-                        item.定日付款 = 0;
-                        item.見票即付 = false;
+                        item.UsanceDays = 0;
+                        item.AtSight = false;
                         if (DateTime.TryParse(lcData.payment.date, out dateValue))
                         {
-                            item.LcItem.PaymentDate = dateValue;
+                            item.LcItems.PaymentDate = dateValue;
                         }
                         else
                         {
@@ -173,23 +173,22 @@ namespace ModelCore.Schema.ENID
 
             // 設定主要欄位
             item.ApplicationNo = appNo;
-            item.付款行 = lcDoc?.payingBank?.branchCode;
-            item.開狀行 = cust.BankCode;
-            item.申請人 = cust.CompanyID;
-            item.受益人 = bene.BeneID;
-            item.通知行 = advisingBank.BankCode;
-            item.沖銷保證金方式 = null; // 依需求補充
+            item.PayableBankCode = lcDoc?.payingBank?.branchCode;
+            item.IssuingBankCode = cust.BankCode;
+            item.ApplicantID = cust.OrganizationID;
+            item.BeneficiaryID = bene.OrganizationID;
+            item.AdvisingBankCode = advisingBank.BankCode;
             item.Instrunction = "非本行制式特別指示之申請原因及依據：";
             item.OverTheCounter = overTheCounter;
-            item.VersionID = cust.Organization.OrganizationExtension?.CurrentVersion;
-            item.BeneDetailID = bene.Organization.OrganizationExtension?.CurrentVersion;
+            item.ApplicantDetailsID = cust.Organization.OrganizationExtension?.CustomerOfBranchVersionID;
+            item.BeneDetailsID = bene.Organization.OrganizationExtension?.CustomerOfBranchVersionID;
 
                 // 這裡可根據實際 XML 結構取得貨物名稱
             FromConditions(item, null, null, lcDoc, modelState);
             // 分批交貨
-            item.SpecificNote.分批交貨 = lcData?.isPartialShipment == LcdDataTypeIsPartialShipment.@true; ;
-            item.SpecificNote.IsCSCTerms = lcData?.isCSCConditions == LcdDataTypeIsCSCConditions.@true;
-            item.SpecificNote.CSCSalesDept = lcData?.CSCSalesDept;
+            item.SpecificNotes.分批交貨 = lcData?.isPartialShipment == LcdDataTypeIsPartialShipment.@true;
+            item.SpecificNotes.IsCSCTerms = lcData?.isCSCConditions == LcdDataTypeIsCSCConditions.@true;
+            item.SpecificNotes.CSCSalesDept = lcData?.CSCSalesDept;
 
             if (!modelState.IsValid)
             {
@@ -202,7 +201,7 @@ namespace ModelCore.Schema.ENID
 
         private static int CheckBeneficiary(CompanyType company, ModelStateDictionary modelState)
         {
-            using GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>();
+            using GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>();
             if (company == null)
             {
                 modelState.AddModelError("Beneficiary", "受益人資料不可為空白");
@@ -225,7 +224,7 @@ namespace ModelCore.Schema.ENID
                 modelState.AddModelError("Beneficiary", "受益人資料不存在");
                 return -1;
             }
-            // 檢查受益人是否有 BeneficiaryData
+            // 檢查受益人是否有 Beneficiary
             var bene = org.BeneficiaryData;
 
             if (bene == null)
@@ -233,16 +232,16 @@ namespace ModelCore.Schema.ENID
                 bene = org.BeneficiaryData = new BeneficiaryData
                 {
                 };
-                models.GetTable<BeneficiaryData>().InsertOnSubmit(bene);
+                models.GetTable<BeneficiaryData>().Add(bene);
                 models.SubmitChanges();
             }
 
-            return bene.BeneID;
+            return bene.OrganizationID;
         }
 
         private static int CheckApplicant(CompanyType company,String bankCode, ModelStateDictionary modelState)
         {
-            using GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>();
+            using GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>();
             if (company == null)
             {
                 modelState.AddModelError("Applicant", "開狀申請人資料不可為空白");
@@ -271,17 +270,17 @@ namespace ModelCore.Schema.ENID
                 cust = new CustomerOfBranch
                 {
                     BankCode = bankCode,
-                    CompanyID = companyID,
+                    OrganizationID = companyID,
                 };
-                models.GetTable<CustomerOfBranch>().InsertOnSubmit(cust);
+                models.GetTable<CustomerOfBranch>().Add(cust);
                 models.SubmitChanges();
             }
-            return cust.CompanyID;
+            return cust.OrganizationID;
         }
 
         private static int CheckOrganization(CompanyType company)
         {
-            using GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>();
+            using GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>();
             var receiptNo = company?.regNo;
             var org = models.GetTable<Organization>()
                         .Where(o => o.ReceiptNo == receiptNo)
@@ -305,7 +304,7 @@ namespace ModelCore.Schema.ENID
                     {
                     },
                 };
-                models.GetTable<Organization>().InsertOnSubmit(org);
+                models.GetTable<Organization>().Add(org);
                 org.OrganizationExtension.CustomerOfBranchVersion = new CustomerOfBranchVersion
                 {
                     CompanyName = org.CompanyName,
@@ -322,8 +321,8 @@ namespace ModelCore.Schema.ENID
 
         private static void FromConditions(CreditApplicationDocumentary appItem, AmendingLcApplication amending, LetterOfCreditVersion versionItem, LcdType lcDoc, ModelStateDictionary modelState)
         {
-            SpecificNote noteItem = appItem?.SpecificNote ?? amending?.SpecificNote ?? versionItem?.SpecificNote;
-            LcItem lcItem = appItem?.LcItem ?? amending?.LcItem ?? versionItem?.LcItem;
+            SpecificNotes noteItem = appItem?.SpecificNotes ?? amending?.SpecificNotes ?? versionItem?.SpecificNotes;
+            LcItems lcItem = appItem?.LcItems ?? amending?.LcItems ?? versionItem?.LcItems;
             AttachableDocument attachableDocument = appItem?.AttachableDocument ?? amending?.AttachableDocument ?? versionItem?.AttachableDocument;
             DateTime dateValue;
 
@@ -347,7 +346,7 @@ namespace ModelCore.Schema.ENID
 
             if (int.TryParse(lcDoc?.currency?.code, out int currency))
             {
-                lcItem.幣別 = currency;
+                lcItem.CurrencyTypeID = currency;
             }
             else
             {
@@ -369,7 +368,7 @@ namespace ModelCore.Schema.ENID
                     case "PaymentTerm":
                         if(appItem!=null)
                         {
-                            appItem.見票即付 = condition.singleChoice.item.Any(i => i.name == "Sight" && i.@checked == ItemTypeChecked.@true);
+                            appItem.AtSight = condition.singleChoice.item.Any(i => i.name == "Sight" && i.@checked == ItemTypeChecked.@true);
                         }
                         break;
 
@@ -381,8 +380,8 @@ namespace ModelCore.Schema.ENID
                             lcItem.定日付款 = days;
                             if (appItem != null)
                             {
-                                appItem.定日付款 = days;
-                                appItem.見票即付 = days == 0; // 如果有定日付款則見票即付為 false
+                                appItem.UsanceDays = days;
+                                appItem.AtSight = days == 0; // 如果有定日付款則見票即付為 false
                             }
                         }
                         break;
@@ -397,8 +396,8 @@ namespace ModelCore.Schema.ENID
                                 lcItem.定日付款 = 0;
                                 if (appItem != null)
                                 {
-                                    appItem.定日付款 = 0;
-                                    appItem.見票即付 = false;
+                                    appItem.UsanceDays = 0;
+                                    appItem.AtSight = false;
                                 }
                             }
                             else if (string.IsNullOrEmpty(blank.Value))
@@ -468,9 +467,9 @@ namespace ModelCore.Schema.ENID
 
         public static LetterOfCredit CommitLC(this CDSLcd lcInstance, ModelStateDictionary modelState, int version = 0)
         {
-            using GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>();
+            using GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>();
 
-            // 1. 取得對應的 CreditApplicationDocumentary
+            // 1. 取得對應的 Application
             var appNo = lcInstance.lcInfo?.appNo;
             if (string.IsNullOrEmpty(appNo))
             {
@@ -504,7 +503,7 @@ namespace ModelCore.Schema.ENID
                 if (creditApp != null)
                 {
                     creditApp = models.GetTable<CreditApplicationDocumentary>()
-                        .Where(d => d.AppID == creditApp.AppID)
+                        .Where(d => d.DocumentaryID == creditApp.DocumentaryID)
                         .First();
                     creditApp.Documentary.CurrentLevel = (int)Naming.DocumentLevel.已開立;
                     models.SubmitChanges();
@@ -513,21 +512,21 @@ namespace ModelCore.Schema.ENID
 
             if (creditApp == null)
             {
-                modelState.AddModelError("CreditApplicationDocumentary", $"找不到對應的開狀申請書: {appNo}");
+                modelState.AddModelError("Application", $"找不到對應的開狀申請書: {appNo}");
                 return null;
             }
 
 
-            // 2. 檢查是否已存在 LetterOfCredit
+            // 2. 檢查是否已存在 NegoLcVersion
             var letterOfCredit = models.GetTable<LetterOfCredit>()
-                .Where(lc => lc.CreditApplicationDocumentary.ApplicationNo == appNo)
+                .Where(lc => lc.Application.ApplicationNo == appNo)
                 .FirstOrDefault();
             if (letterOfCredit == null)
             {
                 letterOfCredit = new LetterOfCredit();
-                // 關聯 CreditApplicationDocumentary
-                letterOfCredit.CreditApplicationDocumentary = creditApp;
-                models.GetTable<LetterOfCredit>().InsertOnSubmit(letterOfCredit);
+                // 關聯 Application
+                letterOfCredit.Application = creditApp;
+                models.GetTable<LetterOfCredit>().Add(letterOfCredit);
             }
 
             var versionItem = letterOfCredit.LetterOfCreditVersion
@@ -543,25 +542,25 @@ namespace ModelCore.Schema.ENID
                 letterOfCredit.LetterOfCreditVersion.Add(versionItem);
             }
 
-            // 3. 將 CDSLcd 相關資料填入 LetterOfCredit
-            letterOfCredit.NotifyingBank = versionItem.NotifyingBank = creditApp.通知行;
+            // 3. 將 CDSLcd 相關資料填入 NegoLcVersion
+            letterOfCredit.NotifyingBank = versionItem.NotifyingBank = creditApp.AdvisingBankCode;
             letterOfCredit.LcDate = issuingDate;
             // LC號碼
             letterOfCredit.LcNo = lcInstance.lcDoc?.lcNo;
-            letterOfCredit.可用餘額 = creditApp.LcItem?.開狀金額;
-            letterOfCredit.AppCountersign = creditApp.BeneficiaryData.AppCountersign == true;
+            letterOfCredit.可用餘額 = creditApp.LcItems?.開狀金額;
+            letterOfCredit.AppCountersign = creditApp.Beneficiary.AppCountersign == true;
             if (version == 0)
             {
-                versionItem.ItemID = creditApp.ItemID;
-                versionItem.AttachmentID = creditApp.AttachmentID;
-                versionItem.NoteID = creditApp.NoteID;
+                versionItem.LcItemsID = creditApp.LcItemsID;
+                versionItem.AttachableDocumentID = creditApp.AttachableDocumentID;
+                versionItem.SpecificNotesID = creditApp.SpecificNotesID;
             }
             else
             {
-                versionItem.LcItem = new LcItem
+                versionItem.LcItems = new LcItems
                 {
                 };
-                versionItem.SpecificNote = new SpecificNote
+                versionItem.SpecificNotes = new SpecificNotes
                 {
                 };
                 versionItem.AttachableDocument = new AttachableDocument
@@ -585,7 +584,7 @@ namespace ModelCore.Schema.ENID
 
         public static AmendingLcApplication CommitLcAmendment(this CDSLcdAmendment lcAmendment, ModelStateDictionary modelState, Naming.DocumentLevel? level = null)
         {
-            using GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>();
+            using GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>();
             var appNo = lcAmendment.lcAmendInfo?.appNo;
             if (string.IsNullOrEmpty(appNo))
             {
@@ -601,23 +600,23 @@ namespace ModelCore.Schema.ENID
             }
 
             LetterOfCredit lc = models.GetTable<LetterOfCredit>()
-                .Where(lc => lc.CreditApplicationDocumentary.ApplicationNo == appNo)
+                .Where(lc => lc.Application.ApplicationNo == appNo)
                 .Where(lc => lc.LcNo == lcNo)
                 .FirstOrDefault();
             if (lc == null)
             {
-                modelState.AddModelError("LetterOfCredit", $"找不到對應的信用狀: {lcNo} for {appNo}");
+                modelState.AddModelError("NegoLcVersion", $"找不到對應的信用狀: {lcNo} for {appNo}");
                 return null;
             }
 
             var lcVersion = new LetterOfCreditVersion
             {
                 VersionNo = lc.LetterOfCreditVersion.Min(v => v.VersionNo) - 1,
-                LetterOfCredit = lc,
-                LcItem = new LcItem
+                Lc = lc,
+                LcItems = new LcItems
                 {
                 },
-                SpecificNote = new SpecificNote
+                SpecificNotes = new SpecificNotes
                 {
                 },
                 AttachableDocument = new AttachableDocument
@@ -628,9 +627,9 @@ namespace ModelCore.Schema.ENID
             // 這裡可根據實際 XML 結構取得貨物名稱
             FromConditions(null, null, lcVersion, lcAmendment.lcDocOld, modelState);
 
-            //var lcVersion = models.GetTable<LetterOfCreditVersion>()
-            //        .Where(v => v.LetterOfCredit.LcNo == lcNo)
-            //        .Where(v => v.LetterOfCredit.CreditApplicationDocumentary.ApplicationNo == appNo)
+            //var lcVersion = models.GetTable<Source>()
+            //        .Where(v => v.NegoLcVersion.LcNo == lcNo)
+            //        .Where(v => v.NegoLcVersion.Application.ApplicationNo == appNo)
             //    .FirstOrDefault();
 
             //if (lcVersion == null)
@@ -665,12 +664,12 @@ namespace ModelCore.Schema.ENID
                         CurrentLevel = (int)(level ?? Naming.DocumentLevel.文件預覽),
                         DocDate = DateTime.Now,
                     },
-                    LetterOfCreditVersion = lcVersion,
-                    LcItem = new LcItem { },
-                    SpecificNote = new SpecificNote { },
+                    Source = lcVersion,
+                    LcItems = new LcItems { },
+                    SpecificNotes = new SpecificNotes { },
                     AttachableDocument = new AttachableDocument { },
                 };
-                models.GetTable<AmendingLcApplication>().InsertOnSubmit(amendingApp);
+                models.GetTable<AmendingLcApplication>().Add(amendingApp);
             }
             else if (amendingApp.IsAmending)
             {
@@ -681,9 +680,9 @@ namespace ModelCore.Schema.ENID
             amendingApp.ApplicationDate = DateTime.Now;
             // 填入修正資訊
             FromConditions(null, amendingApp, null, lcAmendment.lcDocNew, modelState);
-            amendingApp.SpecificNote.分批交貨 = lcAmendment.lcData?.isPartialShipment == LcdDataTypeIsPartialShipment.@true; ;
-            amendingApp.SpecificNote.IsCSCTerms = lcAmendment.lcData?.isCSCConditions == LcdDataTypeIsCSCConditions.@true;
-            amendingApp.SpecificNote.CSCSalesDept = lcAmendment.lcData?.CSCSalesDept;
+            amendingApp.SpecificNotes.分批交貨 = lcAmendment.lcData?.isPartialShipment == LcdDataTypeIsPartialShipment.@true;
+            amendingApp.SpecificNotes.IsCSCTerms = lcAmendment.lcData?.isCSCConditions == LcdDataTypeIsCSCConditions.@true;
+            amendingApp.SpecificNotes.CSCSalesDept = lcAmendment.lcData?.CSCSalesDept;
             // 其他欄位依需求補充
             // 儲存
             if (!modelState.IsValid)
@@ -695,7 +694,7 @@ namespace ModelCore.Schema.ENID
 
         public static AmendingLcInformation CommitAmendmentNotification(this CDSLcdAdvice lcAdvice, ModelStateDictionary modelState)
         {
-            using GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>();
+            using GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>();
             var lcNo = lcAdvice.lcDocOld?.lcNo;
             if (string.IsNullOrEmpty(lcNo))
             {
@@ -705,14 +704,14 @@ namespace ModelCore.Schema.ENID
             var amendmentNo = lcAdvice.lcAdviceInfo?.amendNo;
             var amendingApp = models.GetTable<AmendingLcApplication>()
                 .Where(a => a.AmendmentNo == amendmentNo)
-                .Where(a => a.LetterOfCreditVersion.LetterOfCredit.LcNo == lcNo)
+                .Where(a => a.Source.Lc.LcNo == lcNo)
                 .FirstOrDefault();
             if (amendingApp == null)
             {
                 modelState.AddModelError("AmendingLcApplication", $"找不到對應的修狀申請書: {amendmentNo} for {lcNo}");
                 return null;
             }
-            var currentLc = amendingApp.LetterOfCreditVersion;
+            var currentLc = amendingApp.Source;
             LetterOfCreditVersion lcVersion = null;
             var noticeItem = amendingApp.AmendingLcInformation;
             if (noticeItem != null)
@@ -729,9 +728,9 @@ namespace ModelCore.Schema.ENID
                 };
 
                 amendingApp.AmendingLcInformation = noticeItem;
-                lcVersion = currentLc.LetterOfCredit.LetterOfCreditVersion
+                lcVersion = currentLc.Lc.LetterOfCreditVersion
                     .Where(v => v.VersionNo > 0)
-                    .Where(v => !v.AmendingID.HasValue)
+                    .Where(v => !v.AmendingLcInformationID.HasValue)
                     .OrderBy(v => v.VersionID)
                     .FirstOrDefault();
 
@@ -739,10 +738,10 @@ namespace ModelCore.Schema.ENID
                 {
                     lcVersion = new LetterOfCreditVersion
                     {
-                        VersionNo = currentLc.LetterOfCredit.LetterOfCreditVersion.Max(v => v.VersionNo) + 1,
-                        LetterOfCredit = currentLc.LetterOfCredit,
+                        VersionNo = currentLc.Lc.LetterOfCreditVersion.Max(v => v.VersionNo) + 1,
+                        Lc = currentLc.Lc,
                         AmendingLcInformation = noticeItem,
-                        NotifyingBank = currentLc.LetterOfCredit.NotifyingBank,
+                        NotifyingBank = currentLc.Lc.NotifyingBank,
                     };
                 }
                 else
@@ -761,9 +760,9 @@ namespace ModelCore.Schema.ENID
                 noticeItem.AmendingDate = DateTime.Now;
             }
             // 關聯到修狀申請書
-            lcVersion.AttachmentID = amendingApp.AttachmentID;
-            lcVersion.ItemID = amendingApp.ItemID;
-            lcVersion.NoteID = amendingApp.NoteID;
+            lcVersion.AttachableDocumentID = amendingApp.AttachableDocumentID;
+            lcVersion.LcItemsID = amendingApp.LcItemsID;
+            lcVersion.SpecificNotesID = amendingApp.SpecificNotesID;
 
             // 其他欄位依需求補充
             // 儲存
@@ -775,7 +774,7 @@ namespace ModelCore.Schema.ENID
 
         public static CreditCancellation CommitLcCancellation(this CDSLcdCancellation lcCancel, ModelStateDictionary modelState)
         {
-            using GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>();
+            using GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>();
 
             var lcNo = lcCancel.lcDoc?.lcNo;
             if (string.IsNullOrEmpty(lcNo))
@@ -786,13 +785,13 @@ namespace ModelCore.Schema.ENID
 
             var appNo = lcCancel.lcCancInfo?.appNo;
             var lc = models.GetTable<LetterOfCredit>()
-                .Where(lc => lc.CreditApplicationDocumentary.ApplicationNo == appNo)
+                .Where(lc => lc.Application.ApplicationNo == appNo)
                 .Where(lc => lc.LcNo == lcNo)
                 .FirstOrDefault();
 
             if (lc == null)
             {
-                modelState.AddModelError("LetterOfCredit", $"找不到對應的信用狀: {lcNo} for {appNo}");
+                modelState.AddModelError("NegoLcVersion", $"找不到對應的信用狀: {lcNo} for {appNo}");
                 return null;
             }
             // 1. 檢查是否已存在撤銷申請書
@@ -828,7 +827,7 @@ namespace ModelCore.Schema.ENID
                 },
                 LcID = lc.LcID,
             };
-            models.GetTable<CreditCancellation>().InsertOnSubmit(cancellingApp);
+            models.GetTable<CreditCancellation>().Add(cancellingApp);
 
             cancellingApp.註銷申請號碼 = cancellationNo;
             if (DateTime.TryParse(lcCancel.lcCancInfo?.cancDate, out DateTime dateValue))
@@ -850,7 +849,7 @@ namespace ModelCore.Schema.ENID
 
         public static CreditCancellationInfo CancelLc(this String cancellationNo,DateTime cancellationDate, ModelStateDictionary modelState)
         {
-            using GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>();
+            using GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>();
 
             var cancellingApp = models.GetTable<CreditCancellation>()
                 .Where(c => c.註銷申請號碼 == cancellationNo)
@@ -864,7 +863,7 @@ namespace ModelCore.Schema.ENID
 
             if (cancellingApp.CreditCancellationInfo != null)
             {
-                modelState.AddModelError("cancellationNo", $"信用狀已經註銷: {cancellationNo} for {cancellingApp.LetterOfCredit.LcNo}");
+                modelState.AddModelError("cancellationNo", $"信用狀已經註銷: {cancellationNo} for {cancellingApp.Lc.LcNo}");
                 return null;
             }
 

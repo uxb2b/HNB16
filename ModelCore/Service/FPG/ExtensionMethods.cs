@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using EAI.Service.Transaction;
 using ModelCore.DataModel;
 using ModelCore.Helper;
@@ -21,7 +21,7 @@ namespace ModelCore.Service.FPG
 {
     public static partial class ExtensionMethods
     {
-        public static IQueryable<CreditApplicationDocumentary> GetCreditApplicationReadyToSend(this GenericManager<LcEntityDataContext> mgr,int? serviceID = null)
+        public static IQueryable<CreditApplicationDocumentary> GetCreditApplicationReadyToSend(this GenericManager<LcEntityDbContext> mgr,int? serviceID = null)
         {
             var items = mgr.GetTable<DocumentDispatch>().Select(d => d.Documentary.CreditApplicationDocumentary)
                     .Where(c => c.FpgLcItem != null);
@@ -35,118 +35,118 @@ namespace ModelCore.Service.FPG
             return items;
         }
 
-        public static IQueryable<AmendingLcApplication> GetLcAmendmentReadyToSend(this GenericManager<LcEntityDataContext> mgr, int? serviceID = null)
+        public static IQueryable<AmendingLcApplication> GetLcAmendmentReadyToSend(this GenericManager<LcEntityDbContext> mgr, int? serviceID = null)
         {
             var items =  mgr.GetTable<DocumentDispatch>().Select(d => d.Documentary.AmendingLcApplication)
-                    .Where(c => c.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem != null);
+                    .Where(c => c.Source.Lc.Application.FpgLcItem != null);
 
             if (serviceID.HasValue)
             {
                 var groups = mgr.GetTable<BeneficiaryGroup>().Where(b => b.ServiceID == serviceID);
-                items = items.Where(c => groups.Any(g => c.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem.GroupID == g.GroupID));
+                items = items.Where(c => groups.Any(g => c.Source.Lc.Application.FpgLcItem.GroupID == g.GroupID));
             }
 
             return items;
         }
 
-        public static IQueryable<NegoDraft> GetNegoDraftReadyToSend(this GenericManager<LcEntityDataContext> mgr, Naming.DocumentLevel level, int? serviceID = null)
+        public static IQueryable<NegoDraft> GetNegoDraftReadyToSend(this GenericManager<LcEntityDbContext> mgr, Naming.DocumentLevel level, int? serviceID = null)
         {
             var items =  mgr.GetTable<DocumentDispatch>()
                 .Select(d => d.Documentary)
                 .Where(d => d.CurrentLevel == (int)level)
                 .Select(d => d.NegoDraft)
-                .Where(c => c.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem != null);
+                .Where(c => c.NegoLcVersion.Lc.Application.FpgLcItem != null);
 
             if (serviceID.HasValue)
             {
                 var groups = mgr.GetTable<BeneficiaryGroup>().Where(b => b.ServiceID == serviceID);
-                items = items.Where(c => groups.Any(g => c.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem.GroupID == g.GroupID));
+                items = items.Where(c => groups.Any(g => c.NegoLcVersion.Lc.Application.FpgLcItem.GroupID == g.GroupID));
             }
 
             return items;
         }
 
-        public static IQueryable<NegoDraft> GetFpgNegoRemittanceCheckList(this GenericManager<LcEntityDataContext> mgr, IQueryable<NegoDraft> items)
+        public static IQueryable<NegoDraft> GetFpgNegoRemittanceCheckList(this GenericManager<LcEntityDbContext> mgr, IQueryable<NegoDraft> items)
         {
             return items.Join(mgr.GetTable<FpgNegoDraft>()
                     .Where(f => f.FpgNegoRemittance == null || f.FpgNegoRemittance.Status == (int)Naming.RemittanceStatusDefinition.匯款退回)
-                    , n => n.DraftID, f => f.DraftID, (n, f) => n)
+                    , n => n.DocumentaryID, f => f.NegoDraftID, (n, f) => n)
                 .Join(mgr.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.已開立)
-                    , n => n.DraftID, d => d.DocID, (n, d) => n);
+                    , n => n.DocumentaryID, d => d.DocID, (n, d) => n);
         }
 
-        public static IQueryable<NegoDraft> GetFpgNegoRemittanceAllowingList(this GenericManager<LcEntityDataContext> mgr, IQueryable<NegoDraft> items)
+        public static IQueryable<NegoDraft> GetFpgNegoRemittanceAllowingList(this GenericManager<LcEntityDbContext> mgr, IQueryable<NegoDraft> items)
         {
             return items.Join(mgr.GetTable<FpgNegoDraft>()
                     .Where(f => f.FpgNegoRemittance.Status == (int)Naming.RemittanceStatusDefinition.匯款待審核)
-                    , n => n.DraftID, f => f.DraftID, (n, f) => n)
+                    , n => n.DocumentaryID, f => f.NegoDraftID, (n, f) => n)
                 .Join(mgr.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.已開立)
-                    , n => n.DraftID, d => d.DocID, (n, d) => n);
+                    , n => n.DocumentaryID, d => d.DocID, (n, d) => n);
         }
 
-        public static IQueryable<FpgNegoRemittance> GetFpgNegoRemittanceMarkingList(this GenericManager<LcEntityDataContext> mgr, IQueryable<NegoDraft> items)
+        public static IQueryable<FpgNegoRemittance> GetFpgNegoRemittanceMarkingList(this GenericManager<LcEntityDbContext> mgr, IQueryable<NegoDraft> items)
         {
             return items.Join(mgr.GetTable<FpgNegoRemittance>()
                     .Where(f => /*f.Status == (int)Naming.RemittanceStatusDefinition.匯款資料已送出
                         ||*/ f.Status == (int)Naming.RemittanceStatusDefinition.匯款失敗
                         || f.Status == (int)Naming.RemittanceStatusDefinition.匯款資料已送出)
-                    , n => n.DraftID, f => f.DraftID, (n, f) => f);
+                    , n => n.DocumentaryID, f => f.FpgNegoDraftID, (n, f) => f);
         }
 
 
-        public static IQueryable<NegoDraft> GetFpgNegoDraftByLevel(this GenericManager<LcEntityDataContext> mgr, IQueryable<NegoDraft> items, Naming.DocumentLevel draftLevel)
+        public static IQueryable<NegoDraft> GetFpgNegoDraftByLevel(this GenericManager<LcEntityDbContext> mgr, IQueryable<NegoDraft> items, Naming.DocumentLevel draftLevel)
         {
             return items.Join(mgr.GetTable<FpgNegoDraft>()
-                    , n => n.DraftID, f => f.DraftID, (n, f) => n)
+                    , n => n.DocumentaryID, f => f.NegoDraftID, (n, f) => n)
                 .Join(mgr.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)draftLevel)
-                    , n => n.DraftID, d => d.DocID, (n, d) => n);
+                    , n => n.DocumentaryID, d => d.DocID, (n, d) => n);
         }
 
-        public static IQueryable<NegoDraft> GetFpgNegoDraftDefectsTodo(this GenericManager<LcEntityDataContext> mgr, IQueryable<NegoDraft> items)
+        public static IQueryable<NegoDraft> GetFpgNegoDraftDefectsTodo(this GenericManager<LcEntityDbContext> mgr, IQueryable<NegoDraft> items)
         {
             return mgr.GetFpgNegoDraftByLevel(items, Naming.DocumentLevel.瑕疵押匯)
                 .Where(d => d.DownloadFlag == 1);
         }
 
 
-        public static IQueryable<FpgNegoRemittance> GetFpgNegoRemittanceReadyToSend(this GenericManager<LcEntityDataContext> mgr)
+        public static IQueryable<FpgNegoRemittance> GetFpgNegoRemittanceReadyToSend(this GenericManager<LcEntityDbContext> mgr)
         {
             DateTime readyDate = DateTime.Today.AddDays(1);
             //return mgr.GetTable<DocumentDispatch>()
-            //    .Join(mgr.GetTable<NegoDraft>(), d => d.DocID, n => n.DraftID, (d, n) => n)
+            //    .Join(mgr.GetTable<NegoDraft>(), d => d.DocumentaryID, n => n.DocumentaryID, (d, n) => n)
             //    .Join(mgr.GetTable<FpgNegoRemittance>()
             //            .Where(f => f.RemittanceDate < readyDate)
             //            .Where(r => r.Status == (int)Naming.RemittanceStatusDefinition.匯款資料準備中),
-            //        n => n.DraftID, r => r.DraftID, (n, r) => r);
+            //        n => n.DocumentaryID, r => r.DocumentaryID, (n, r) => r);
 
             return mgr.GetTable<NegoDraft>()
                     .Join(mgr.GetTable<FpgNegoRemittance>()
                             .Where(f => f.RemittanceDate < readyDate)
                             .Where(r => r.Status == (int)Naming.RemittanceStatusDefinition.匯款資料準備中),
-                        n => n.DraftID, r => r.DraftID, (n, r) => r);
+                        n => n.DocumentaryID, r => r.FpgNegoDraftID, (n, r) => r);
         }
 
-        public static IQueryable<FpgNegoRemittanceLog> GetReadyToSendRemittanceEAI(this GenericManager<LcEntityDataContext> mgr)
+        public static IQueryable<FpgNegoRemittanceLog> GetReadyToSendRemittanceEAI(this GenericManager<LcEntityDbContext> mgr)
         {
             return mgr.GetTable<FpgNegoRemittanceDispatch>()
                 .Join(mgr.GetTable<FpgNegoRemittanceLog>()
                         .Where(r => r.Status == (int)Naming.RemittanceStatusDefinition.匯款資料已送出),
-                    n => n.RemittanceID, r => r.RemittanceID, (n, r) => r)
+                    n => n.FpgNegoRemittanceLogID, r => r.RemittanceID, (n, r) => r)
                 .Join(mgr.GetTable<FpgNegoRemittance>(),
-                    r => r.DraftID, f => f.DraftID, (r, f) => r);
+                    r => r.FpgNegoRemittanceID, f => f.FpgNegoDraftID, (r, f) => r);
         }
 
-        public static IQueryable<FpgNegoRemittanceLog> GetReadyToSendA1000(this GenericManager<LcEntityDataContext> mgr)
+        public static IQueryable<FpgNegoRemittanceLog> GetReadyToSendA1000(this GenericManager<LcEntityDbContext> mgr)
         {
             return mgr.GetTable<FpgNegoRemittanceDispatch>()
                 .Join(mgr.GetTable<FpgNegoRemittanceLog>()
                         .Where(r => r.Status == (int)Naming.RemittanceStatusDefinition.匯款資料已送出),
-                    n => n.RemittanceID, r => r.RemittanceID, (n, r) => r)
+                    n => n.FpgNegoRemittanceLogID, r => r.RemittanceID, (n, r) => r)
                 .Join(mgr.GetTable<FpgNegoRemittance>(),
-                    r => r.DraftID, f => f.DraftID, (r, f) => r);
+                    r => r.FpgNegoRemittanceID, f => f.FpgNegoDraftID, (r, f) => r);
         }
 
-        public static DataPortLog SendToFPG(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP item, BeneficiaryServiceGroup.ServiceDefinition? serviceID)
+        public static DataPortLog SendToFPG(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP item, BeneficiaryServiceGroup.ServiceDefinition? serviceID)
         {
             String fpgPost = mgr.GetTable<BeneficiaryServiceGroup>().Where(s => s.ServiceID == (int?)serviceID)
                     .FirstOrDefault()?.PostUrl;
@@ -155,7 +155,7 @@ namespace ModelCore.Service.FPG
         }
 
 
-        public static DataPortLog SendToFPG(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP item, String fpgPost, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
+        public static DataPortLog SendToFPG(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP item, String fpgPost, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
             var docMsg = item.ConvertToXml();
             CryptoUtility.SignXmlSHA256(docMsg, null,
@@ -181,7 +181,7 @@ namespace ModelCore.Service.FPG
                 ServiceID = (int?)serviceID,
             };
 
-            mgr.GetTable<DataPortLog>().InsertOnSubmit(log);
+            mgr.GetTable<DataPortLog>().Add(log);
 
             try
             {
@@ -243,7 +243,7 @@ namespace ModelCore.Service.FPG
         }
 
 
-        public static void ProcessConfirmation(this GenericManager<LcEntityDataContext> mgr, XmlDocument docMsg, BeneficiaryServiceGroup.ServiceDefinition? serviceID)
+        public static void ProcessConfirmation(this GenericManager<LcEntityDbContext> mgr, XmlDocument docMsg, BeneficiaryServiceGroup.ServiceDefinition? serviceID)
         {
             DataPortLog log = mgr.processInput(docMsg);
 
@@ -277,7 +277,7 @@ namespace ModelCore.Service.FPG
             }
         }
 
-        private static DataPortLog processInput(this GenericManager<LcEntityDataContext> mgr, XmlDocument docMsg)
+        private static DataPortLog processInput(this GenericManager<LcEntityDbContext> mgr, XmlDocument docMsg)
         {
             DateTime now = DateTime.Now;
             String fileName = Path.Combine(CommonLib.Core.Utility.Logger.LogDailyPath, String.Format("{0:yyyyMMdd-HHmmssfff}-{1}.xml", now, Guid.NewGuid()));
@@ -290,12 +290,12 @@ namespace ModelCore.Service.FPG
                 TransportTime = now,
             };
 
-            mgr.GetTable<DataPortLog>().InsertOnSubmit(log);
+            mgr.GetTable<DataPortLog>().Add(log);
 
             return log;
         }
 
-        public static void PrepareServiceRequest(this GenericManager<LcEntityDataContext> mgr, XmlDocument docMsg,BeneficiaryServiceGroup.ServiceDefinition serviceID = BeneficiaryServiceGroup.ServiceDefinition.Fpg)
+        public static void PrepareServiceRequest(this GenericManager<LcEntityDbContext> mgr, XmlDocument docMsg,BeneficiaryServiceGroup.ServiceDefinition serviceID = BeneficiaryServiceGroup.ServiceDefinition.Fpg)
         {
             DataPortLog log = mgr.processInput(docMsg);
 
@@ -332,7 +332,7 @@ namespace ModelCore.Service.FPG
         }
 
 
-        public static void ConfirmFpgResponse(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP j2sp)
+        public static void ConfirmFpgResponse(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP j2sp)
         {
             switch (j2sp.TABLENAME)
             {
@@ -350,7 +350,7 @@ namespace ModelCore.Service.FPG
             }
         }
 
-        public static void ProcessFpgRequest(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem, BeneficiaryServiceGroup.ServiceDefinition? serviceID)
+        public static void ProcessFpgRequest(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem, BeneficiaryServiceGroup.ServiceDefinition? serviceID)
         {
             switch (j2sp.TABLENAME)
             {
@@ -380,14 +380,14 @@ namespace ModelCore.Service.FPG
             }
         }
 
-        public static void LogException(this GenericManager<LcEntityDataContext> mgr, Exception ex, int logID)
+        public static void LogException(this GenericManager<LcEntityDbContext> mgr, Exception ex, int logID)
         {
             //ModelCore.Helper.Logger.Error(ex, ModelCore.Helper.Logger.LogLevel.Error);
-            using(GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>())
+            using(GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>())
             {
-                models.GetTable<DataProcessLog>().InsertOnSubmit(new DataProcessLog
+                models.GetTable<DataProcessLog>().Add(new DataProcessLog
                 {
-                    LogID = logID,
+                    DataPortLogID = logID,
                     ProcessDate = DateTime.Now,
                     ExceptionLog = new ExceptionLog
                     {
@@ -401,11 +401,11 @@ namespace ModelCore.Service.FPG
             }
         }
 
-        public static void LogMessage(this GenericManager<LcEntityDataContext> mgr, String message, int logID)
+        public static void LogMessage(this GenericManager<LcEntityDbContext> mgr, String message, int logID)
         {
-            mgr.GetTable<DataProcessLog>().InsertOnSubmit(new DataProcessLog
+            mgr.GetTable<DataProcessLog>().Add(new DataProcessLog
             {
-                LogID = logID,
+                DataPortLogID = logID,
                 ProcessDate = DateTime.Now,
                 ExceptionLog = new ExceptionLog
                 {
@@ -417,12 +417,13 @@ namespace ModelCore.Service.FPG
             mgr.SubmitChanges();
         }
 
-        public static bool FindLc(this GenericManager<LcEntityDataContext> mgr, String lcNo, String lcSqNo, out LetterOfCreditVersion lcItem, out AmendingLcInformation amendmentInfo)
+        public static bool FindLc(this GenericManager<LcEntityDbContext> mgr, String lcNo, String lcSqNo, out LetterOfCreditVersion lcItem, out AmendingLcInformation amendmentInfo)
         {
-            lcItem = mgr.GetTable<LetterOfCreditVersion>().Where(l => l.LetterOfCredit.LcNo == lcNo).FirstOrDefault();
+            var items = mgr.GetTable<LetterOfCreditVersion>().Where(l => l.Lc.LcNo == lcNo);
+            lcItem = null;
             amendmentInfo = null;
 
-            if (lcItem != null)
+            if (items.Any())
             {
                 int verNo = 0;
                 if (!String.IsNullOrEmpty(lcSqNo) && int.TryParse(lcSqNo, out verNo))
@@ -432,15 +433,14 @@ namespace ModelCore.Service.FPG
 
                 if (verNo > 0)
                 {
-                    int lcID = lcItem.LcID;
+                    lcItem = items.Where(l => l.VersionNo == verNo).FirstOrDefault() ?? items.OrderByDescending(l => l.VersionID).FirstOrDefault();
+
                     amendmentInfo = lcItem.AmendingLcInformation;
-                    if (amendmentInfo != null)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
                 else
                 {
+                    lcItem = items.FirstOrDefault();
                     return true;
                 }
             }
@@ -448,46 +448,39 @@ namespace ModelCore.Service.FPG
             return false;
         }
 
-        public static bool FindDraft(this GenericManager<LcEntityDataContext> mgr, String lcNo, String lcSqNo, String sqNo, out LetterOfCreditVersion lcItem, out AmendingLcInformation amendmentInfo, out NegoDraft draft)
+        public static bool FindDraft(this GenericManager<LcEntityDbContext> mgr, String lcNo, String lcSqNo, String sqNo, out LetterOfCreditVersion lcItem, out AmendingLcInformation amendmentInfo, out NegoDraft draft)
         {
             draft = null;
             if (mgr.FindLc(lcNo, lcSqNo, out lcItem, out amendmentInfo))
             {
-                if (amendmentInfo != null)
-                {
-                    draft = amendmentInfo.NegoDraft.Where(d => d.DraftNo == sqNo)
-                        .OrderByDescending(d => d.DraftID).FirstOrDefault();
-                }
-                else
-                {
-                    draft = lcItem.NegoDraft.Where(d => d.DraftNo == sqNo)
-                        .OrderByDescending(d => d.DraftID).FirstOrDefault();
-                }
+
+                draft = lcItem.NegoDraft.Where(d => d.DraftNo == sqNo)
+                    .OrderByDescending(d => d.DocumentaryID).FirstOrDefault();
             }
             return draft != null;
         }
 
 
-        public static void ConfirmFpgNegoDraftReject(this GenericManager<LcEntityDataContext> mgr,UserProfile userProfile)
+        public static void ConfirmFpgNegoDraftReject(this GenericManager<LcEntityDbContext> mgr,UserProfile userProfile)
         {
             foreach (var item in userProfile.GetEffectiveNegoDraft(mgr)
                 .Join(mgr.GetTable<FpgNegoDraft>()
-                    , n => n.DraftID, f => f.DraftID, (n, f) => n)
+                    , n => n.DocumentaryID, f => f.NegoDraftID, (n, f) => n)
                 .Join(mgr.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.拒絕押匯_自動退回)
-                    , n => n.DraftID, d => d.DocID, (n, d) => n))
+                    , n => n.DocumentaryID, d => d.DocID, (n, d) => n))
             {
                 item.Documentary.CurrentLevel = (int)Naming.DocumentLevel.銀行已拒絕;
             }
             mgr.SubmitChanges();
         }
 
-        public static void AnnotateFpgNegoAsRemitted(this GenericManager<LcEntityDataContext> mgr,UserProfile userProfile, IEnumerable<int> draftID)
+        public static void AnnotateFpgNegoAsRemitted(this GenericManager<LcEntityDbContext> mgr,UserProfile userProfile, IEnumerable<int> draftID)
         {
             var remittance = mgr.GetTable<FpgNegoRemittance>();
 
             foreach (var id in draftID)
             {
-                var item = remittance.Where(l => l.DraftID == id).FirstOrDefault();
+                var item = remittance.Where(l => l.FpgNegoDraftID == id).FirstOrDefault();
                 if (item != null)
                 {
                     item.Status = (int)Naming.RemittanceStatusDefinition.匯款已完成;
@@ -495,19 +488,19 @@ namespace ModelCore.Service.FPG
                     item.FpgNegoDraft.NegoDraft.IntentToDispatch();
                     mgr.SubmitChanges();
 
-                    mgr.ExecuteCommand("UPDATE FpgNegoRemittanceLog SET Status = 5 WHERE DraftID = {0}", item.DraftID);
+                    mgr.ExecuteCommand("UPDATE FpgNegoRemittanceLog SET Status = 5 WHERE DocumentaryID = {0}", item.FpgNegoDraftID);
                 }
             }
 
         }
 
-        public static void AnnotateFpgNegoAsReturned(this GenericManager<LcEntityDataContext> mgr, UserProfile userProfile, IEnumerable<int> draftID)
+        public static void AnnotateFpgNegoAsReturned(this GenericManager<LcEntityDbContext> mgr, UserProfile userProfile, IEnumerable<int> draftID)
         {
             var remittance = mgr.GetTable<FpgNegoRemittance>();
 
             foreach (var id in draftID)
             {
-                var item = remittance.Where(l => l.DraftID == id).FirstOrDefault();
+                var item = remittance.Where(l => l.FpgNegoDraftID == id).FirstOrDefault();
                 if (item != null)
                 {
                     item.Status = (int)Naming.RemittanceStatusDefinition.匯款退回;

@@ -5,17 +5,17 @@ using System.Web;
 using ModelCore.UploadManagement;
 using ModelCore.DataModel;
 using CommonLib.Utility;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 
 namespace ModelCore.UserManagement
 {
-    public class GroupDepartmentUploadManager : XmlUploadManager<LcEntityDataContext, GroupDepartment>
+    public class GroupDepartmentUploadManager : XmlUploadManager<LcEntityDbContext, GroupDepartment>
     {
         public GroupDepartmentUploadManager() : base()
         {
         }
 
-        public GroupDepartmentUploadManager(GenericManager<LcEntityDataContext> manager)
+        public GroupDepartmentUploadManager(GenericManager<LcEntityDbContext> manager)
             : base(manager)
         {
         }
@@ -62,8 +62,8 @@ namespace ModelCore.UserManagement
 
                 if (currentItem == null)
                 {
-//                    this.EntityList.InsertOnSubmit(item.Entity);
-                    item.Entity.BeneficiaryGroup = beneGroup;
+//                    this.EntityList.Add(item.Entity);
+                    item.Entity.Group = beneGroup;
                 }
                 else
                 {

@@ -1,4 +1,5 @@
-﻿using CommonLib.DataAccess;
+﻿using CommonLib.Core.DataWork;
+using Microsoft.EntityFrameworkCore;
 using ModelCore.Locale;
 using ModelCore.UploadManagement;
 using ModelCore.UserManagement;
@@ -12,7 +13,7 @@ using System.Text;
 namespace ModelCore.UploadManagement
 {
     public abstract class CsvUploadManager<T, TEntity, TUploadItem> : GenericManager<T, TEntity>, ICsvUploadManager, IUploadManager<TUploadItem>
-        where T : DataContext, new()
+        where T : DbContext, new()
         where TEntity : class, new()
         where TUploadItem : IItemUpload, new()
     {

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using EAI.Service;
 using EAI.Service.Transaction;
 using ModelCore.DataModel;
@@ -27,45 +27,45 @@ namespace ModelCore.Service.FPG
         {
             return new ModelCore.Schema.FPG.J2SPITEMTXD2SB29
             {
-                AMT = item.LcItem.開狀金額.Value,
+                AMT = item.LcItems.開狀金額.Value,
                 AMTSpecified = true,
-                ASSNPAYCKEDDAT = item.LcItem.PaymentDate.HasValue ? String.Format("{0}{1:MMdd}", item.LcItem.PaymentDate.Value.Year - 1911, item.LcItem.PaymentDate.Value) : null,
-                ASSNEPRDAT = item.SpecificNote.押匯起始日.HasValue ? String.Format("{0:yyyyMMdd}", item.SpecificNote.押匯起始日) : null,
+                ASSNPAYCKEDDAT = item.LcItems.PaymentDate.HasValue ? String.Format("{0}{1:MMdd}", item.LcItems.PaymentDate.Value.Year - 1911, item.LcItems.PaymentDate.Value) : null,
+                ASSNEPRDAT = item.SpecificNotes.押匯起始日.HasValue ? String.Format("{0:yyyyMMdd}", item.SpecificNotes.押匯起始日) : null,
                 BENFADR = item.BeneDetails.Addr,
                 BENFCOCNM = item.BeneDetails.CompanyName,
                 BENFDIV = item.FpgLcItem.DepartID.Replace(GroupDepartment.DefaultDepartID, ""),
-                BENFRFNO = item.BeneficiaryData.Organization.ReceiptNo,
+                BENFRFNO = item.Beneficiary.Organization.ReceiptNo,
                 BKCHKCOMT = "",
                 BKCHKTM = String.Format("{0:yyyyMMddHHmmss}", item.Documentary.DocumentaryAllowance.OrderByDescending(a => a.ApprovalDate).First().ApprovalDate),
                 CTMNM = item.FpgLcItem.ContactName,
                 CTMTEL = item.FpgLcItem.ContactPhone,
-                CUAPLCOMT = item.SpecificNote.其他,
+                CUAPLCOMT = item.SpecificNotes.其他,
                 CUCOCNM = item.ApplicantDetails.CompanyName,
-                CUCY = item.LcItem.currency_type.apprev_name,
+                CUCY = item.LcItems.CurrencyType.AbbrevName,
                 CUNO = item.FpgLcItem.CustomerNo,
-                DLEDDAT = String.Format("{0:yyyyMMdd}", item.SpecificNote.最後交貨日),
-                DSRCONT = item.LcItem.GetGoodsDescription(),
-                EFFDDAT = String.Format("{0}{1:MMdd}", item.LcItem.有效期限.Value.Year - 1911, item.LcItem.有效期限.Value),
-                EIVMK = item.SpecificNote.接受發票電子訊息 == true ? "Y" : "N",
+                DLEDDAT = String.Format("{0:yyyyMMdd}", item.SpecificNotes.最後交貨日),
+                DSRCONT = item.LcItems.GetGoodsDescription(),
+                EFFDDAT = String.Format("{0}{1:MMdd}", item.LcItems.有效期限.Value.Year - 1911, item.LcItems.有效期限.Value),
+                EIVMK = item.SpecificNotes.接受發票電子訊息 == true ? "Y" : "N",
                 EPRDIFRR = item.FpgLcItem.押匯允差比例.HasValue ? item.FpgLcItem.押匯允差比例.Value : 0,
                 EPRDIFRRSpecified = true,
-                IVADRMK = item.SpecificNote.接受發票人地址與受益人地址不符 == true ? "Y" : "N",
-                IVAMTMK = item.SpecificNote.接受發票金額大於開狀金額 == true ? "Y" : "N",
-                IVDATMK = item.SpecificNote.接受發票早於開狀日 == true ? "Y" : "N",
-                IVFROPNDAT = item.SpecificNote.接受發票早於開狀日 == true && item.SpecificNote.押匯發票起始日.HasValue
-                            ? String.Format("{0:yyyyMMdd}", item.SpecificNote.押匯發票起始日)
+                IVADRMK = item.SpecificNotes.接受發票人地址與受益人地址不符 == true ? "Y" : "N",
+                IVAMTMK = item.SpecificNotes.接受發票金額大於開狀金額 == true ? "Y" : "N",
+                IVDATMK = item.SpecificNotes.接受發票早於開狀日 == true ? "Y" : "N",
+                IVFROPNDAT = item.SpecificNotes.接受發票早於開狀日 == true && item.SpecificNotes.押匯發票起始日.HasValue
+                            ? String.Format("{0:yyyyMMdd}", item.SpecificNotes.押匯發票起始日)
                             : ""    /*String.Format("{0:yyyyMMdd}", item.OpeningApplicationDocumentary.開狀日期)*/,
                 LCAPLTM = String.Format("{0:yyyyMMddHHmmss}", item.ApplicationDate),
-                LCBK = "009" + item.開狀行,
-                LCBKACID = "009" + item.通知行,
-                LCNO = item.LetterOfCredit[0].LcNo,
+                LCBK = "009" + item.IssuingBankCode,
+                LCBKACID = "009" + item.AdvisingBankCode,
+                LCNO = item.LetterOfCredit.FirstOrDefault()?.LcNo,
                 LCPESRFNO = item.CustomerOfBranch.Organization.ReceiptNo,
                 LCSQNO = "01",
-                PAMK = item.SpecificNote.分批交貨 == true ? "Y" : "N",
+                PAMK = item.SpecificNotes.分批交貨 == true ? "Y" : "N",
                 PAYCKFRSTD = "",
-                PAYCKMK = item.SpecificNote.受益人單獨蓋章 == true ? "Y" : "N",
-                PAYDYS = item.定日付款 > 0 && !item.見票即付 ? item.定日付款.ToString() : null,
-                PAYTY = item.見票即付 ? "A" : "B",
+                PAYCKMK = item.SpecificNotes.受益人單獨蓋章 == true ? "Y" : "N",
+                PAYDYS = item.UsanceDays > 0 && !item.AtSight ? item.UsanceDays.ToString() : null,
+                PAYTY = item.AtSight ? "A" : "B",
                 TRNTM = String.Format("{0:yyyyMMddHHmmss}", DateTime.Now)
             };
         }
@@ -74,45 +74,45 @@ namespace ModelCore.Service.FPG
         {
             return new ModelCore.Schema.FPG.J2SPITEMTXD2SB29
             {
-                AMT = item.LcItem.開狀金額.Value,
+                AMT = item.LcItems.開狀金額.Value,
                 AMTSpecified = true,
-                ASSNPAYCKEDDAT = item.LcItem.PaymentDate.HasValue ? String.Format("{0}{1:MMdd}", item.LcItem.PaymentDate.Value.Year - 1911, item.LcItem.PaymentDate.Value) : null,
-                ASSNEPRDAT = item.SpecificNote.押匯起始日.HasValue ? String.Format("{0:yyyyMMdd}", item.SpecificNote.押匯起始日) : null,
-                BENFADR = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneDetails.Addr,
-                BENFCOCNM = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneDetails.CompanyName,
-                BENFDIV = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem.DepartID.Replace(GroupDepartment.DefaultDepartID, ""),
-                BENFRFNO = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.ReceiptNo,
+                ASSNPAYCKEDDAT = item.LcItems.PaymentDate.HasValue ? String.Format("{0}{1:MMdd}", item.LcItems.PaymentDate.Value.Year - 1911, item.LcItems.PaymentDate.Value) : null,
+                ASSNEPRDAT = item.SpecificNotes.押匯起始日.HasValue ? String.Format("{0:yyyyMMdd}", item.SpecificNotes.押匯起始日) : null,
+                BENFADR = item.Source.Lc.Application.BeneDetails.Addr,
+                BENFCOCNM = item.Source.Lc.Application.BeneDetails.CompanyName,
+                BENFDIV = item.Source.Lc.Application.FpgLcItem.DepartID.Replace(GroupDepartment.DefaultDepartID, ""),
+                BENFRFNO = item.Source.Lc.Application.Beneficiary.Organization.ReceiptNo,
                 BKCHKCOMT = "",
                 BKCHKTM = String.Format("{0:yyyyMMddHHmmss}", item.Documentary.DocumentaryAllowance.OrderByDescending(a => a.ApprovalDate).First().ApprovalDate),
-                CTMNM = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem.ContactName,
-                CTMTEL = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem.ContactPhone,
-                CUAPLCOMT = item.SpecificNote.其他,
-                CUCOCNM = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ApplicantDetails.CompanyName,
-                CUCY = item.LcItem.currency_type.apprev_name,
-                CUNO = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem.CustomerNo,
-                DLEDDAT = String.Format("{0:yyyyMMdd}", item.SpecificNote.最後交貨日),
-                DSRCONT = item.LcItem.GetGoodsDescription(),
-                EFFDDAT = String.Format("{0}{1:MMdd}", item.LcItem.有效期限.Value.Year - 1911, item.LcItem.有效期限.Value),
-                EIVMK = item.SpecificNote.接受發票電子訊息 == true ? "Y" : "N",
-                EPRDIFRR = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem.押匯允差比例.HasValue ? item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem.押匯允差比例.Value : 0,
+                CTMNM = item.Source.Lc.Application.FpgLcItem.ContactName,
+                CTMTEL = item.Source.Lc.Application.FpgLcItem.ContactPhone,
+                CUAPLCOMT = item.SpecificNotes.其他,
+                CUCOCNM = item.Source.Lc.Application.ApplicantDetails.CompanyName,
+                CUCY = item.LcItems.CurrencyType.AbbrevName,
+                CUNO = item.Source.Lc.Application.FpgLcItem.CustomerNo,
+                DLEDDAT = String.Format("{0:yyyyMMdd}", item.SpecificNotes.最後交貨日),
+                DSRCONT = item.LcItems.GetGoodsDescription(),
+                EFFDDAT = String.Format("{0}{1:MMdd}", item.LcItems.有效期限.Value.Year - 1911, item.LcItems.有效期限.Value),
+                EIVMK = item.SpecificNotes.接受發票電子訊息 == true ? "Y" : "N",
+                EPRDIFRR = item.Source.Lc.Application.FpgLcItem.押匯允差比例.HasValue ? item.Source.Lc.Application.FpgLcItem.押匯允差比例.Value : 0,
                 EPRDIFRRSpecified = true,
-                IVADRMK = item.SpecificNote.接受發票人地址與受益人地址不符 == true ? "Y" : "N",
-                IVAMTMK = item.SpecificNote.接受發票金額大於開狀金額 == true ? "Y" : "N",
-                IVDATMK = item.SpecificNote.接受發票早於開狀日 == true ? "Y" : "N",
-                IVFROPNDAT = item.SpecificNote.接受發票早於開狀日 == true && item.SpecificNote.押匯發票起始日.HasValue
-                            ? String.Format("{0:yyyyMMdd}", item.SpecificNote.押匯發票起始日)
-                            : ""    /*String.Format("{0:yyyyMMdd}", item.LetterOfCredit.CreditApplicationDocumentary.OpeningApplicationDocumentary.開狀日期)*/,
-                LCAPLTM = String.Format("{0:yyyyMMddHHmmss}", item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ApplicationDate),
-                LCBK = "009" + item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.開狀行,
-                LCBKACID = "009" + item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行,
-                LCNO = item.LetterOfCreditVersion.LetterOfCredit.LcNo,
-                LCPESRFNO = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.CustomerOfBranch.Organization.ReceiptNo,
+                IVADRMK = item.SpecificNotes.接受發票人地址與受益人地址不符 == true ? "Y" : "N",
+                IVAMTMK = item.SpecificNotes.接受發票金額大於開狀金額 == true ? "Y" : "N",
+                IVDATMK = item.SpecificNotes.接受發票早於開狀日 == true ? "Y" : "N",
+                IVFROPNDAT = item.SpecificNotes.接受發票早於開狀日 == true && item.SpecificNotes.押匯發票起始日.HasValue
+                            ? String.Format("{0:yyyyMMdd}", item.SpecificNotes.押匯發票起始日)
+                            : ""    /*String.Format("{0:yyyyMMdd}", item.NegoLcVersion.Application.OpeningApplicationDocumentary.開狀日期)*/,
+                LCAPLTM = String.Format("{0:yyyyMMddHHmmss}", item.Source.Lc.Application.ApplicationDate),
+                LCBK = "009" + item.Source.Lc.Application.IssuingBankCode,
+                LCBKACID = "009" + item.Source.Lc.Application.AdvisingBankCode,
+                LCNO = item.Source.Lc.LcNo,
+                LCPESRFNO = item.Source.Lc.Application.CustomerOfBranch.Organization.ReceiptNo,
                 LCSQNO = String.Format("{0:00}", item.AmendingLcInformation.CurrentLc.VersionNo + 1),
-                PAMK = item.SpecificNote.分批交貨 == true ? "Y" : "N",
+                PAMK = item.SpecificNotes.分批交貨 == true ? "Y" : "N",
                 PAYCKFRSTD = "",
-                PAYCKMK = item.SpecificNote.受益人單獨蓋章 == true ? "Y" : "N",
-                PAYDYS = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.定日付款 > 0 && !item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.見票即付 ? item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.定日付款.ToString() : null,
-                PAYTY = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.見票即付 ? "A" : "B",
+                PAYCKMK = item.SpecificNotes.受益人單獨蓋章 == true ? "Y" : "N",
+                PAYDYS = item.Source.Lc.Application.UsanceDays > 0 && !item.Source.Lc.Application.AtSight ? item.Source.Lc.Application.UsanceDays.ToString() : null,
+                PAYTY = item.Source.Lc.Application.AtSight ? "A" : "B",
                 TRNTM = String.Format("{0:yyyyMMddHHmmss}", DateTime.Now)
             };
         }
@@ -123,11 +123,11 @@ namespace ModelCore.Service.FPG
             {
                 SQNO = item.DraftNo,
                 STS = statusCode,
-                BENFRFNO = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.ReceiptNo,
+                BENFRFNO = item.NegoLcVersion.Lc.Application.Beneficiary.Organization.ReceiptNo,
                 BKCHKCOMT = "",
-                LCBKACID = "009" + item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行,
-                LCNO = item.LetterOfCreditVersion.LetterOfCredit.LcNo,
-                LCSQNO = String.Format("{0:00}", item.AmendingID.HasValue ? item.AmendingLcInformation.CurrentLc.VersionNo + 1 : 1),
+                LCBKACID = "009" + item.NegoLcVersion.Lc.Application.AdvisingBankCode,
+                LCNO = item.NegoLcVersion.Lc.LcNo,
+                LCSQNO = String.Format("{0:00}", item.NegoLcVersion.VersionNo + 1),
                 TRNTM = String.Format("{0:yyyyMMddHHmmss}", DateTime.Now)
             };
 
@@ -146,9 +146,9 @@ namespace ModelCore.Service.FPG
             return new ModelCore.Schema.FPG.J2SPITEMTXD2SB38
             {
                 BKID = "009",
-                LCBK = "009" + item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.開狀行,
-                LCNO = item.LetterOfCreditVersion.LetterOfCredit.LcNo,
-                LCPESRFNO = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.CustomerOfBranch.Organization.ReceiptNo,
+                LCBK = "009" + item.Source.Lc.Application.IssuingBankCode,
+                LCNO = item.Source.Lc.LcNo,
+                LCPESRFNO = item.Source.Lc.Application.CustomerOfBranch.Organization.ReceiptNo,
                 LCSQNO = String.Format("{0:00}", item.AmendingLcInformation.CurrentLc.VersionNo + 1),
                 TRNTM = String.Format("{0:yyyyMMddHHmmss}", DateTime.Now)
             };
@@ -158,14 +158,14 @@ namespace ModelCore.Service.FPG
         {
             return new ModelCore.Schema.FPG.J2SPITEMTXD2SB30
             {
-                LCBKACID = "009" + item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行,
-                LCNO = item.LetterOfCreditVersion.LetterOfCredit.LcNo,
-                LCSQNO = String.Format("{0:00}", item.AmendingID.HasValue ? item.AmendingLcInformation.CurrentLc.VersionNo + 1 : 1),
+                LCBKACID = "009" + item.NegoLcVersion.Lc.Application.AdvisingBankCode,
+                LCNO = item.NegoLcVersion.Lc.LcNo,
+                LCSQNO = String.Format("{0:00}", item.NegoLcVersion.VersionNo + 1),
                 SQNO = item.DraftNo
             };
         }
 
-        public static void AcceptLcAmendment(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem)
+        public static void AcceptLcAmendment(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem)
         {
             var processLog = mgr.GetTable<DataProcessLog>();
             List<ModelCore.Schema.FPG.J2SPITEMTXD2SB38> checkItems = new List<ModelCore.Schema.FPG.J2SPITEMTXD2SB38>();
@@ -180,7 +180,7 @@ namespace ModelCore.Service.FPG
                     {
                         if (amendmentInfo == null)
                         {
-                            lcItem.LetterOfCredit.CreditApplicationDocumentary.IsAccepted = true;
+                            lcItem.Lc.Application.IsAccepted = true;
                             mgr.SubmitChanges();
                         }
                         else
@@ -233,7 +233,7 @@ namespace ModelCore.Service.FPG
         }
 
 
-        public static void ConfirmSentLc(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP j2sp)
+        public static void ConfirmSentLc(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP j2sp)
         {
             foreach (var item in j2sp.ITEM.TXD2SB29)
             {
@@ -242,18 +242,18 @@ namespace ModelCore.Service.FPG
                 if (mgr.FindLc(item.LCNO, item.LCSQNO, out lcItem, out amendmentInfo))
                 {
                     DocumentDispatch dispatch = amendmentInfo != null ? amendmentInfo.AmendingLcApplication.Documentary.DocumentDispatch
-                        : lcItem.LetterOfCredit.CreditApplicationDocumentary.Documentary.DocumentDispatch;
+                        : lcItem.Lc.Application.Documentary.DocumentDispatch;
 
                     if (dispatch != null)
                     {
-                        mgr.GetTable<DocumentDispatch>().DeleteOnSubmit(dispatch);
+                        mgr.GetTable<DocumentDispatch>().Remove(dispatch);
                         mgr.SubmitChanges();
                     }
                 }
             }
         }
 
-        public static void ConfirmSentNegoDraftStatus(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP j2sp)
+        public static void ConfirmSentNegoDraftStatus(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP j2sp)
         {
             foreach (var item in j2sp.ITEM.TXD2SB31)
             {
@@ -266,27 +266,27 @@ namespace ModelCore.Service.FPG
 
                     if (dispatch != null)
                     {
-                        mgr.GetTable<DocumentDispatch>().DeleteOnSubmit(dispatch);
+                        mgr.GetTable<DocumentDispatch>().Remove(dispatch);
                         mgr.SubmitChanges();
                     }
                 }
             }
         }
 
-        public static void ConfirmSentNegoPromptRequest(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP j2sp)
+        public static void ConfirmSentNegoPromptRequest(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP j2sp)
         {
             var queue = mgr.GetTable<NegoPromptRequestQueue>();
             var item = queue.Where(q => q.DataPortLog.FpgFileName == j2sp.INITIALFILE).FirstOrDefault();
             if (item != null)
             {
-                queue.DeleteOnSubmit(item);
+                queue.Remove(item);
                 mgr.SubmitChanges();
             }
         }
 
-        public static void PromptDraftNegotiation(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
+        public static void PromptDraftNegotiation(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
-            // TODO: 1. save NegoPrompt
+            // TODO: 1. save Prompt
             DateTime importDate = DateTime.Now;
 
             NegoPrompt prompt = new NegoPrompt 
@@ -294,7 +294,7 @@ namespace ModelCore.Service.FPG
                 LogID = logItem.LogID,
                 ImportDate = importDate
             };
-            mgr.GetTable<NegoPrompt>().InsertOnSubmit(prompt);
+            mgr.GetTable<NegoPrompt>().Add(prompt);
             mgr.SubmitChanges();
 
             List<ModelCore.Schema.FPG.J2SPITEMTXD2SB30> checkItems = new List<ModelCore.Schema.FPG.J2SPITEMTXD2SB30>();
@@ -315,7 +315,7 @@ namespace ModelCore.Service.FPG
                         continue;
                     }
 
-                    if (draftItem.LCBKACID != "009" + lcItem.LetterOfCredit.CreditApplicationDocumentary.通知行)
+                    if (draftItem.LCBKACID != "009" + lcItem.Lc.Application.AdvisingBankCode)
                     {
                         mgr.LogMessage(String.Format("第{0}筆匯票資料押匯銀行與信用狀不符,押匯銀行:{1}", idx + 1, draftItem.LCBKACID), logItem.LogID);
                         continue;
@@ -325,14 +325,7 @@ namespace ModelCore.Service.FPG
                     int appYear = draftDate.Year - 1911;
 
                     NegoDraft draft = null;
-                    if (amendmentInfo != null)
-                    {
-                        draft = amendmentInfo.NegoDraft.Where(d => d.DraftNo == draftItem.SQNO).FirstOrDefault();
-                    }
-                    else
-                    {
-                        draft = lcItem.NegoDraft.Where(d => d.DraftNo == draftItem.SQNO).FirstOrDefault();
-                    }
+                    draft = lcItem.NegoDraft.Where(d => d.DraftNo == draftItem.SQNO).FirstOrDefault();
 
                     if (draft != null)
                     {
@@ -352,19 +345,18 @@ namespace ModelCore.Service.FPG
                                 {
                                     DraftType = (int)(serviceID == BeneficiaryServiceGroup.ServiceDefinition.Chimei
                                                     ? Naming.DraftType.CHIMEI
-                                                    : Naming.DraftType.FPG), //  lcItem.CreditApplicationDocumentary.BeneficiaryData.DraftType,
-                                    NegoBranch = lcItem.LetterOfCredit.CreditApplicationDocumentary.通知行,
+                                                    : Naming.DraftType.FPG), //  lcItem.Application.Beneficiary.DraftType,
+                                    NegoBranch = lcItem.Lc.Application.AdvisingBankCode,
                                     DueDate = importDate,
-                                    NegotiateDate = importDate,
-                                    LcBranch = lcItem.LetterOfCredit.CreditApplicationDocumentary.開狀行
+                                    LcBranch = lcItem.Lc.Application.IssuingBankCode
                                 },
-                                NegoPrompt = prompt,
+                                Prompt = prompt,
                                 Amount = draftItem.EPRAMT,
                                 AppSeq = 0,
                                 AppYear = appYear,
                                 DraftNo = draftItem.SQNO,
-                                ImportDate = importDate,
-                                LcID = lcItem.LcID,
+                                NegoDate = importDate,
+                                NegoLcVersionID = lcItem.LcID,
                                 ShipmentDate = draftItem.OUTMDAT.FromChineseDate(),
                                 DraftContent = draftItem.FILE1,
                                 ItemName = draftItem.DSRCONT,
@@ -384,25 +376,23 @@ namespace ModelCore.Service.FPG
                             匯入銀行名稱 = draftItem.BKNM
                         };
 
-                        if (amendmentInfo != null)
-                            draft.AmendingID = amendmentInfo.AmendingID;
 
-                        if ((amendmentInfo == null && lcItem.LetterOfCredit.CreditApplicationDocumentary.IsAccepted != true)
+                        if ((amendmentInfo == null && lcItem.Lc.Application.IsAccepted != true)
                             || (amendmentInfo != null && amendmentInfo.AmendingLcApplication.IsAccepted != true))
                         {
                             draft.Documentary.DoDeny(Naming.DocumentLevel.拒絕押匯_自動退回, null, "信用狀受益人未接受");
                             draft.IntentToDispatch();
                         }
-                        else if (draftItem.OUTMDAT.FromChineseDate() > lcItem.SpecificNote.最後交貨日)
+                        else if (draftItem.OUTMDAT.FromChineseDate() > lcItem.SpecificNotes.最後交貨日)
                         {
                             draft.Documentary.DoDeny(Naming.DocumentLevel.拒絕押匯_自動退回, null, "出貨日晚於信用狀最後交貨日");
                             draft.IntentToDispatch();
                         }
-                        else if (lcItem.LetterOfCredit.可用餘額 == 0)
+                        else if (lcItem.Lc.可用餘額 == 0)
                         {
                             draft.Documentary.DoDeny(Naming.DocumentLevel.瑕疵押匯, Settings.Default.SystemID, "信用狀餘額為零,請於優利主機再次確認。");
                         }
-                        else if (lcItem.LetterOfCredit.可用餘額 < draft.Amount)
+                        else if (lcItem.Lc.可用餘額 < draft.Amount)
                         {
                             draft.Documentary.DoDeny(Naming.DocumentLevel.瑕疵押匯, Settings.Default.SystemID, "信用狀餘額不足,請於優利主機再次確認。");
                         }
@@ -417,7 +407,7 @@ namespace ModelCore.Service.FPG
                             };
                         }
 
-                        draftTable.InsertOnSubmit(draft);
+                        draftTable.Add(draft);
                     }
 
                     mgr.SubmitChanges();
@@ -457,7 +447,7 @@ namespace ModelCore.Service.FPG
             public List<ModelCore.Schema.FPG.J2SPITEMTXD2SB33> InvoiceDetail { get; set; }
         }
 
-        public static List<NegoDraft> SupplementNegoDraft(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP sb30, ModelCore.Schema.FPG.J2SP sb32, ModelCore.Schema.FPG.J2SP sb33, BeneficiaryServiceGroup.ServiceDefinition? service = null)
+        public static List<NegoDraft> SupplementNegoDraft(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP sb30, ModelCore.Schema.FPG.J2SP sb32, ModelCore.Schema.FPG.J2SP sb33, BeneficiaryServiceGroup.ServiceDefinition? service = null)
         {
             List<_Supplement> items = new List<_Supplement>();
             if (sb30.ITEM.TXD2SB30 != null && sb30.ITEM.TXD2SB30.Length > 0)
@@ -519,16 +509,16 @@ namespace ModelCore.Service.FPG
             return new List<NegoDraft>();
         }
 
-        private static List<NegoDraft> processSupplement(this GenericManager<LcEntityDataContext> mgr, List<_Supplement> items, BeneficiaryServiceGroup.ServiceDefinition? service = null)
+        private static List<NegoDraft> processSupplement(this GenericManager<LcEntityDbContext> mgr, List<_Supplement> items, BeneficiaryServiceGroup.ServiceDefinition? service = null)
         {
-            // TODO: 1. save NegoPrompt
+            // TODO: 1. save Prompt
             DateTime importDate = DateTime.Now;
             List<NegoDraft> results = new List<NegoDraft>();
             // TODO: 2. save NegoDraft
             var draftTable = mgr.GetTable<NegoDraft>();
             int appSeq = 1;
             int appYear = DateTime.Today.Year - 1911;
-            var singleDraft = draftTable.Where(d => d.AppYear == appYear).OrderByDescending(d => d.DraftID).FirstOrDefault();
+            var singleDraft = draftTable.Where(d => d.AppYear == appYear).OrderByDescending(d => d.DocumentaryID).FirstOrDefault();
             if (singleDraft != null)
                 appSeq = singleDraft.AppSeq.Value + 1;
 
@@ -545,7 +535,7 @@ namespace ModelCore.Service.FPG
 
                 if (service.HasValue)
                 {
-                    if (lcItem.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem?.GroupDepartment.BeneficiaryGroup.ServiceID != (int?)service)
+                    if (lcItem.Lc.Application.FpgLcItem?.GroupDepartment.Group.ServiceID != (int?)service)
                     {
                         continue;
                     }
@@ -556,7 +546,7 @@ namespace ModelCore.Service.FPG
                     var draftItem = suppDraft.SB30;
                     try
                     {
-                        if (draftItem.LCBKACID != "009" + lcItem.LetterOfCredit.CreditApplicationDocumentary.通知行)
+                        if (draftItem.LCBKACID != "009" + lcItem.Lc.Application.AdvisingBankCode)
                         {
                             continue;
                         }
@@ -574,19 +564,18 @@ namespace ModelCore.Service.FPG
                             {
                                 DraftType = (int)(service == BeneficiaryServiceGroup.ServiceDefinition.Chimei
                                                     ? Naming.DraftType.CHIMEI
-                                                    : Naming.DraftType.FPG),    //lcItem.CreditApplicationDocumentary.BeneficiaryData.DraftType,
-                                NegoBranch = lcItem.LetterOfCredit.CreditApplicationDocumentary.通知行,
+                                                    : Naming.DraftType.FPG),    //lcItem.Application.Beneficiary.DraftType,
+                                NegoBranch = lcItem.Lc.Application.AdvisingBankCode,
                                 DueDate = importDate,
-                                NegotiateDate = importDate,
-                                LcBranch = lcItem.LetterOfCredit.CreditApplicationDocumentary.開狀行
+                                LcBranch = lcItem.Lc.Application.IssuingBankCode
                             },
                             Amount = draftItem.EPRAMT,
                             AppSeq = appSeq,
                             AppYear = appYear,
                             DraftNo = draftItem.SQNO,
-                            ImportDate = importDate,
-                            LcID = lcItem.VersionID,
-                            LetterOfCreditVersion = lcItem,
+                            NegoDate = importDate,
+                            NegoLcVersionID = lcItem.VersionID,
+                            NegoLcVersion = lcItem,
                             ShipmentDate = draftItem.OUTMDAT.FromChineseDate(),
                             DraftContent = draftItem.FILE1,
                             ItemName = draftItem.DSRCONT,
@@ -606,8 +595,6 @@ namespace ModelCore.Service.FPG
                             匯入銀行名稱 = draftItem.BKNM
                         };
 
-                        if (amendmentInfo != null)
-                            draft.AmendingID = amendmentInfo.AmendingID;
 
                         draft.Documentary.CurrentLevel = (int)Naming.DocumentLevel.押匯資料補登;
                         new DocumentaryLevel
@@ -632,7 +619,7 @@ namespace ModelCore.Service.FPG
             return results;
         }
 
-        private static void processSupplementInvoice(this GenericManager<LcEntityDataContext> mgr, NegoDraft draft, _SupplementDraft supplement)
+        private static void processSupplementInvoice(this GenericManager<LcEntityDbContext> mgr, NegoDraft draft, _SupplementDraft supplement)
         {
             if (supplement.Invoice == null || supplement.Invoice.Count < 1)
                 return;
@@ -680,7 +667,7 @@ namespace ModelCore.Service.FPG
             }
         }
 
-        private static void processSupplementInvoiceDetail(this GenericManager<LcEntityDataContext> mgr, NegoDraft draft,_SupplementInvoice supplement)
+        private static void processSupplementInvoiceDetail(this GenericManager<LcEntityDbContext> mgr, NegoDraft draft,_SupplementInvoice supplement)
         {
             if (supplement.InvoiceDetail == null || supplement.InvoiceDetail.Count < 1)
                 return;
@@ -726,7 +713,7 @@ namespace ModelCore.Service.FPG
 
 
 
-        public static void ReceiveNegoInvoice(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem)
+        public static void ReceiveNegoInvoice(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem)
         {
             DateTime importDate = DateTime.Now;
             List<ModelCore.Schema.FPG.J2SPITEMTXD2SB32> checkItems = new List<ModelCore.Schema.FPG.J2SPITEMTXD2SB32>();
@@ -746,7 +733,7 @@ namespace ModelCore.Service.FPG
                         continue;
                     }
 
-                    if (invItem.LCBKACID != "009" + lcItem.LetterOfCredit.CreditApplicationDocumentary.通知行)
+                    if (invItem.LCBKACID != "009" + lcItem.Lc.Application.AdvisingBankCode)
                     {
                         mgr.LogMessage(String.Format("第{0}筆發票資料押匯銀行與信用狀不符,押匯銀行:{1}", idx + 1, invItem.LCBKACID), logItem.LogID);
                         continue;
@@ -774,7 +761,7 @@ namespace ModelCore.Service.FPG
                     negoInv.ReceiptNo = invItem.IVPESRFNO;
                     mgr.SubmitChanges();
 
-                    if (mgr.GetTable<NegoAffair>().Where(a => a.InvoiceID == negoInv.InvoiceID && a.NegoDraft.Documentary.CurrentLevel != (int)Naming.DocumentLevel.銀行已拒絕)
+                    if (mgr.GetTable<NegoAffair>().Where(a => a.NegoInvoiceID == negoInv.InvoiceID && a.NegoDraft.Documentary.CurrentLevel != (int)Naming.DocumentLevel.銀行已拒絕)
                         .Sum(a => (decimal?)a.NegoAmount) > negoInv.InvoiceAmount)
                     {
                         mgr.LogMessage(String.Format("第{0}筆發票資料押匯金額總額已超過發票金額,發票號碼:{1}", idx + 1, invItem.IVNO), logItem.LogID);
@@ -784,19 +771,19 @@ namespace ModelCore.Service.FPG
                     }
                     else if (draft.Documentary.CurrentLevel == (int)Naming.DocumentLevel.押匯文件準備中 || draft.Documentary.CurrentLevel == (int)Naming.DocumentLevel.瑕疵押匯)
                     {
-                        if (lcItem.SpecificNote.押匯發票起始日.HasValue && lcItem.SpecificNote.押匯發票起始日.Value > negoInv.InvoiceDate.Value)
+                        if (lcItem.SpecificNotes.押匯發票起始日.HasValue && lcItem.SpecificNotes.押匯發票起始日.Value > negoInv.InvoiceDate.Value)
                         {
                             mgr.LogMessage(String.Format("第{0}筆發票資料發票日早於發票起始日,發票號碼:{1}", idx + 1, invItem.IVNO), logItem.LogID);
                             draft.Documentary.DoDeny(Naming.DocumentLevel.瑕疵押匯, null, "押匯發票日早於發票起始日");
                             mgr.SubmitChanges();
                         }
-                        if (lcItem.SpecificNote.接受發票早於開狀日 != true && negoInv.InvoiceDate < lcItem.LetterOfCredit.LcDate.Date)
+                        if (lcItem.SpecificNotes.接受發票早於開狀日 != true && negoInv.InvoiceDate < lcItem.Lc.LcDate.Date)
                         {
                             mgr.LogMessage(String.Format("第{0}筆發票資料發票日早於開狀日,發票號碼:{1}", idx + 1, invItem.IVNO), logItem.LogID);
                             draft.Documentary.DoDeny(Naming.DocumentLevel.瑕疵押匯, null, "押匯發票日早於開狀日");
                             mgr.SubmitChanges();
                         }
-                        if (lcItem.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.ReceiptNo != invItem.IVPESRFNO)
+                        if (lcItem.Lc.Application.Beneficiary.Organization.ReceiptNo != invItem.IVPESRFNO)
                         {
                             mgr.LogMessage(String.Format("第{0}筆發票資料發票開立人統編與受益人統編不符,發票號碼:{1}", idx + 1, invItem.IVNO), logItem.LogID);
                             draft.Documentary.DoDeny(Naming.DocumentLevel.瑕疵押匯, null, "發票開立人統編與受益人統編不符");
@@ -820,7 +807,7 @@ namespace ModelCore.Service.FPG
             });
         }
 
-        public static void ReceiveInvoiceDetail(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem)
+        public static void ReceiveInvoiceDetail(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem)
         {
             DateTime importDate = DateTime.Now;
             List<ModelCore.Schema.FPG.J2SPITEMTXD2SB33> checkItems = new List<ModelCore.Schema.FPG.J2SPITEMTXD2SB33>();
@@ -840,7 +827,7 @@ namespace ModelCore.Service.FPG
                         continue;
                     }
 
-                    if (invItem.LCBKACID != "009" + lcItem.LetterOfCredit.CreditApplicationDocumentary.通知行)
+                    if (invItem.LCBKACID != "009" + lcItem.Lc.Application.AdvisingBankCode)
                     {
                         mgr.LogMessage(String.Format("第{0}筆發票資料押匯銀行與信用狀不符,押匯銀行:{1}", idx + 1, invItem.LCBKACID), logItem.LogID);
                         continue;
@@ -883,7 +870,7 @@ namespace ModelCore.Service.FPG
 
         }
 
-        public static void CheckDraftInvoice(this GenericManager<LcEntityDataContext> mgr)
+        public static void CheckDraftInvoice(this GenericManager<LcEntityDbContext> mgr)
         {
             var items = mgr.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.押匯文件準備中)
                 .Select(d => d.NegoDraft).Where(d => d.NegoAffair.Count(a => a.NegoInvoice.DownloadFlag == 1) == d.InvoiceCount);
@@ -891,7 +878,7 @@ namespace ModelCore.Service.FPG
             foreach (var item in items)
             {
                 item.DownloadFlag = 1;
-                if (item.LetterOfCreditVersion.SpecificNote.押匯起始日.HasValue && item.LetterOfCreditVersion.SpecificNote.押匯起始日.Value > item.ImportDate)
+                if (item.NegoLcVersion.SpecificNotes.押匯起始日.HasValue && item.NegoLcVersion.SpecificNotes.押匯起始日.Value > item.NegoDate)
                 {
                     item.Documentary.DoDeny(Naming.DocumentLevel.瑕疵押匯, null, "押匯日早於押匯起始日");
                 }
@@ -906,8 +893,8 @@ namespace ModelCore.Service.FPG
                 item.Documentary.CurrentLevel = (int)Naming.DocumentLevel.待經辦審核;
                 mgr.SubmitChanges();
 
-                MessageNotification.CreateInboxMessage(item.DraftID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
-                MessageNotification.CreateMailMessage(mgr, item.DraftID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
+                MessageNotification.CreateInboxMessage(item.DocumentaryID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
+                MessageNotification.CreateMailMessage(mgr, item.DocumentaryID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
 
             }
 
@@ -918,20 +905,20 @@ namespace ModelCore.Service.FPG
             foreach (var item in items)
             {
                 item.DownloadFlag = 1;
-                if (item.LetterOfCreditVersion.SpecificNote.押匯起始日.HasValue && item.LetterOfCreditVersion.SpecificNote.押匯起始日.Value > item.ImportDate)
+                if (item.NegoLcVersion.SpecificNotes.押匯起始日.HasValue && item.NegoLcVersion.SpecificNotes.押匯起始日.Value > item.NegoDate)
                 {
                     item.Documentary.DoDeny(Naming.DocumentLevel.瑕疵押匯, null, "押匯日早於押匯起始日");
                 }
                 mgr.SubmitChanges();
 
-                MessageNotification.CreateInboxMessage(item.DraftID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
-                MessageNotification.CreateMailMessage(mgr, item.DraftID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
+                MessageNotification.CreateInboxMessage(item.DocumentaryID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
+                MessageNotification.CreateMailMessage(mgr, item.DocumentaryID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
 
             }
 
         }
 
-        public static List<ModelCore.Schema.FPG.J2SPITEMTXD2SB39> ReviewFpgDraftNegotiation(this GenericManager<LcEntityDataContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem)
+        public static List<ModelCore.Schema.FPG.J2SPITEMTXD2SB39> ReviewFpgDraftNegotiation(this GenericManager<LcEntityDbContext> mgr, ModelCore.Schema.FPG.J2SP j2sp, DataPortLog logItem)
         {
             List<ModelCore.Schema.FPG.J2SPITEMTXD2SB39> items = new List<ModelCore.Schema.FPG.J2SPITEMTXD2SB39>();
             foreach (var item in j2sp.ITEM.TXD2SB39)
@@ -961,7 +948,7 @@ namespace ModelCore.Service.FPG
             return items;
         }
 
-        public static void SendNegotiationPromptRequest(this GenericManager<LcEntityDataContext> mgr, List<ModelCore.Schema.FPG.J2SPITEMTXD2SB39> items, BeneficiaryServiceGroup.ServiceDefinition? serviceID)
+        public static void SendNegotiationPromptRequest(this GenericManager<LcEntityDbContext> mgr, List<ModelCore.Schema.FPG.J2SPITEMTXD2SB39> items, BeneficiaryServiceGroup.ServiceDefinition? serviceID)
         {
             DateTime now = DateTime.Now;
 
@@ -995,128 +982,13 @@ namespace ModelCore.Service.FPG
             }
         }
 
-        public static String CreateRemittanceDataFile(this GenericManager<LcEntityDataContext> mgr, Organization beneficiary, IEnumerable<FpgNegoRemittance> items)
-        {
-            String fileName = Path.Combine(CommonLib.Core.Utility.Logger.LogDailyPath, String.Format("PCCUTN_{0:yyyyMMddHHmmssf}.txt", DateTime.Now));
-            Encoding enc = Encoding.GetEncoding(950);
 
-            using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-            {
-                var item = items.First();
-
-                fs.WriteByte((byte)'1');
-                fs.Write(enc.GetBytes("009"), 0, 3);
-                fs.Write(enc.GetBytes(item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行), 0, 4);
-                fs.Write(enc.GetBytes(String.Format("{0}", item.FpgNegoDraft.NegoDraft.PaymentNotification.入戶帳號).PadLeft(16, '0')), 0, 16);
-                fs.Write(enc.GetBytes(String.Format("{0:yyyyMMdd}", item.RemittanceDate)), 0, 8);
-                fs.Write(enc.GetBytes(item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行), 0, 4);
-                fs.Write(enc.GetBytes(item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.ReceiptNo.PadRight(10)), 0, 10);
-                fs.Write(enc.GetBytes(String.Format("{0}", item.FpgNegoDraft.NegoDraft.PaymentNotification.入戶帳號名稱).PadLeft(60, ' ')), 0, 60);
-                fs.Write(enc.GetBytes("  "), 0, 2);
-                fs.Write(enc.GetBytes("    "), 0, 4);
-                fs.Write(enc.GetBytes("  "), 0, 2);
-                fs.Write(enc.GetBytes("499"), 0, 3);
-                fs.Write(enc.GetBytes("AMS01"), 0, 5);
-                fs.Write(enc.GetBytes("1"), 0, 1);
-                fs.Write(enc.GetBytes("01"), 0, 2);
-                fs.Write(enc.GetBytes("00"), 0, 2);
-                fs.Write(enc.GetBytes("".PadLeft(23, ' ')), 0, 23);
-                fs.Write(enc.GetBytes("".PadLeft(200, ' ')), 0, 200);
-
-                int idx = 0;
-                foreach (var remittance in items)
-                {
-                    fs.WriteByte((byte)'2');
-                    fs.Write(enc.GetBytes(String.Format("{0:00000}", ++idx)), 0, 5);
-                    fs.Write(enc.GetBytes(String.Format("{0}", remittance.FpgNegoDraft.匯入銀行代碼).PadLeft(7, '0')), 0, 7);
-                    fs.Write(enc.GetBytes(String.Format("{0}", remittance.FpgNegoDraft.匯入帳號).PadLeft(16, '0')), 0, 16);
-                    fs.WriteByte((byte)'0');
-                    fs.Write(enc.GetBytes("".PadLeft(10, ' ')), 0, 10);
-                    fs.Write(enc.GetBytes(String.Format("{0}", remittance.FpgNegoDraft.匯入戶名).PadRight(60, ' ')), 0, 60);
-                    fs.Write(enc.GetBytes(String.Format("{0:yyyyMMdd}", item.RemittanceDate)), 0, 8);
-                    fs.WriteByte((byte)'2');
-                    fs.WriteByte((byte)'0');
-                    fs.Write(enc.GetBytes("00"), 0, 2);
-                    fs.Write(enc.GetBytes(String.Format("{0:000000000000.00}", remittance.FpgNegoDraft.NegoDraft.Amount).Replace(".", "")), 0, 14);
-                    fs.Write(enc.GetBytes("99"), 0, 2);
-                    fs.Write(enc.GetBytes("".PadLeft(10, ' ')), 0, 10);
-                    fs.Write(enc.GetBytes("".PadLeft(10, ' ')), 0, 10);
-                    fs.WriteByte((byte)'2');
-                    fs.WriteByte((byte)'1');
-                    fs.Write(enc.GetBytes("".PadLeft(50, ' ')), 0, 50);
-                    fs.Write(enc.GetBytes("".PadLeft(3, ' ')), 0, 3);
-                    fs.Write(enc.GetBytes("".PadLeft(8, ' ')), 0, 8);
-                    fs.Write(enc.GetBytes("".PadLeft(20, ' ')), 0, 20);
-                    fs.Write(enc.GetBytes("電子押匯匯款".PadRight(60, ' ')), 0, 60);
-                    fs.Write(enc.GetBytes(String.Format("{0:yyyyMMdd}15{1:000000}", item.RemittanceDate, item.DraftID).PadRight(30, ' ')), 0, 30);
-                    fs.Write(enc.GetBytes("".PadLeft(11, ' ')), 0, 11);
-                    fs.Write(enc.GetBytes("".PadLeft(18, ' ')), 0, 18);
-                }
-
-                fs.WriteByte((byte)'3');
-                fs.Write(enc.GetBytes(String.Format("{0:00000000000000.00}", items.Select(f => f.FpgNegoDraft.NegoDraft).Sum(d => d.Amount)).Replace(".", "")), 0, 16);
-                fs.Write(enc.GetBytes(String.Format("{0:0000000000}", items.Count()).Replace(".", "")), 0, 10);
-                fs.Write(enc.GetBytes("".PadRight(16, '0')), 0, 16);
-                fs.Write(enc.GetBytes("".PadRight(10, '0')), 0, 10);
-                fs.Write(enc.GetBytes("".PadRight(16, ' ')), 0, 16);
-                fs.Write(enc.GetBytes("".PadRight(10, ' ')), 0, 10);
-                fs.Write(enc.GetBytes("".PadRight(271, ' ')), 0, 271);
-
-            }
-            return fileName;
-        }
-
-        public static void SendB8500(this GenericManager<LcEntityDataContext> mgr, Organization beneficiary, IEnumerable<FpgNegoRemittance> items, DataPortLog log)
-        {
-            var item = items.First();
-            Txn_B8500 txn = new Txn_B8500();
-            txn.Rq.EAIBody.MsgRq.SvcRq.CIFKEY = beneficiary.ReceiptNo;
-            txn.Rq.EAIBody.MsgRq.SvcRq.TYPE = "499";
-            txn.Rq.EAIBody.MsgRq.SvcRq.KIND = "PC01";
-            txn.Rq.EAIBody.MsgRq.SvcRq.NAME = Path.GetFileName(log.ContentPath);
-            txn.Rq.EAIBody.MsgRq.SvcRq.WCNT = String.Format("{0:0000000000}", items.Count());
-            txn.Rq.EAIBody.MsgRq.SvcRq.WAMT = String.Format("{0:000000000000.00}", items.Select(f => f.FpgNegoDraft.NegoDraft).Sum(d => d.Amount)).Replace(".", "");
-            txn.Rq.EAIBody.MsgRq.SvcRq.DCNT = "0000000000";
-            txn.Rq.EAIBody.MsgRq.SvcRq.DAMT = "00000000000000";
-            txn.Rq.EAIBody.MsgRq.SvcRq.CHKNO = "";
-            txn.Rq.EAIBody.MsgRq.SvcRq.KINBR = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
-            txn.Rq.EAIBody.MsgRq.SvcRq.EMPNOT = "";
-            txn.Rq.EAIBody.MsgRq.SvcRq.EMPNOS = "";
-            txn.Rq.EAIBody.MsgRq.SvcRq.TLRNO = "";
-            txn.Rq.EAIBody.MsgRq.SvcRq.INDEXKEY = String.Format("{0:yyyyMMdd}20{1:000000}", item.RemittanceDate, log.LogID);
-
-            using (WebClient wc = new WebClient())
-            {
-                wc.Credentials = new NetworkCredential(Settings.Default.FpgRemittanceFtpUserName, Settings.Default.FpgRemittanceFtpPWD);
-                wc.UploadFile(String.Format(Settings.Default.FpgRemittanceFtp, DateTime.Today), log.ContentPath);
-            }
-
-            log.FpgFileName = txn.Rq.EAIBody.MsgRq.SvcRq.INDEXKEY;
-
-            if (txn.Commit())
-            {
-                log.TransportTime = DateTime.Now;
-            }
-            else
-            {
-                log.ExceptionLog = new ExceptionLog
-                {
-                    LogTime = DateTime.Now,
-                    Message = String.Format("{0}:{1}", txn.Rs.EAIBody.MsgRs.Header.RspCode
-                        , mgr.ReadErrCodeDis(txn))
-                };
-                log.AlertDataQueue = new AlertDataQueue { };
-            }
-            mgr.SubmitChanges();
-
-        }
-
-        public static void CreateBatchRemittance(this GenericManager<LcEntityDataContext> mgr, FpgNegoRemittance item)
+        public static void CreateBatchRemittance(this GenericManager<LcEntityDbContext> mgr, FpgNegoRemittance item)
         {
             bool toCreate = item.FpgNegoRemittanceLog.Count == 0;
 
             item.Status = (int)Naming.RemittanceStatusDefinition.匯款資料已送出;
-            mgr.DeleteAnyOnSubmit<DocumentDispatch>(d => d.DocID == item.DraftID);
+            mgr.DeleteAnyOnSubmit<DocumentDispatch>(d => d.DocumentaryID == item.FpgNegoDraftID);
             if (toCreate)
             {
                 decimal totalAmt = item.FpgNegoDraft.NegoDraft.Amount;
@@ -1126,7 +998,7 @@ namespace ModelCore.Service.FPG
                     item.FpgNegoRemittanceLog.Add(new FpgNegoRemittanceLog
                         {
                             Amount = amount,
-                            DraftID = item.DraftID,
+                            FpgNegoRemittanceID = item.FpgNegoDraftID,
                             SeqNo = 0,
                             Status = (int)Naming.RemittanceStatusDefinition.匯款資料已送出,
                             DataPortLog = new DataPortLog
@@ -1169,60 +1041,13 @@ namespace ModelCore.Service.FPG
         }
 
 
-        public static void SendP1002(this GenericManager<LcEntityDataContext> models, FpgNegoRemittanceLog item)
-        {
-            bool toCreate = item.Status == (int)Naming.RemittanceStatusDefinition.匯款資料已送出;
-
-            if (toCreate)
-            {
-                if(createP1002(item,out Txn_P1002 p1002))
-                {
-                    bool hasEC = false;
-
-                    try
-                    {
-                        hasEC = !doR1000(models, item);
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelCore.Helper.Logger.Error(ex);
-                        item.Status = (int)Naming.RemittanceStatusDefinition.匯款失敗;
-                        item.FpgNegoRemittance.Status = (int)Naming.RemittanceStatusDefinition.匯款失敗;
-                        item.Description = ex.Message;
-                        models.SubmitChanges();
-
-                        hasEC = true;
-                    }
-
-                    if(hasEC)
-                    {
-                        //P1002 EC
-                        p1002.Rq.EAIBody.MsgRq.SvcRq.HCODE = "1";
-                        p1002.Rq.EAIBody.MsgRq.SvcRq.ECKIN = p1002.Rs.EAIBody.MsgRs.SvcRs.BRNO;
-                        p1002.Rq.EAIBody.MsgRq.SvcRq.ECTRM = p1002.Rs.EAIBody.MsgRs.SvcRs.TRMSEQ;
-                        p1002.Rq.EAIBody.MsgRq.SvcRq.ECTNO = p1002.Rs.EAIBody.MsgRs.SvcRs.TXTNO;
-                        p1002.DoTransaction();
-                        //
-                    }
-                }
-                else
-                {
-                    item.Status = (int)Naming.RemittanceStatusDefinition.匯款失敗;
-                    item.FpgNegoRemittance.Status = (int)Naming.RemittanceStatusDefinition.匯款失敗;
-                    item.Description = p1002.GetResponseDescription();
-                    item.DPMTID = null;
-                    models.SubmitChanges();
-                }
-            }
-        }
-
         private static bool createP1002(FpgNegoRemittanceLog log,out Txn_P1002 p1002)
         {
             FpgNegoRemittance item = log.FpgNegoRemittance;
-            Organization beneficiary = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization;
+            Organization beneficiary = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.Beneficiary.Organization;
 
             p1002 = new Txn_P1002();
-            p1002.Rq.EAIBody.MsgRq.SvcRq.KINBR = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
+            p1002.Rq.EAIBody.MsgRq.SvcRq.KINBR = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.AdvisingBankCode;
             p1002.Rq.EAIBody.MsgRq.SvcRq.DSCPT = "005";
             p1002.Rq.EAIBody.MsgRq.SvcRq.ACTNO = beneficiary.OrganizationStatus.ReserveAccount?.Replace("-", "");
             p1002.Rq.EAIBody.MsgRq.SvcRq.TXAMT = log.Amount.ToString();
@@ -1244,60 +1069,7 @@ namespace ModelCore.Service.FPG
 
         }
 
-        public static void SendA1000(this GenericManager<LcEntityDataContext> models, FpgNegoRemittanceLog item)
-        {
-            bool toCreate = item.Status == (int)Naming.RemittanceStatusDefinition.匯款資料已送出;
-
-            if (toCreate)
-            {
-                if (createA1000(item, out Txn_A1000 a1000))
-                {
-                    bool hasEC = false;
-
-                    try
-                    {
-                        hasEC = !doR1000(models, item);
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelCore.Helper.Logger.Error(ex);
-                        item.Status = (int)Naming.RemittanceStatusDefinition.匯款失敗;
-                        item.FpgNegoRemittance.Status = (int)Naming.RemittanceStatusDefinition.匯款失敗;
-                        item.Description = ex.Message;
-                        models.SubmitChanges();
-
-                        hasEC = true;
-                    }
-
-                    if (hasEC)
-                    {
-                        // A1000 反向沖帳
-                        //<IDSCPT>060</IDSCPT>  ：此處改為 060。(連動轉)
-                        //<CRDB>1</CRDB>        ：維持不變為1。
-                        //<TACNO>BBBB</TACNO>   ：改為2144。
-                        //<TSBNO>001</TSBNO>    ：改為160。
-                        //<TDTLNO>098</TDTLNO>  ：改為000。
-                        //<REFNO>12144160000098</REFNO>  ：改為1BBBB004098098。
-                        a1000.Rq.EAIBody.MsgRq.SvcRq.IDSCPT = "060";
-                        a1000.Rq.EAIBody.MsgRq.SvcRq.TACNO = "2144";
-                        a1000.Rq.EAIBody.MsgRq.SvcRq.TSBNO = "160";
-                        a1000.Rq.EAIBody.MsgRq.SvcRq.TDTLNO = "000";
-                        a1000.Rq.EAIBody.MsgRq.SvcRq.REFNO = "1BBBB004098098";
-                        a1000.DoTransaction();                        
-                    }
-                }
-                else
-                {
-                    item.Status = (int)Naming.RemittanceStatusDefinition.匯款失敗;
-                    item.FpgNegoRemittance.Status = (int)Naming.RemittanceStatusDefinition.匯款失敗;
-                    item.Description = a1000.GetResponseDescription();
-                    item.DPMTID = null;
-                    models.SubmitChanges();
-                }
-            }
-        }
-
-        private static bool doR1000(GenericManager<LcEntityDataContext> models, FpgNegoRemittanceLog item)
+        private static bool doR1000(GenericManager<LcEntityDbContext> models, FpgNegoRemittanceLog item)
         {
             if (createR1000(item, out Txn_R1000 r1000))
             {
@@ -1305,7 +1077,7 @@ namespace ModelCore.Service.FPG
                 item.Status = (int)Naming.RemittanceStatusDefinition.匯款已完成;
                 models.SubmitChanges();
 
-                models.ExecuteCommand("delete FpgNegoRemittanceDispatch where RemittanceID = {0}", item.RemittanceID);
+                models.ExecuteCommand("delete FpgNegoRemittanceDispatch where FpgNegoRemittanceLogID = {0}", item.RemittanceID);
 
                 var remittance = item.FpgNegoRemittance;
                 if (remittance.Status == (int)Naming.RemittanceStatusDefinition.匯款資料已送出
@@ -1333,10 +1105,10 @@ namespace ModelCore.Service.FPG
         private static bool createA1000(FpgNegoRemittanceLog log, out Txn_A1000 eai)
         {
             FpgNegoRemittance item = log.FpgNegoRemittance;
-            Organization beneficiary = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization;
+            Organization beneficiary = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.Beneficiary.Organization;
 
             eai = new Txn_A1000();
-            eai.Rq.EAIBody.MsgRq.SvcRq.KINBR = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
+            eai.Rq.EAIBody.MsgRq.SvcRq.KINBR = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.AdvisingBankCode;
             eai.Rq.EAIBody.MsgRq.SvcRq.IDSCPT = "004";
             eai.Rq.EAIBody.MsgRq.SvcRq.CRDB = "1";
             eai.Rq.EAIBody.MsgRq.SvcRq.SECNO = "98";
@@ -1352,14 +1124,14 @@ namespace ModelCore.Service.FPG
             eai.Rq.EAIBody.MsgRq.SvcRq.RELNO3 = "00000000";
             eai.Rq.EAIBody.MsgRq.SvcRq.DRVSNO = "0000000000";
             eai.Rq.EAIBody.MsgRq.SvcRq.NOTE1 = "000";
-            eai.Rq.EAIBody.MsgRq.SvcRq.REMK1 = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.LcNo;
+            eai.Rq.EAIBody.MsgRq.SvcRq.REMK1 = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.LcNo;
             eai.Rq.EAIBody.MsgRq.SvcRq.NOTE2 = "000";
             eai.Rq.EAIBody.MsgRq.SvcRq.REMK2 = "";
             eai.Rq.EAIBody.MsgRq.SvcRq.MISDEP = "";
             eai.Rq.EAIBody.MsgRq.SvcRq.PDUT = "0000";
             eai.Rq.EAIBody.MsgRq.SvcRq.MISDEP = "";
             eai.Rq.EAIBody.MsgRq.SvcRq.MACTNO = "";
-            eai.Rq.EAIBody.MsgRq.SvcRq.TBRNO = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
+            eai.Rq.EAIBody.MsgRq.SvcRq.TBRNO = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.AdvisingBankCode;
             eai.Rq.EAIBody.MsgRq.SvcRq.TDEPT = "1";
             eai.Rq.EAIBody.MsgRq.SvcRq.TACNO = "BBBB";
             eai.Rq.EAIBody.MsgRq.SvcRq.TSBNO = "001";
@@ -1385,10 +1157,10 @@ namespace ModelCore.Service.FPG
         public static long CountHandlingCharge(this FpgNegoRemittanceLog log)
         {
             FpgNegoRemittance item = log.FpgNegoRemittance;
-            Organization beneficiary = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization;
+            Organization beneficiary = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.Beneficiary.Organization;
             OrganizationBranchSettings settings = beneficiary.OrganizationBranchSettings
                 .Where(s => s.Status == (int)Naming.BeneficiaryStatus.已核准)
-                .Where(s => s.BankCode == item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行)
+                .Where(s => s.BankCode == item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.AdvisingBankCode)
                 .OrderByDescending(s => s.SettingID)
                 .FirstOrDefault();
 
@@ -1399,13 +1171,13 @@ namespace ModelCore.Service.FPG
         private static bool createR1000(FpgNegoRemittanceLog log, out Txn_R1000 r1000)
         {
             FpgNegoRemittance item = log.FpgNegoRemittance;
-            Organization beneficiary = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization;
+            Organization beneficiary = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.Beneficiary.Organization;
 
             r1000 = new Txn_R1000();
 
-            r1000.Rq.EAIBody.MsgRq.SvcRq.KINBR = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
+            r1000.Rq.EAIBody.MsgRq.SvcRq.KINBR = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.AdvisingBankCode;
             r1000.Rq.EAIBody.MsgRq.SvcRq.DSCPT = "";    // "005";
-            r1000.Rq.EAIBody.MsgRq.SvcRq.ACBRNO = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
+            r1000.Rq.EAIBody.MsgRq.SvcRq.ACBRNO = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.AdvisingBankCode;
 
             if (item.FpgNegoDraft.NegoDraft.NegoDraftExtension.DraftType == (int)Naming.DraftType.CHIMEI)
             {
@@ -1422,7 +1194,7 @@ namespace ModelCore.Service.FPG
             var chargeFee = log.CountHandlingCharge();
             r1000.Rq.EAIBody.MsgRq.SvcRq.TXAMT = $"{Math.Max((long)(log.Amount ?? 0) - chargeFee, 0)}";
             r1000.Rq.EAIBody.MsgRq.SvcRq.ACFLG = "0";
-            r1000.Rq.EAIBody.MsgRq.SvcRq.RBRNO = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
+            r1000.Rq.EAIBody.MsgRq.SvcRq.RBRNO = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.AdvisingBankCode;
             r1000.Rq.EAIBody.MsgRq.SvcRq.SECNO = "25";
 
             if (item.FpgNegoDraft.NegoDraft.NegoDraftExtension.DraftType == (int)Naming.DraftType.CHIMEI)
@@ -1435,7 +1207,7 @@ namespace ModelCore.Service.FPG
                 r1000.Rq.EAIBody.MsgRq.SvcRq.CIFKEY = beneficiary.OrganizationStatus.ReserveAccountReceiptNo;
             }
             
-            r1000.Rq.EAIBody.MsgRq.SvcRq.FBRNO = item.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
+            r1000.Rq.EAIBody.MsgRq.SvcRq.FBRNO = item.FpgNegoDraft.NegoDraft.NegoLcVersion.Lc.Application.AdvisingBankCode;
             r1000.Rq.EAIBody.MsgRq.SvcRq.REMDAY = String.Format("{0:yyyy-MM-dd}", item.RemittanceDate);
             r1000.Rq.EAIBody.MsgRq.SvcRq.RCVBK = item.FpgNegoDraft.匯入銀行代碼;
             r1000.Rq.EAIBody.MsgRq.SvcRq.REMTYPE = "11";

@@ -52,7 +52,7 @@ namespace ModelCore.Properties
         public bool EnableFpgRemittanceDispatch { get; set; } = false;
         public int HandlingChargeBaseAmount { get; set; } = 2000000;
         public int HandlingChargeStepAmount { get; set; } = 1000000;
-        public string ProxyUrlToUXCDS { get; set; } = "http://172.16.71.71:8080/";
+        public string ProxyUrlToUXCDS { get; set; } //= "http://172.16.71.71:8080/";
         public String[] BankUserRoleID = ["auditor", "manager", "supervisor", "viewer", "administrator", "officer", "operator"];
         public String MailMessageUrl { get; set; } = "http://localhost:5160/MessageBox/MailMessage";
         public string WebMaster { get; set; } = "eNID@hncb.com.tw";

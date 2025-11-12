@@ -30,6 +30,10 @@ namespace CommonLib.Core.Properties
                 return _default;
             }
         }
+        public static void Reload()
+        {
+            Reload<AppSettings>(ref _default, typeof(AppSettings).Namespace);
+        }
 
         public String IPdfUtilityImpl { get; set; } = "ExternalPdfWrapper.PdfUtility, ExternalPdfWrapper, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
         public String IPdfUtilityImplAssembly { get; set; } = "ExternalPdfWrapper, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";

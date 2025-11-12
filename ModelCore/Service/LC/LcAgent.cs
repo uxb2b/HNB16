@@ -72,14 +72,14 @@ namespace ModelCore.Service.LC
                         availableAmt = decimal.Parse(txn.SQBAL);
                         item.可用餘額 = availableAmt;
                         if (availableAmt <= 0)
-                            item.CreditApplicationDocumentary.Documentary.DoApprove(Naming.DocumentLevel.信用狀餘額為零, Settings.Default.SystemID, null);
+                            item.Application.Documentary.DoApprove(Naming.DocumentLevel.信用狀餘額為零, Settings.Default.SystemID, null);
                         mgr.SubmitChanges();
                     }
                     else if ("XL215".Equals(txn.RspCode))
                     {
                         availableAmt = 0;
                         item.可用餘額 = 0;
-                        item.CreditApplicationDocumentary.Documentary.DoApprove(Naming.DocumentLevel.信用狀餘額為零, Settings.Default.SystemID, null);
+                        item.Application.Documentary.DoApprove(Naming.DocumentLevel.信用狀餘額為零, Settings.Default.SystemID, null);
                         mgr.SubmitChanges();
                     }
                     else
@@ -92,8 +92,8 @@ namespace ModelCore.Service.LC
                     {
                         var cancellation = mgr.CreateActiveCancellation(item);
                         //傳送email及訊息匣訊息
-                        MessageNotification.CreateInboxMessage(cancellation.CancellationID, Naming.MessageTypeDefinition.MSG_CANCELLATION_UNASKED, Naming.MessageReceipent.ForApplicantAndBank);
-                        MessageNotification.CreateMailMessage(mgr,cancellation.CancellationID, Naming.MessageTypeDefinition.MSG_CANCELLATION_UNASKED, Naming.MessageReceipent.ForApplicantAndBank);
+                        MessageNotification.CreateInboxMessage(cancellation.DocumentaryID, Naming.MessageTypeDefinition.MSG_CANCELLATION_UNASKED, Naming.MessageReceipent.ForApplicantAndBank);
+                        MessageNotification.CreateMailMessage(mgr,cancellation.DocumentaryID, Naming.MessageTypeDefinition.MSG_CANCELLATION_UNASKED, Naming.MessageReceipent.ForApplicantAndBank);
                     }
                 }
             }

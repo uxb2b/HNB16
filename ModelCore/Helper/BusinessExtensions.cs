@@ -4,7 +4,7 @@ using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using EAI.Service.Transaction;
 using ModelCore.BankManagement;
 using ModelCore.DataModel;
@@ -44,11 +44,10 @@ namespace ModelCore.Helper
         }
 
 
-        public static IQueryable<BeneficiaryData> PromptBeneficiary(this UserProfile profile,GenericManager<LcEntityDataContext> models,Naming.DraftType? serviceType = null)
+        public static IQueryable<BeneficiaryData> PromptBeneficiary(this UserProfile profile,GenericManager<LcEntityDbContext> models,Naming.DraftType? serviceType = null)
         {
             var items = models.GetTable<BeneficiaryData>()
-                            .Where(b => b.Status == (int)Naming.BeneficiaryStatus.已核准)
-                            .Where(c => c.BankData.DisabledBranch == null);
+                            .Where(b => b.Status == (int)Naming.BeneficiaryStatus.已核准);
                             //.Where(b => b.Organization.OrganizationStatus == null
                             //        || b.Organization.OrganizationStatus.SelectedAsBeneficiary == true
                             //        || b.Organization.OrganizationStatus.FpgNegoBeneficiary == true);
@@ -56,13 +55,13 @@ namespace ModelCore.Helper
             switch(serviceType)
             {
                 case Naming.DraftType.CDS_CSC:
-                    items = items.Where(b => b.Organization.OrganizationStatus.BeneficiaryGroup.ServiceID == (int)BeneficiaryServiceGroup.ServiceDefinition.UXCDS);
+                    items = items.Where(b => b.Organization.OrganizationStatus.Group.ServiceID == (int)BeneficiaryServiceGroup.ServiceDefinition.UXCDS);
                     break;
                 case Naming.DraftType.FPG:
-                    items = items.Where(b => b.Organization.OrganizationStatus.BeneficiaryGroup.ServiceID == (int)BeneficiaryServiceGroup.ServiceDefinition.Fpg);
+                    items = items.Where(b => b.Organization.OrganizationStatus.Group.ServiceID == (int)BeneficiaryServiceGroup.ServiceDefinition.Fpg);
                     break;
                 case Naming.DraftType.CHIMEI:
-                    items = items.Where(b => b.Organization.OrganizationStatus.BeneficiaryGroup.ServiceID == (int)BeneficiaryServiceGroup.ServiceDefinition.Chimei);
+                    items = items.Where(b => b.Organization.OrganizationStatus.Group.ServiceID == (int)BeneficiaryServiceGroup.ServiceDefinition.Chimei);
                     break;
                 default:
                     //items = items.Where(c => c.DraftType == (int?)serviceType);
@@ -73,7 +72,7 @@ namespace ModelCore.Helper
             //{
             //    if(serviceType == Naming.DraftType.CDS_CSC)
             //    {
-            //        items = items.Where(b => b.Organization.OrganizationStatus.BeneficiaryGroup.ServiceID == (int)BeneficiaryServiceGroup.ServiceDefinition.UXCDS);
+            //        items = items.Where(b => b.Organization.OrganizationStatus.Group.ServiceID == (int)Service.ServiceDefinition.UXCDS);
             //    }
             //    else
             //    {
@@ -91,9 +90,9 @@ namespace ModelCore.Helper
             return item != null ? new StringBuilder()
                 .Append("ApplicationNo：").Append(item.ApplicationNo).Append("<br/>")
                 .Append("日期：").Append(String.Format("{0:yyyy/MM/dd}", item.ApplicationDate)).Append("<br/>")
-                .Append("申請人：").Append(item.ApplicantDetails.CompanyName).Append("<br/>")
-                .Append("金額：").Append(String.Format("{0:##,###,###,###}", item.LcItem.開狀金額)).Append("<br/>")
-                .Append("有效期限：").Append(String.Format("{0:yyyy/MM/dd}", item.LcItem.有效期限))
+                .Append("ApplicantID：").Append(item.ApplicantDetails.CompanyName).Append("<br/>")
+                .Append("金額：").Append(String.Format("{0:##,###,###,###}", item.LcItems.開狀金額)).Append("<br/>")
+                .Append("有效期限：").Append(String.Format("{0:yyyy/MM/dd}", item.LcItems.有效期限))
                 .ToString() : null;
         }
 
@@ -102,19 +101,19 @@ namespace ModelCore.Helper
             return item != null ? new StringBuilder()
             .Append("修狀申請書號碼：").Append(item.AmendmentNo).Append("<br/>")
             .Append("日期：").Append(String.Format("{0:yyyy/MM/dd}", item.ApplicationDate)).Append("<br/>")
-            .Append("申請人：").Append(item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ApplicantDetails.CompanyName).Append("<br/>")
-            .Append("信用狀號碼：").Append(item.LetterOfCreditVersion.LetterOfCredit.LcNo)
+            .Append("ApplicantID：").Append(item.Source.Lc.Application.ApplicantDetails.CompanyName).Append("<br/>")
+            .Append("信用狀號碼：").Append(item.Source.Lc.LcNo)
             .ToString() : null;
         }
 
         public static String GetDocumentDescription(this CreditCancellation item)
         {
-            var lc = item.LetterOfCredit;
+            var lc = item.Lc;
 
             return item != null ? new StringBuilder()
             .Append("註銷申請號碼：").Append(item.註銷申請號碼).Append("<br/>")
             .Append("日期：").Append(String.Format("{0:yyyy/MM/dd}", item.申請日期)).Append("<br/>")
-            .Append("申請人：").Append(lc.CreditApplicationDocumentary.ApplicantDetails.CompanyName).Append("<br/>")
+            .Append("ApplicantID：").Append(lc.Application.ApplicantDetails.CompanyName).Append("<br/>")
             .Append("信用狀號碼：").Append(lc.LcNo)
             .ToString() : null;
         }
@@ -125,58 +124,20 @@ namespace ModelCore.Helper
                 ? String.Concat(
                     "匯票申請書號碼：", item.AppNo(), "<br/>",
                     "匯票號碼：", item.DraftNo, "<br/>",
-                    "押匯日期：", String.Format("{0:yyyy/MM/dd}", item.ImportDate), "<br/>",
-                    "匯票申請人：", item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneDetails.CompanyName, "<br/>",
+                    "押匯日期：", String.Format("{0:yyyy/MM/dd}", item.NegoDate), "<br/>",
+                    "匯票申請人：", item.NegoLcVersion.Lc.Application.BeneDetails.CompanyName, "<br/>",
                     "押匯金額：", String.Format("{0:##,###,###,###}", item.Amount), "<br/>",
-                    "信用狀號碼：", item.LetterOfCreditVersion.LetterOfCredit.LcNo) 
+                    "信用狀號碼：", item.NegoLcVersion.Lc.LcNo) 
                 : null;
         }
 
-        public static String GetDocumentDescription(this Reimbursement item)
-        {
-            return item != null
-                ? item.NegoLoan == null
-                    ? String.Concat(
-                        "匯票申請書號碼：", item.NegoDraft.AppNo(), "<br/>",
-                        "匯票號碼：", item.NegoDraft.DraftNo, "<br/>",
-                        "還款日期：", String.Format("{0:yyyy/MM/dd}", item.ApplicationDate), "<br/>",
-                        "還款申請人：", item.NegoDraft.LetterOfCreditVersion.LetterOfCredit?.CreditApplicationDocumentary.ApplicantDetails.CompanyName ?? item.NegoDraft.NegoLC?.ApplicantDetails.CompanyName, "<br/>",
-                        "還款金額：", String.Format("{0:##,###,###,###}", item.Amount), "<br/>",
-                        "約定授權扣款帳號：", item.PayableAccount)
-                    : String.Concat(
-                        "匯票申請書號碼：", item.NegoDraft.AppNo(), "<br/>",
-                        "匯票號碼：", item.NegoDraft.DraftNo, "<br/>",
-                        "改貸日期：", String.Format("{0:yyyy/MM/dd}", item.ApplicationDate), "<br/>",
-                        "還款申請人：", item.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ApplicantDetails.CompanyName, "<br/>",
-                        "改貸金額：", String.Format("{0:##,###,###,###}", item.Amount), "<br/>")
-                : null;
-        }
-
-        public static String GetDocumentDescription(this NegoLoanRepayment item)
-        {
-            var loan = item.NegoLoan;
-            var reimItem = loan.Reimbursement;
-            var draft = reimItem.NegoDraft;
-            return item != null
-                ? String.Concat(
-                        "匯票申請書號碼：", draft.AppNo(), "<br/>",
-                        "匯票號碼：", draft.DraftNo, "<br/>",
-                        "改貸申請書號碼：", reimItem.ReimbursementNo, "<br/>",
-                        "還款日期：", String.Format("{0:yyyy/MM/dd}", item.RepaymentDate), "<br/>",
-                        "還款人：", draft.LetterOfCreditVersion?.LetterOfCredit?.CreditApplicationDocumentary.ApplicantDetails.CompanyName ?? draft.NegoLC?.ApplicantDetails.CompanyName, "<br/>",
-                        "還款金額：", String.Format("{0:##,###,###,###}", item.RepaymentAmount), "<br/>",
-                        "繳付利息金額：", String.Format("{0:##,###,###,###}", item.InterestAmount), "<br/>",
-                        "約定授權扣款帳號：", reimItem.PayableAccount)
-                : null;
-        }
-
-        public static List<LcAmendatory> GetLcAmendmentDetails(this LcAmendmentQueryViewModel viewModel, GenericManager<LcEntityDataContext> models)
+        public static List<LcAmendatory> GetLcAmendmentDetails(this LcAmendmentQueryViewModel viewModel, GenericManager<LcEntityDbContext> models)
         {
             List<LcAmendatory> items = new List<LcAmendatory>();
 
-            LcItem oldItem;
+            LcItems oldItem;
             AttachableDocument oldAttach;
-            SpecificNote oldSN;
+            SpecificNotes oldSN;
 
             var lc = models.GetTable<LetterOfCredit>().Where(l => l.LcID == viewModel.LcID).FirstOrDefault();
             if (lc == null)
@@ -184,9 +145,9 @@ namespace ModelCore.Helper
 
             var lcVersion = lc.LetterOfCreditVersion.OrderByDescending(v => v.VersionID).First();
 
-            oldItem = lcVersion.LcItem;
+            oldItem = lcVersion.LcItems;
             oldAttach = lcVersion.AttachableDocument;
-            oldSN = lcVersion.SpecificNote;
+            oldSN = lcVersion.SpecificNotes;
 
             if (viewModel.LcAmt != oldItem.開狀金額)
             {
@@ -246,9 +207,10 @@ namespace ModelCore.Helper
                                 , idx++, oldItem.Goods, null, null, null, null, null))
                         .Append("<br/>");
             }
-            for (int i = 0; i < oldItem.GoodsDetails.Count; i++)
+            var details = oldItem.GoodsDetail != null ? oldItem.GoodsDetail.ToList() : new List<GoodsDetail>();
+            for (int i = 0; i < details.Count; i++)
             {
-                var g = oldItem.GoodsDetails[i];
+                var g = details[i];
                 destGoods.Append(String.Format("{0}. 品名:{1} 規格:{2} 單價:{3} 數量:{4} 金額:{5} 備註:{6}"
                             , idx++, g.ProductName, g.ProductSize, g.UnitPrice, g.Quantity, g.Amount, g.Remark))
                         .Append("<br/>");

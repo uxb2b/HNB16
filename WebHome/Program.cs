@@ -6,6 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using WebHome.Controllers.Filters;
 using WebHome.Properties;
 
+// Add Swagger/OpenAPI usings
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore.SwaggerUI;
+
 namespace WebHome;
 
 public class Program
@@ -82,11 +87,33 @@ public class Program
             options.JsonSerializerOptions.PropertyNamingPolicy = null; // JsonNamingPolicy.CamelCase;
         });
 
+        // Register Swagger/OpenAPI services
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebHome API", Version = "v1" });
+        });
+
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+            });
+
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
+            // Enable Swagger middleware to serve generated OpenAPI as JSON and Swagger UI.
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "WebHome API V1");
+                options.RoutePrefix = "swagger"; // UI will be available at /swagger
+            });
+
             app.UseDeveloperExceptionPage();
         }
         else

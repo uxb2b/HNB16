@@ -7,14 +7,15 @@ using System.Text;
 
 using ModelCore.Locale;
 using CommonLib.Utility;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using System.Data.Linq;
 using ModelCore.UserManagement;
+using Microsoft.EntityFrameworkCore;
 
 namespace ModelCore.UploadManagement
 {
     public abstract class TextArrayUploadManager<T, TEntity, TextArray> : GenericManager<T, TEntity>, ICsvUploadManager
-        where T : DataContext, new()
+        where T : DbContext, new()
         where TEntity : class,new()
         where TextArray : struct
     {

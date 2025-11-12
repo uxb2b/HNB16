@@ -1,14 +1,15 @@
 ﻿using CommonLib.Core.Utility;
 using CommonLib.Utility;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ModelCore.DataModel;
 using ModelCore.Schema.ENID;
 
 using System.Text;
 using System.Xml;
-using System.Data.SqlClient;
 using System.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 namespace TestConsole;
 
 class Program
@@ -68,9 +69,10 @@ class Program
 
     private static void TestLCCInfo()
     {
-        using (ModelSource<LcEntityDataContext> models = new ModelSource<LcEntityDataContext>())
+        using (ModelSource models = new ModelSource())
         {
-            var reader = models.DataContext.Connection.ConnectionString.ExecuteReader(CommandType.Text,
+            var sqlConnection = (SqlConnection)models.DataContext.Database.GetDbConnection();
+            var reader = SqlHelper.ExecuteReader(sqlConnection, CommandType.Text,
                 @"SELECT *,CONVERT(datetime, 
         REPLACE(REPLACE(STUFF(AUDIT_TIME, 11, 1, ' '),'上午','AM'),'下午','PM'), 
         0) as ConfirmTime FROM OPENROWSET('MSDASQL', 
@@ -113,9 +115,10 @@ class Program
 
     private static void TestLCC()
     {
-        using (ModelSource<LcEntityDataContext> models = new ModelSource<LcEntityDataContext>())
+        using (ModelSource models = new ModelSource())
         {
-            var reader = models.DataContext.Connection.ConnectionString.ExecuteReader(CommandType.Text,
+            var sqlConnection = (SqlConnection)models.DataContext.Database.GetDbConnection();
+            var reader = SqlHelper.ExecuteReader(sqlConnection, CommandType.Text,
                 @"SELECT *,convert(varchar(max),dbo.TextToBinary(CIPHER)) as CipherData,convert(varchar(max),dbo.TextToBinary(VOID_XML)) as XmlData FROM OPENROWSET('MSDASQL', 
    'Driver={Microsoft Access Text Driver (*.txt, *.csv)};DefaultDir=F:\Project\AppDev\HNB\Reference\hncb_enid_data_csv\;', 
    'SELECT * FROM EISSUED_LCD.csv')");
@@ -161,9 +164,10 @@ class Program
 
     private static void TestLCRN()
     {
-        using (ModelSource<LcEntityDataContext> models = new ModelSource<LcEntityDataContext>())
+        using (ModelSource models = new ModelSource())
         {
-            var reader = models.DataContext.Connection.ConnectionString.ExecuteReader(CommandType.Text,
+            var sqlConnection = (SqlConnection)models.DataContext.Database.GetDbConnection();
+            var reader = SqlHelper.ExecuteReader(sqlConnection, CommandType.Text,
                 @"SELECT *,convert(varchar(max),dbo.TextToBinary(CIPHER)) CipherData,convert(varchar(max),dbo.TextToBinary(NOTICE_XML)) XmlData FROM OPENROWSET('MSDASQL', 
    'Driver={Microsoft Access Text Driver (*.txt, *.csv)};DefaultDir=F:\Project\AppDev\HNB\Reference\hncb_enid_data_csv\;', 
    'SELECT * FROM EISSUED_LCRN.csv')");
@@ -209,9 +213,10 @@ class Program
 
     private static void TestLCR()
     {
-        using (ModelSource<LcEntityDataContext> models = new ModelSource<LcEntityDataContext>())
+        using (ModelSource models = new ModelSource())
         {
-            var reader = models.DataContext.Connection.ConnectionString.ExecuteReader(CommandType.Text,
+                var sqlConnection = (SqlConnection)models.DataContext.Database.GetDbConnection();
+                var reader = SqlHelper.ExecuteReader(sqlConnection, CommandType.Text,
                 @"SELECT *,convert(varchar(max),dbo.TextToBinary(CIPHER)) CipherData,convert(varchar(max),dbo.TextToBinary(AMENDMENT_XML)) XmlData  FROM OPENROWSET('MSDASQL', 
    'Driver={Microsoft Access Text Driver (*.txt, *.csv)};DefaultDir=F:\Project\AppDev\HNB\Reference\hncb_enid_data_csv\;', 
    'SELECT * FROM EISSUED_LCR.csv')");
@@ -257,9 +262,10 @@ class Program
 
     private static void TestLCDetails()
     {
-        using (ModelSource<LcEntityDataContext> models = new ModelSource<LcEntityDataContext>())
+        using (ModelSource models = new ModelSource())
         {
-            var reader = models.DataContext.Connection.ConnectionString.ExecuteReader(CommandType.Text,
+            var sqlConnection = (SqlConnection)models.DataContext.Database.GetDbConnection();
+            var reader = SqlHelper.ExecuteReader(sqlConnection, CommandType.Text,
                 @"SELECT *,convert(varchar(max),dbo.TextToBinary(CIPHER)) as CipherData,convert(varchar(max),dbo.TextToBinary(LC_XML)) as XmlData FROM OPENROWSET('MSDASQL', 
    'Driver={Microsoft Access Text Driver (*.txt, *.csv)};DefaultDir=F:\Project\AppDev\HNB\Reference\hncb_enid_data_csv\;', 
    'SELECT * FROM EISSUED_LCDETAIL.csv')");
@@ -307,9 +313,10 @@ class Program
 
     private static void TestLCA()
     {
-        using (ModelSource<LcEntityDataContext> models = new ModelSource<LcEntityDataContext>())
+        using (ModelSource models = new ModelSource())
         {
-            var reader = models.DataContext.Connection.ConnectionString.ExecuteReader(CommandType.Text,
+            var sqlConnection = (SqlConnection)models.DataContext.Database.GetDbConnection();
+            var reader = SqlHelper.ExecuteReader(sqlConnection, CommandType.Text,
                 @"SELECT *,convert(varchar(max),dbo.TextToBinary(CIPHER)) as CipherData,convert(varchar(max),dbo.TextToBinary(APPLICATION_XML)) as XmlData FROM OPENROWSET('MSDASQL', 
    'Driver={Microsoft Access Text Driver (*.txt, *.csv)};DefaultDir=F:\Project\AppDev\HNB\Reference\hncb_enid_data_csv\;', 
    'SELECT * FROM EISSUED_LCA.csv')");

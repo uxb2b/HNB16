@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using ModelCore.Locale;
 
 
 namespace ModelCore.DataModel
 {
-    public partial class ModelSource<TEntity> : ModelSource<LcEntityDataContext, TEntity>
+    public partial class ModelSource<TEntity> : ModelSource<LcEntityDbContext, TEntity>
         where TEntity : class,new()
     {
         public ModelSource() : base() { }
-        public ModelSource(GenericManager<LcEntityDataContext> manager) : base(manager) { }
+        public ModelSource(GenericManager<LcEntityDbContext> manager) : base(manager) { }
 
         //public Naming.DataResultMode ResultModel
         //{
@@ -23,17 +23,17 @@ namespace ModelCore.DataModel
 
     }
 
-    public partial class ModelSourceInquiry<TEntity> : ModelSourceInquiry<LcEntityDataContext, TEntity>
+    public partial class ModelSourceInquiry<TEntity> : ModelSourceInquiry<LcEntityDbContext, TEntity>
         where TEntity : class,new()
     {
 
     }
 
-    public class ModelSource : GenericManager<LcEntityDataContext>
+    public class ModelSource : GenericManager<LcEntityDbContext>
     {
 
         public ModelSource() : base() { }
-        public ModelSource(GenericManager<LcEntityDataContext> manager) : base(manager) { }
+        public ModelSource(GenericManager<LcEntityDbContext> manager) : base(manager) { }
 
     }
 

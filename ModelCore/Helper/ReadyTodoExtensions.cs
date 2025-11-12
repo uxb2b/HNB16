@@ -4,7 +4,7 @@ using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using EAI.Service.Transaction;
 using ModelCore.DataModel;
 using ModelCore.Locale;
@@ -30,7 +30,7 @@ namespace ModelCore.Helper
             (int)Naming.DocumentTypeDefinition.還款改貸申請書,
         };
 
-        public static IQueryable<Documentary> PromptToAccept(this GenericManager<LcEntityDataContext> models)
+        public static IQueryable<Documentary> PromptToAccept(this GenericManager<LcEntityDbContext> models)
         {
             return models.GetTable<Documentary>()
                 .Where(d => __IDELC0101_DataScope.Contains(d.CurrentLevel))
@@ -38,167 +38,167 @@ namespace ModelCore.Helper
         }
 
 
-        public static IQueryable<Documentary> PromptToAcceptALC(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<Documentary> PromptToAcceptALC(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d =>
                 __IDELC0101_DataScope.Contains(d.CurrentLevel))
                     .Join(models.GetTable<CreditApplicationDocumentary>()
-                        .Join(profile.GetActionBranch(models), a => a.開狀行, b => b.BankCode, (a, b) => a)
-                    , d => d.DocID, a => a.AppID, (d, a) => d);
+                        .Join(profile.GetActionBranch(models), a => a.IssuingBankCode, b => b.BankCode, (a, b) => a)
+                    , d => d.DocID, a => a.DocumentaryID, (d, a) => d);
         }
 
-        public static IQueryable<Documentary> PromptToVerifyALC(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<Documentary> PromptToVerifyALC(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d =>
                 d.CurrentLevel == (int)Naming.DocumentLevel.待主管審核)
                     .Join(models.GetTable<CreditApplicationDocumentary>()
-                        .Join(profile.GetActionBranch(models), a => a.開狀行, b => b.BankCode, (a, b) => a)
-                    , d => d.DocID, a => a.AppID, (d, a) => d);
+                        .Join(profile.GetActionBranch(models), a => a.IssuingBankCode, b => b.BankCode, (a, b) => a)
+                    , d => d.DocID, a => a.DocumentaryID, (d, a) => d);
         }
 
-        public static IQueryable<Documentary> PromptToRegisterALC(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<Documentary> PromptToRegisterALC(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d =>
                 d.CurrentLevel == (int)Naming.DocumentLevel.待CRC登錄
                 || d.CurrentLevel == (int)Naming.DocumentLevel.已退回_CRC主管退回)
                     .Join(models.GetTable<CreditApplicationDocumentary>()
-                        .Join(profile.GetActionBranch(models), a => a.開狀行, b => b.BankCode, (a, b) => a)
-                    , d => d.DocID, a => a.AppID, (d, a) => d);
+                        .Join(profile.GetActionBranch(models), a => a.IssuingBankCode, b => b.BankCode, (a, b) => a)
+                    , d => d.DocID, a => a.DocumentaryID, (d, a) => d);
         }
 
-        public static IQueryable<Documentary> PromptToAllowALC(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<Documentary> PromptToAllowALC(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d =>
                 d.CurrentLevel == (int)Naming.DocumentLevel.待放行)
                     .Join(models.GetTable<CreditApplicationDocumentary>()
-                        .Join(profile.GetActionBranch(models), a => a.開狀行, b => b.BankCode, (a, b) => a)
-                    , d => d.DocID, a => a.AppID, (d, a) => d);
+                        .Join(profile.GetActionBranch(models), a => a.IssuingBankCode, b => b.BankCode, (a, b) => a)
+                    , d => d.DocID, a => a.DocumentaryID, (d, a) => d);
         }
 
-        public static IQueryable<Documentary> PromptToMarkALC(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<Documentary> PromptToMarkALC(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d =>
                 d.CurrentLevel == (int)Naming.DocumentLevel.待註記)
                     .Join(models.GetTable<CreditApplicationDocumentary>()
-                        .Join(profile.GetActionBranch(models), a => a.開狀行, b => b.BankCode, (a, b) => a)
-                    , d => d.DocID, a => a.AppID, (d, a) => d);
+                        .Join(profile.GetActionBranch(models), a => a.IssuingBankCode, b => b.BankCode, (a, b) => a)
+                    , d => d.DocID, a => a.DocumentaryID, (d, a) => d);
         }
 
-        public static IQueryable<Documentary> PromptToAcceptALCByCounter(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<Documentary> PromptToAcceptALCByCounter(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d =>
                 d.CurrentLevel == (int)Naming.DocumentLevel.臨櫃申請CRC主管退回
                 || d.CurrentLevel == (int)Naming.DocumentLevel.臨櫃申請待登錄)
                     .Join(models.GetTable<CreditApplicationDocumentary>()
                         //.Where(c => c.FpgLcItem != null)
-                        .Join(profile.GetActionBranch(models), a => a.開狀行, b => b.BankCode, (a, b) => a)
-                    , d => d.DocID, a => a.AppID, (d, a) => d);
+                        .Join(profile.GetActionBranch(models), a => a.IssuingBankCode, b => b.BankCode, (a, b) => a)
+                    , d => d.DocID, a => a.DocumentaryID, (d, a) => d);
         }
 
-        public static IQueryable<Documentary> PromptToRegisterALCByCounter(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<Documentary> PromptToRegisterALCByCounter(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d =>
                 d.CurrentLevel == (int)Naming.DocumentLevel.臨櫃申請待登錄)
                     .Join(models.GetTable<CreditApplicationDocumentary>()
-                        .Join(profile.GetActionBranch(models), a => a.開狀行, b => b.BankCode, (a, b) => a)
-                    , d => d.DocID, a => a.AppID, (d, a) => d);
+                        .Join(profile.GetActionBranch(models), a => a.IssuingBankCode, b => b.BankCode, (a, b) => a)
+                    , d => d.DocID, a => a.DocumentaryID, (d, a) => d);
         }
 
-        public static IQueryable<AmendingLcApplication> PromptToAcceptMLC(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<AmendingLcApplication> PromptToAcceptMLC(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d => __IDELC0101_DataScope.Contains(d.CurrentLevel))
                     .Join(models.PromptAmendingLcApplication(profile),
-                        d => d.DocID, a => a.AmendingID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<AmendingLcApplication> PromptToVerifyMLC(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<AmendingLcApplication> PromptToVerifyMLC(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.待主管審核)
                     .Join(models.PromptAmendingLcApplication(profile),
-                        d => d.DocID, a => a.AmendingID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<AmendingLcApplication> PromptToRegisterMLC(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<AmendingLcApplication> PromptToRegisterMLC(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.待CRC登錄
                 || d.CurrentLevel == (int)Naming.DocumentLevel.已退回_CRC主管退回)
                     .Join(models.PromptAmendingLcApplication(profile),
-                        d => d.DocID, a => a.AmendingID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<AmendingLcApplication> PromptToAllowMLC(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<AmendingLcApplication> PromptToAllowMLC(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.待放行)
                     .Join(models.PromptAmendingLcApplication(profile),
-                        d => d.DocID, a => a.AmendingID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<AmendingLcApplication> PromptToMarkMLC(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<AmendingLcApplication> PromptToMarkMLC(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.待註記)
                     .Join(models.PromptAmendingLcApplication(profile),
-                        d => d.DocID, a => a.AmendingID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<AmendingLcApplication> PromptToAcceptMLCByCounter(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<AmendingLcApplication> PromptToAcceptMLCByCounter(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>()
                     .Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.臨櫃申請CRC主管退回
                         || d.CurrentLevel == (int)Naming.DocumentLevel.臨櫃申請待登錄)
                     .Join(models.PromptAmendingLcApplication(profile),
-                        d => d.DocID, a => a.AmendingID, (d, a) => a); 
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a); 
         }
 
-        public static IQueryable<AmendingLcApplication> PromptToRegisterMLCByCounter(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<AmendingLcApplication> PromptToRegisterMLCByCounter(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>()
                     .Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.臨櫃申請待登錄)
                     .Join(models.PromptAmendingLcApplication(profile),
-                        d => d.DocID, a => a.AmendingID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<CreditCancellation> PromptToAcceptBCL(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<CreditCancellation> PromptToAcceptBCL(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.待經辦審核
                 || d.CurrentLevel == (int)Naming.DocumentLevel.已退回_主管退回)
                     .Join(models.PromptCreditCancellation(profile),
-                        d => d.DocID, a => a.CancellationID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<CreditCancellation> PromptToVerifyBCL(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<CreditCancellation> PromptToVerifyBCL(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.待主管審核)
                     .Join(models.PromptCreditCancellation(profile),
-                        d => d.DocID, a => a.CancellationID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<CreditCancellation> PromptToRegisterAutoBCL(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<CreditCancellation> PromptToRegisterAutoBCL(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.主動餘額註銷_待登錄)
                     .Join(models.PromptCreditCancellation(profile),
-                        d => d.DocID, a => a.CancellationID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<CreditCancellation> PromptToAllowAutoBCL(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<CreditCancellation> PromptToAllowAutoBCL(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.主動餘額註銷_待放行)
                     .Join(models.PromptCreditCancellation(profile),
-                        d => d.DocID, a => a.CancellationID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<CreditCancellation> PromptToMarkBCL(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<CreditCancellation> PromptToMarkBCL(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<Documentary>().Where(d => d.CurrentLevel == (int)Naming.DocumentLevel.待註記)
                     .Join(models.PromptCreditCancellation(profile),
-                        d => d.DocID, a => a.CancellationID, (d, a) => a);
+                        d => d.DocID, a => a.DocumentaryID, (d, a) => a);
         }
 
-        public static IQueryable<AmendingLcApplication> PromptAmendingLcApplication(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<AmendingLcApplication> PromptAmendingLcApplication(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             var lcItems = models.GetTable<LetterOfCredit>()
                 .Join(models.GetTable<CreditApplicationDocumentary>()
-                    .Join(profile.GetActionBranch(models), a => a.開狀行, b => b.BankCode, (a, b) => a),
-                    l => l.AppID, d => d.AppID, (l, d) => l);
+                    .Join(profile.GetActionBranch(models), a => a.IssuingBankCode, b => b.BankCode, (a, b) => a),
+                    l => l.ApplicationID, d => d.DocumentaryID, (l, d) => l);
             var versionItems = models.GetTable<LetterOfCreditVersion>()
                 .Join(lcItems, a => a.LcID, l => l.LcID, (a, l) => a);
             // Filter for amending applications
@@ -206,28 +206,28 @@ namespace ModelCore.Helper
                     .Where(a => versionItems.Any(v => v.VersionID == a.SourceID));
         }
 
-        public static IQueryable<CreditCancellation> PromptCreditCancellation(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<CreditCancellation> PromptCreditCancellation(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<CreditCancellation>()
                     .Join(models.GetTable<LetterOfCredit>()
                         .Join(models.GetTable<CreditApplicationDocumentary>()
-                            .Join(profile.GetActionBranch(models), a => a.開狀行, b => b.BankCode, (a, b) => a),
-                            l => l.AppID, d => d.AppID, (l, d) => l),
+                            .Join(profile.GetActionBranch(models), a => a.IssuingBankCode, b => b.BankCode, (a, b) => a),
+                            l => l.ApplicationID, d => d.DocumentaryID, (l, d) => l),
                         a => a.LcID, l => l.LcID, (a, l) => a);
         }
 
-        public static IQueryable<BeneficiaryData> PromptToVerifyBeneficiary(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<BeneficiaryData> PromptToVerifyBeneficiary(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<BeneficiaryData>().Where(b => (b.Status == (int)Naming.BeneficiaryStatus.修改待放行 || b.Status == (int)Naming.BeneficiaryStatus.新增待放行 || b.Status == (int)Naming.BeneficiaryStatus.刪除待放行));
         }
 
-        public static IQueryable<CustomerOfBranch> PromptToVerifyCustomer(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<CustomerOfBranch> PromptToVerifyCustomer(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<CustomerOfBranch>().Where(b => profile.BranchCodeItems.Contains(b.BankCode)
                 && (b.CurrentLevel == (int)Naming.BeneficiaryStatus.修改待放行 || b.CurrentLevel == (int)Naming.BeneficiaryStatus.新增待放行 || b.CurrentLevel == (int)Naming.BeneficiaryStatus.刪除待放行));
         }
 
-        public static IQueryable<OrganizationBranchSettings> PromptToVerifyOrganizationSettings(this GenericManager<LcEntityDataContext> models, UserProfile profile)
+        public static IQueryable<OrganizationBranchSettings> PromptToVerifyOrganizationSettings(this GenericManager<LcEntityDbContext> models, UserProfile profile)
         {
             return models.GetTable<OrganizationBranchSettings>().Where(b => profile.BranchCodeItems.Contains(b.BankCode)
                 && (b.Status == (int)Naming.BeneficiaryStatus.修改待放行 || b.Status == (int)Naming.BeneficiaryStatus.新增待放行 || b.Status == (int)Naming.BeneficiaryStatus.刪除待放行));

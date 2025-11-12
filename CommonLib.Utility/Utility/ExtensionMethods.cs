@@ -1290,6 +1290,7 @@ namespace CommonLib.Utility
         public static Newtonsoft.Json.JsonSerializerSettings CommonJsonSettings = new Newtonsoft.Json.JsonSerializerSettings
         {
             NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
+            //ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
         };
 
         public static String JsonStringify(this Object model)

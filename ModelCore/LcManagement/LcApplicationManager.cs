@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ModelCore.DataModel;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using ModelCore.Locale;
 using ModelCore.UserManagement;
 using EAI.Service.Transaction;
@@ -21,15 +21,14 @@ namespace ModelCore.LcManagement
 			//
 		}
 
-        public LcApplicationManager(GenericManager<LcEntityDataContext> mgr) : base(mgr) { }
+        public LcApplicationManager(GenericManager<LcEntityDbContext> mgr) : base(mgr) { }
 
         public bool ApproveLcApplication(int? appID,UserProfile profile,String memo,String instruction)
         {
-            var item = this.EntityList.Where(a => a.AppID == appID).FirstOrDefault();
-            if (item != null && item.PaymentID.HasValue)
+            var item = this.EntityList.Where(a => a.DocumentaryID == appID).FirstOrDefault();
+            if (item != null)
             {
                 item.Documentary.DoApprove(Naming.DocumentLevel.待主管審核, profile.ProfileData.PID, memo);
-                item.PaymentNotification.放款作業專員 = profile.ProfileData.USER_NAME;
                 item.Instrunction = instruction;
 
                 this.SubmitChanges();
@@ -45,12 +44,10 @@ namespace ModelCore.LcManagement
 
         public bool VerifyLcApplication(int? appID, UserProfile profile,out CreditApplicationDocumentary item, String memo = null)
         {
-            item = this.EntityList.Where(a => a.AppID == appID).FirstOrDefault();
-            if (item != null && item.PaymentID.HasValue)
+            item = this.EntityList.Where(a => a.DocumentaryID == appID).FirstOrDefault();
+            if (item != null)
             {
                 item.Documentary.DoApprove(Naming.DocumentLevel.待CRC登錄, profile.ProfileData.PID, memo);
-                item.PaymentNotification.授信支援主管 = profile.ProfileData.USER_NAME;
-
                 this.SubmitChanges();
                 return true;
             }
@@ -59,11 +56,10 @@ namespace ModelCore.LcManagement
 
         public bool RegisterLcApplication(int? appID, UserProfile profile, String memo, String instruction = null)
         {
-            var item = this.EntityList.Where(a => a.AppID == appID).FirstOrDefault();
-            if (item != null && item.OpeningID.HasValue)
+            var item = this.EntityList.Where(a => a.DocumentaryID == appID).FirstOrDefault();
+            if (item != null)
             {
                 item.Documentary.DoApprove(Naming.DocumentLevel.待放行, profile.ProfileData.PID, memo);
-                item.OpeningApplicationDocumentary.放款作業專員 = profile.ProfileData.USER_NAME;
                 if (instruction != null)
                 {
                     item.Instrunction = instruction;
@@ -77,22 +73,20 @@ namespace ModelCore.LcManagement
 
         public bool AllowLcApplication(int? appID, UserProfile profile, String lcNo)
         {
-            var item = this.EntityList.Where(a => a.AppID == appID).FirstOrDefault();
+            var item = this.EntityList.Where(a => a.DocumentaryID == appID).FirstOrDefault();
             return AllowLcApplication(item, profile, lcNo);
         }
 
         public bool AllowLcApplication(CreditApplicationDocumentary item, UserProfile profile, String lcNo, String memo = null)
         {
-            if (item != null && item.OpeningID.HasValue)
+            if (item != null)
             {
-                this.Context.CreateLetterOfCredit(item.AppID, lcNo);
+                //this.Context.CreateLetterOfCredit(item.DocumentaryID, lcNo);
 
                 item.Documentary.DoApprove(Naming.DocumentLevel.已開立, profile.ProfileData.PID, String.Join(",", String.Format("LCNo:{0}", lcNo), memo));
                 //item.OpeningApplicationDocumentary.作業資訊組負責人 = profile.USER_NAME;
 
                 this.SubmitChanges();
-
-                this.ExecuteCommand("update OpeningApplicationDocumentary set 作業資訊組負責人 = {0} where OpeningID = {1}", profile.ProfileData.USER_NAME, item.OpeningID);
 
                 try
                 {
@@ -153,10 +147,6 @@ namespace ModelCore.LcManagement
                 //item.PaymentID = null;
                 //this.DeleteAnyOnSubmit<PaymentNotification>(p => p.PaymentID == paymentID);
 
-                int? openingID = item.OpeningID;
-                item.OpeningID = null;
-                this.DeleteAnyOnSubmit<OpeningApplicationDocumentary>(p => p.OpeningID == openingID);
-
                 this.SubmitChanges();
 
                 return true;
@@ -166,27 +156,18 @@ namespace ModelCore.LcManagement
 
         public bool DenyLcApplicationWhenAllowing(int? appID, UserProfile profile, string rejectReason)
         {
-            var item = this.EntityList.Where(a => a.AppID == appID).FirstOrDefault();
+            var item = this.EntityList.Where(a => a.DocumentaryID == appID).FirstOrDefault();
             if (item != null)
             {
                 if (item.OverTheCounter == true)
                 {
                     item.Documentary.DoDeny(Naming.DocumentLevel.臨櫃申請CRC主管退回, profile.ProfileData.PID, rejectReason);
-
-                    int? paymentID = item.PaymentID;
-                    item.PaymentID = null;
-                    this.DeleteAnyOnSubmit<PaymentNotification>(p => p.PaymentID == paymentID);
                 }
                 else
                 {
                     item.Documentary.DoDeny(Naming.DocumentLevel.已退回_CRC主管退回, profile.ProfileData.PID, rejectReason);
 
                 }
-
-                int? openingID = item.OpeningID;
-                item.OpeningID = null;
-                this.DeleteAnyOnSubmit<OpeningApplicationDocumentary>(p => p.OpeningID == openingID);
-
                 this.SubmitChanges();
                 return true;
             }
@@ -202,7 +183,7 @@ namespace ModelCore.LcManagement
 
         protected bool denyApplication(int? appID, UserProfile profile, string rejectReason, Naming.DocumentLevel denyLevel,String instruction,out CreditApplicationDocumentary item)
         {
-            item = this.EntityList.Where(a => a.AppID == appID).FirstOrDefault();
+            item = this.EntityList.Where(a => a.DocumentaryID == appID).FirstOrDefault();
             if (item != null)
             {
                 item.Documentary.DoDeny(denyLevel, profile.ProfileData.PID, rejectReason);
@@ -217,7 +198,7 @@ namespace ModelCore.LcManagement
 
         protected bool denyApplication(int? appID, UserProfile profile, string rejectReason,Naming.DocumentLevel denyLevel,out CreditApplicationDocumentary item)
         {
-            item = this.EntityList.Where(a => a.AppID == appID).FirstOrDefault();
+            item = this.EntityList.Where(a => a.DocumentaryID == appID).FirstOrDefault();
             if (item != null)
             {
                 item.Documentary.DoDeny(denyLevel, profile.ProfileData.PID, rejectReason);

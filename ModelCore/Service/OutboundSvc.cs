@@ -31,41 +31,41 @@ namespace ModelCore.Service
         public static void SendLcToCDS(this CreditApplicationDocumentary item)
         {
             string uri = new System.Text.StringBuilder(Settings.Default.urlToCDS)
-                .Append("?type=LC&fileName=").Append(HttpUtility.UrlEncode("LC-" + item.LetterOfCredit[0].LcNo + ".xml"))
+                .Append("?type=LC&fileName=").Append(HttpUtility.UrlEncode("LC-" + item.LetterOfCredit.FirstOrDefault()?.LcNo + ".xml"))
                 .Append("&no=").Append(HttpUtility.UrlEncode(item.ApplicationNo)).ToString();
 
             LLC lcObj = new LLC
             {
                 LC = new LLCLC
                 {
-                    AdvisingBank = item.通知行,
-                    AdvisingBankName = item.AdvisingBank.BranchName,
+                    AdvisingBank = item.AdvisingBankCode,
+                    AdvisingBankName = item.AdvisingBankCodeNavigation.BranchName,
                     AppDate = item.ApplicationDate.ToString("yyyy/MM/dd"),
                     Applicant = item.ApplicantDetails.CompanyName,
                     ApplicantAddr = item.ApplicantDetails.Addr,
                     AppNo = item.ApplicationNo,
-                    AtSight = item.見票即付.ToString(),
+                    AtSight = item.AtSight.ToString(),
                     AttachAcceptance = item.AttachableDocument.匯票承兌申請書.ToString(),
                     AttachInv = item.AttachableDocument.統一發票.ToString(),
                     AttachPaying = item.AttachableDocument.匯票付款申請書.ToString(),
-                    AtUsance = (!item.見票即付).ToString(),
+                    AtUsance = (!item.AtSight).ToString(),
                     Beneficiary = item.BeneDetails.CompanyName,
-                    BeneSeal = item.SpecificNote.受益人單獨蓋章.ToString(),
-                    EarlyInvDate = item.SpecificNote.接受發票早於開狀日.ToString(),
-                    Goods = item.LcItem.Goods,
-                    IssuingDate = item.LetterOfCredit[0].LcDate.ToString("yyyy/MM/dd"),
-                    LargerInvAmt = item.SpecificNote.接受發票金額大於開狀金額.ToString(),
-                    LcAmt = item.LcItem.開狀金額.ToString(),
-                    LcExpiry = String.Format("{0:yyyy/MM/dd}",item.LcItem.有效期限),
-                    LcNo = item.LetterOfCredit[0].LcNo,
-                    NoAfterThan = String.Format("{0:yyyy/MM/dd}",item.SpecificNote.最後交貨日),
-                    NonPatial = (!item.SpecificNote.分批交貨).ToString(),
-                    Partial = item.SpecificNote.分批交貨.ToString(),
-                    PayableBankAddr = item.PayableBank.Address,
-                    PayableBankName = item.PayableBank.BranchName,
+                    BeneSeal = item.SpecificNotes.受益人單獨蓋章.ToString(),
+                    EarlyInvDate = item.SpecificNotes.接受發票早於開狀日.ToString(),
+                    Goods = item.LcItems.Goods,
+                    IssuingDate = item.LetterOfCredit.FirstOrDefault()?.LcDate.ToString("yyyy/MM/dd"),
+                    LargerInvAmt = item.SpecificNotes.接受發票金額大於開狀金額.ToString(),
+                    LcAmt = item.LcItems.開狀金額.ToString(),
+                    LcExpiry = String.Format("{0:yyyy/MM/dd}",item.LcItems.有效期限),
+                    LcNo = item.LetterOfCredit.FirstOrDefault()?.LcNo,
+                    NoAfterThan = String.Format("{0:yyyy/MM/dd}",item.SpecificNotes.最後交貨日),
+                    NonPatial = (!item.SpecificNotes.分批交貨).ToString(),
+                    Partial = item.SpecificNotes.分批交貨.ToString(),
+                    PayableBankAddr = item.PayableBankCodeNavigation.Address,
+                    PayableBankName = item.PayableBankCodeNavigation.BranchName,
                     ReceiptNo = item.CustomerOfBranch.Organization.ReceiptNo,
-                    Seal = item.SpecificNote.原留印鑑相符.ToString(),
-                    Usance = item.LcItem.定日付款.ToString()
+                    Seal = item.SpecificNotes.原留印鑑相符.ToString(),
+                    Usance = item.LcItems.定日付款.ToString()
                 }
             };
 
@@ -75,7 +75,7 @@ namespace ModelCore.Service
         public static LLC SendLc(this CreditApplicationDocumentary item,String pdfBase64)
         {
 
-            string uri = item.BeneficiaryData.Organization.OrganizationStatus?.BeneficiaryGroup?.BeneficiaryServiceGroup?.PostUrl;
+            string uri = item.Beneficiary.Organization.OrganizationStatus?.Group?.Service?.PostUrl;
             if (uri == null)
             {
                 return null;
@@ -85,50 +85,50 @@ namespace ModelCore.Service
             {
                 LC = new LLCLC
                 {
-                    AdvisingBank = item.通知行,
-                    AdvisingBankName = item.AdvisingBank.BranchName,
+                    AdvisingBank = item.AdvisingBankCode,
+                    AdvisingBankName = item.AdvisingBankCodeNavigation.BranchName,
                     AppDate = item.ApplicationDate.ToString("yyyy/MM/dd"),
                     Applicant = item.ApplicantDetails.CompanyName,
                     ApplicantAddr = item.ApplicantDetails.Addr,
                     AppNo = item.ApplicationNo,
-                    AtSight = item.見票即付.ToString(),
+                    AtSight = item.AtSight.ToString(),
                     AttachAcceptance = item.AttachableDocument.匯票承兌申請書.ToString(),
                     AttachInv = item.AttachableDocument.統一發票.ToString(),
                     AttachPaying = item.AttachableDocument.匯票付款申請書.ToString(),
-                    AtUsance = (!item.見票即付).ToString(),
+                    AtUsance = (!item.AtSight).ToString(),
                     Beneficiary = item.BeneDetails.CompanyName,
-                    BeneSeal = item.SpecificNote.受益人單獨蓋章.ToString(),
-                    EarlyInvDate = item.SpecificNote.接受發票早於開狀日.ToString(),
-                    Goods = item.LcItem.BuildGoodsDetails(),
-                    IssuingDate = item.LetterOfCredit[0].LcDate.ToString("yyyy/MM/dd"),
-                    LargerInvAmt = item.SpecificNote.接受發票金額大於開狀金額.ToString(),
-                    LcAmt = item.LcItem.開狀金額.ToString(),
-                    LcExpiry = String.Format("{0:yyyy/MM/dd}", item.LcItem.有效期限),
-                    LcNo = item.LetterOfCredit[0].LcNo,
-                    NoAfterThan = String.Format("{0:yyyy/MM/dd}", item.SpecificNote.最後交貨日),
-                    NonPatial = (!item.SpecificNote.分批交貨).ToString(),
-                    Partial = item.SpecificNote.分批交貨.ToString(),
-                    PayableBankAddr = item.PayableBank.Address,
-                    PayableBankName = item.PayableBank.BranchName,
+                    BeneSeal = item.SpecificNotes.受益人單獨蓋章.ToString(),
+                    EarlyInvDate = item.SpecificNotes.接受發票早於開狀日.ToString(),
+                    Goods = item.LcItems.BuildGoodsDetails(),
+                    IssuingDate = item.LetterOfCredit.FirstOrDefault()?.LcDate.ToString("yyyy/MM/dd"),
+                    LargerInvAmt = item.SpecificNotes.接受發票金額大於開狀金額.ToString(),
+                    LcAmt = item.LcItems.開狀金額.ToString(),
+                    LcExpiry = String.Format("{0:yyyy/MM/dd}", item.LcItems.有效期限),
+                    LcNo = item.LetterOfCredit.FirstOrDefault()?.LcNo,
+                    NoAfterThan = String.Format("{0:yyyy/MM/dd}", item.SpecificNotes.最後交貨日),
+                    NonPatial = (!item.SpecificNotes.分批交貨).ToString(),
+                    Partial = item.SpecificNotes.分批交貨.ToString(),
+                    PayableBankAddr = item.PayableBankCodeNavigation.Address,
+                    PayableBankName = item.PayableBankCodeNavigation.BranchName,
                     ReceiptNo = item.CustomerOfBranch.Organization.ReceiptNo,
-                    Seal = item.SpecificNote.原留印鑑相符.ToString(),
-                    Usance = item.LcItem.定日付款.ToString(),
-                    PaymentDate = item.LcItem.PaymentDate?.ToString("yyyy/MM/dd"),
+                    Seal = item.SpecificNotes.原留印鑑相符.ToString(),
+                    Usance = item.LcItems.定日付款.ToString(),
+                    PaymentDate = item.LcItems.PaymentDate?.ToString("yyyy/MM/dd"),
                     AttachEInv = item.AttachableDocument.電子發票證明聯?.ToString(),
-                    BeneficiaryNo = item.BeneficiaryData.Organization.ReceiptNo,
+                    BeneficiaryNo = item.Beneficiary.Organization.ReceiptNo,
                     AttachOthers = item.AttachableDocument.其他,
-                    InvDateStart = item.SpecificNote.押匯發票起始日?.ToString("yyyy/MM/dd"),
-                    NegoDateStart = item.SpecificNote.押匯起始日?.ToString("yyyy/MM/dd"),
-                    AcceptInvAddr = item.SpecificNote.接受發票人地址與受益人地址不符?.ToString(),
-                    AcceptInvDetails = item.SpecificNote.貨品明細以發票為準?.ToString(),
-                    AcceptEInv = item.SpecificNote.接受發票電子訊息?.ToString(),
-                    LargerInvNego = item.SpecificNote.接受發票金額大於匯票金額?.ToString(),
-                    SpecificOthers = item.SpecificNote.其他,
+                    InvDateStart = item.SpecificNotes.押匯發票起始日?.ToString("yyyy/MM/dd"),
+                    NegoDateStart = item.SpecificNotes.押匯起始日?.ToString("yyyy/MM/dd"),
+                    AcceptInvAddr = item.SpecificNotes.接受發票人地址與受益人地址不符?.ToString(),
+                    AcceptInvDetails = item.SpecificNotes.貨品明細以發票為準?.ToString(),
+                    AcceptEInv = item.SpecificNotes.接受發票電子訊息?.ToString(),
+                    LargerInvNego = item.SpecificNotes.接受發票金額大於匯票金額?.ToString(),
+                    SpecificOthers = item.SpecificNotes.其他,
                     BankID = "009",
-                    IssuingBank = item.開狀行,
-                    PayableBank = item.付款行,
+                    IssuingBank = item.IssuingBankCode,
+                    PayableBank = item.PayableBankCode,
                     PdfBase64 = pdfBase64,
-                    ToConfirm = item.AppID.EncryptKey(),
+                    ToConfirm = item.DocumentaryID.EncryptKey(),
                 }
             };
 
@@ -238,8 +238,8 @@ namespace ModelCore.Service
                     AdviceDate = String.Format("{0:yyyy/MM/dd}", item.ApplicationDate),
                     AdviceNo = item.AmendingLcInformation.InformationNo,
                     AmendNo = item.AmendmentNo,
-                    AppNo = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ApplicationNo,
-                    LcNo = item.LetterOfCreditVersion.LetterOfCredit.LcNo
+                    AppNo = item.Source.Lc.Application.ApplicationNo,
+                    LcNo = item.Source.Lc.LcNo
                 }
             };
 
@@ -249,8 +249,8 @@ namespace ModelCore.Service
 
         public static LLC SendAmendmentInfo(this AmendingLcApplication item,String pdfBase64)
         {
-            LetterOfCreditVersion lc = item.LetterOfCreditVersion;
-            string uri = lc.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.OrganizationStatus?.BeneficiaryGroup?.BeneficiaryServiceGroup?.PostUrl;
+            LetterOfCreditVersion lc = item.Source;
+            string uri = lc.Lc.Application.Beneficiary.Organization.OrganizationStatus?.Group?.Service?.PostUrl;
             if (uri == null)
             {
                 return null;
@@ -263,19 +263,19 @@ namespace ModelCore.Service
                     AdviceDate = String.Format("{0:yyyy/MM/dd}", item.ApplicationDate),
                     AdviceNo = item.AmendingLcInformation?.InformationNo,
                     AmendNo = item.AmendmentNo,
-                    AppNo = lc.LetterOfCredit.CreditApplicationDocumentary.ApplicationNo,
-                    LcNo = lc.LetterOfCredit.LcNo,
+                    AppNo = lc.Lc.Application.ApplicationNo,
+                    LcNo = lc.Lc.LcNo,
                     BankID = "009",
-                    IssuingBank = lc.LetterOfCredit.CreditApplicationDocumentary.開狀行,
-                    ReceiptNo = lc.LetterOfCredit.CreditApplicationDocumentary.CustomerOfBranch.Organization.ReceiptNo,
+                    IssuingBank = lc.Lc.Application.IssuingBankCode,
+                    ReceiptNo = lc.Lc.Application.CustomerOfBranch.Organization.ReceiptNo,
                     PdfBase64 = pdfBase64,
-                    ToConfirm = item.AmendingID.EncryptKey(),
+                    ToConfirm = item.DocumentaryID.EncryptKey(),
                 }
             };
 
-            LcItem newItem, oldItem;
+            LcItems newItem, oldItem;
             AttachableDocument newAttach, oldAttach;
-            SpecificNote newSN, oldSN;
+            SpecificNotes newSN, oldSN;
 
             item.GetLcAmendmentItems(out newItem, out oldItem, out newAttach, out oldAttach, out newSN, out oldSN, out String newNotifyingBank, out String oldNotifyingBank);
 
@@ -399,8 +399,8 @@ namespace ModelCore.Service
             LLC lcObj = new LLC
             {
                 ApplyLcNo = new LLCApplyLcNo {
-                    ApplNo = item.LetterOfCredit.CreditApplicationDocumentary.ApplicationNo,
-                    LcNo = item.LetterOfCredit.LcNo,
+                    ApplNo = item.Lc.Application.ApplicationNo,
+                    LcNo = item.Lc.LcNo,
                     CancelNo = item.註銷申請號碼
                 },
                 Reject = new LLCReject
@@ -416,8 +416,8 @@ namespace ModelCore.Service
 
         public static LLC SendLcCancellation(this CreditCancellation item, String pdfBase64)
         {
-            LetterOfCredit lc = item.LetterOfCredit;
-            string uri = lc.CreditApplicationDocumentary.BeneficiaryData.Organization.OrganizationStatus?.BeneficiaryGroup?.BeneficiaryServiceGroup?.PostUrl;
+            LetterOfCredit lc = item.Lc;
+            string uri = lc.Application.Beneficiary.Organization.OrganizationStatus?.Group?.Service?.PostUrl;
             if (uri == null)
             {
                 return null;
@@ -427,15 +427,15 @@ namespace ModelCore.Service
             {
                 LcCancel = new LLCLcCancel
                 {
-                    ApplNo = lc.CreditApplicationDocumentary.ApplicationNo,
+                    ApplNo = lc.Application.ApplicationNo,
                     LcNo = lc.LcNo,
                     CancelNo = item.註銷申請號碼,
                     PdfBase64 = pdfBase64,
                     BankID = "009",
-                    IssuingBank = lc.CreditApplicationDocumentary.開狀行,
+                    IssuingBank = lc.Application.IssuingBankCode,
                     CancelDate = $"{item.CreditCancellationInfo?.CancellationDate:yyyy/MM/dd}",
-                    ReceiptNo = lc.CreditApplicationDocumentary.CustomerOfBranch.Organization.ReceiptNo,
-                    ToConfirm = item.CancellationID.EncryptKey(),
+                    ReceiptNo = lc.Application.CustomerOfBranch.Organization.ReceiptNo,
+                    ToConfirm = item.DocumentaryID.EncryptKey(),
                 }
             };
 
@@ -467,16 +467,16 @@ namespace ModelCore.Service
                     break;
                 case Naming.DocumentTypeDefinition.修狀申請書:
                     dsAppl.Type = "LCR";
-                    docNo = rejectData.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ApplicationNo;
-                    dsAppl.ApplyLcNo.ApplNo = rejectData.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ApplicationNo;
-                    dsAppl.ApplyLcNo.LcNo = rejectData.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.LcNo;
+                    docNo = rejectData.AmendingLcApplication.Source.Lc.Application.ApplicationNo;
+                    dsAppl.ApplyLcNo.ApplNo = rejectData.AmendingLcApplication.Source.Lc.Application.ApplicationNo;
+                    dsAppl.ApplyLcNo.LcNo = rejectData.AmendingLcApplication.Source.Lc.LcNo;
                     dsAppl.ApplyLcNo.AmendNo = rejectData.AmendingLcApplication.AmendmentNo;
                     break;
                 case Naming.DocumentTypeDefinition.信用狀註銷申請書:
                     dsAppl.Type = "LCD";
                     docNo = rejectData.CreditCancellation.註銷申請號碼;
-                    dsAppl.ApplyLcNo.ApplNo = rejectData.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.ApplicationNo;
-                    dsAppl.ApplyLcNo.LcNo = rejectData.CreditCancellation.LetterOfCredit.LcNo;
+                    dsAppl.ApplyLcNo.ApplNo = rejectData.CreditCancellation.Lc.Application.ApplicationNo;
+                    dsAppl.ApplyLcNo.LcNo = rejectData.CreditCancellation.Lc.LcNo;
                     dsAppl.ApplyLcNo.CancelNo = rejectData.CreditCancellation.註銷申請號碼;
                     break;
                 default:
@@ -530,8 +530,8 @@ namespace ModelCore.Service
         public static LLC AllowNegoDraft(this NegoDraft item)
         {
 
-            string uri = item.LetterOfCreditVersion?.LetterOfCredit?.CreditApplicationDocumentary.BeneficiaryData.Organization.OrganizationStatus?.BeneficiaryGroup?.BeneficiaryServiceGroup?.PostUrl
-                        ?? item.NegoLC?.BeneficiaryData.Organization.OrganizationStatus?.BeneficiaryGroup?.BeneficiaryServiceGroup?.PostUrl;
+            string uri = item.NegoLcVersion?.Lc?.Application.Beneficiary.Organization.OrganizationStatus?.Group?.Service?.PostUrl
+                        ?? item.NegoLcVersion.Lc.NegoLC?.Beneficiary.Organization.OrganizationStatus?.Group?.Service?.PostUrl;
 
             if (uri == null)
             {
@@ -543,9 +543,9 @@ namespace ModelCore.Service
                 AllowedNego = new LLCAllowedNego
                 {
                     DraftNo = item.DraftNo,
-                    LcNo = item.LetterOfCreditVersion?.LetterOfCredit?.LcNo ?? item.NegoLC?.LCNo,
+                    LcNo = item.NegoLcVersion?.Lc?.LcNo ,
                     BankID = "009",
-                    ToConfirm = item.DraftID.EncryptKey(),
+                    ToConfirm = item.DocumentaryID.EncryptKey(),
                 }
             };
 
@@ -556,8 +556,8 @@ namespace ModelCore.Service
         public static LLC RejectNegoDraft(this NegoDraft item)
         {
 
-            string uri = item.LetterOfCreditVersion?.LetterOfCredit?.CreditApplicationDocumentary.BeneficiaryData.Organization.OrganizationStatus?.BeneficiaryGroup?.BeneficiaryServiceGroup?.PostUrl
-                        ?? item.NegoLC?.BeneficiaryData.Organization.OrganizationStatus?.BeneficiaryGroup?.BeneficiaryServiceGroup?.PostUrl;
+            string uri = item.NegoLcVersion?.Lc?.Application.Beneficiary.Organization.OrganizationStatus?.Group?.Service?.PostUrl
+                        ?? item.NegoLcVersion.Lc.NegoLC?.Beneficiary.Organization.OrganizationStatus?.Group?.Service?.PostUrl;
 
             if (uri == null)
             {
@@ -569,9 +569,9 @@ namespace ModelCore.Service
                 RejectedNego = new LLCRejectedNego
                 {
                     DraftNo = item.DraftNo,
-                    LcNo = item.LetterOfCreditVersion?.LetterOfCredit?.LcNo ?? item.NegoLC?.LCNo,
+                    LcNo = item.NegoLcVersion?.Lc?.LcNo,
                     BankID = "009",
-                    ToConfirm = item.DraftID.EncryptKey(),
+                    ToConfirm = item.DocumentaryID.EncryptKey(),
                 }
             };
 

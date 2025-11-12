@@ -7,15 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using ModelCore.Locale;
 using CommonLib.Utility;
 using ModelCore.UserManagement;
+using Microsoft.EntityFrameworkCore;
 
 namespace ModelCore.UploadManagement
 {
     public abstract class XmlUploadManager<T, TEntity> : GenericManager<T, TEntity>, ICsvUploadManager, IUploadManager<ItemUpload<TEntity>>
-        where T : DataContext, new()
+        where T : DbContext, new()
         where TEntity : class,new()
     {
         protected List<ItemUpload<TEntity>> _items;

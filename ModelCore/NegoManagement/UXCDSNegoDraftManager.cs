@@ -1,84 +1,82 @@
+using CommonLib.Core.DataWork;
+using CommonLib.Utility;
+using Microsoft.EntityFrameworkCore.Storage;
+using ModelCore.BankManagement;
+using ModelCore.DataModel;
+using ModelCore.EventMessageApp;
+using ModelCore.Helper;
+using ModelCore.Locale;
+using ModelCore.Properties;
+using ModelCore.Schema;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Web;
-
-
-
-using CommonLib.DataAccess;
-using ModelCore.DataModel;
-using ModelCore.EventMessageApp;
-using ModelCore.Locale;
-using ModelCore.Properties;
-using CommonLib.Utility;
-using ModelCore.BankManagement;
-using ModelCore.Helper;
-
-using System.Threading;
-using System.Text;
-using System.Collections.Specialized;
-using System.Threading.Tasks;
 using System.Net;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace ModelCore.NegoManagement
 {
-	/// <summary>
-	/// NegoDraftDALC 的摘要描述。
-	/// </summary>
+    /// <summary>
+    /// NegoDraftDALC 的摘要描述。
+    /// </summary>
     public class UXCDSNegoDraftManager : LcEntityManager<NegoDraft>
-	{
-		public UXCDSNegoDraftManager() : base()
-		{
-			//
-			// TODO: 在此加入建構函式的程式碼
-			//
-		}
+    {
+        public UXCDSNegoDraftManager() : base()
+        {
+            //
+            // TODO: 在此加入建構函式的程式碼
+            //
+        }
 
-        public UXCDSNegoDraftManager(GenericManager<LcEntityDataContext> mgr) : base(mgr) { }
+        public UXCDSNegoDraftManager(GenericManager<LcEntityDbContext> mgr) : base(mgr) { }
 
-		public bool AllowMarkedNegoApplication(string approver,int[] draftID,String[] branchNo)
-		{
-			bool bResult = false;
-            if (draftID != null && draftID.Length > 0 && branchNo != null && branchNo.Length==draftID.Length )
-			{
-                DbTransaction sqlTran = null;
+        public bool AllowMarkedNegoApplication(string approver, int[] draftID, String[] branchNo)
+        {
+            bool bResult = false;
+            if (draftID != null && draftID.Length > 0 && branchNo != null && branchNo.Length == draftID.Length)
+            {
+                IDbContextTransaction sqlTran = null;
+                try
+                {
 
-				try
-				{
-					Context.Connection.Open();
+                    sqlTran = Context.Database.BeginTransaction();
 
-                    sqlTran = Context.Connection.BeginTransaction();
-                    Context.Transaction = sqlTran;
+                    for (int i = 0; i < draftID.Length; i++)
+                    {
+                        //Context.AllowNegoApplication(draftID[i], approver, null, null, branchNo[i]);
+                    }
 
-					for(int i=0;i<draftID.Length;i++)
-					{
-                        Context.AllowNegoApplication(draftID[i], approver, null, null, branchNo[i]);
-					}
+                    sqlTran.Commit();
+                    bResult = true;
+                }
+                catch (Exception ex)
+                {
+                    if (sqlTran != null)
+                    {
+                        sqlTran.Rollback();
+                    }
+                    ModelCore.Helper.Logger.Error(ex, ModelCore.Helper.Logger.LogLevel.Error);
+                }
+                finally
+                {
+                    if(sqlTran != null)
+                    {
+                        sqlTran.Dispose();
+                    }   
+                }
+            }
 
-					sqlTran.Commit();
-					bResult = true;
-				}
-				catch(Exception ex)
-				{
-					if(sqlTran!=null)
-					{
-						sqlTran.Rollback();
-					}
-					ModelCore.Helper.Logger.Error(ex, ModelCore.Helper.Logger.LogLevel.Error);
-				}
-				finally
-				{
-                    Context.Connection.Close();
-				}
-			}
-
-			return bResult;
-		}
+            return bResult;
+        }
 
 
         public void SavePromptInfo(ModelCore.Schema.UXCDS.NegoData negoData)
@@ -91,15 +89,16 @@ namespace ModelCore.NegoManagement
                 ImportDate = now
             };
 
-            this.GetTable<NegoPrompt>().InsertOnSubmit(prompt);
+            this.GetTable<NegoPrompt>().Add(prompt);
             this.SubmitChanges();
 
-            LetterOfCredit lc;
-            NegoLC nlc;
-            if (!CheckNegoLC(negoData.LC, out lc, out nlc))
+            LetterOfCreditVersion eLc;
+            if (!CheckNegoLC(negoData.LC, out eLc))
             {
                 return;
             }
+
+            var lc = eLc.Lc;
 
             var draftRow = negoData.Draft;
             if (draftRow == null)
@@ -109,11 +108,10 @@ namespace ModelCore.NegoManagement
             else
             {
                 NegoDraft draft = this.EntityList.Where(d => d.DraftNo == draftRow.DraftNo)
-                                            .OrderByDescending(d => d.DraftID).FirstOrDefault();
+                                    .OrderByDescending(d => d.DocumentaryID).FirstOrDefault();
                 if (draft != null)
                 {
-                    if (draft.LcID == lc?.LcID
-                        || draft.LC_ID == nlc?.LC_ID)
+                    if (draft.NegoLcVersionID == eLc.VersionID)
                     {
                         if (draft.Documentary.CurrentLevel == (int)Naming.DocumentLevel.銀行已拒絕)
                         {
@@ -138,7 +136,8 @@ namespace ModelCore.NegoManagement
                         {
                             DraftType = (int)Naming.DraftType.CDS_CSC
                         },
-                        NegoPrompt = prompt
+                        Prompt = prompt,
+                        NegoDate = draftRow.NegoDate ?? DateTime.Now,
                     };
 
                     new DocumentaryLevel
@@ -148,25 +147,21 @@ namespace ModelCore.NegoManagement
                         DocLevel = (int)Naming.DocumentLevel.待經辦審核
                     };
 
-                    if (lc != null)
+                    draft.NegoLcVersionID = lc.LetterOfCreditVersion.OrderByDescending(v => v.VersionID).First().VersionID;
+                    if (lc.Application != null)
                     {
-                        draft.LcID = lc.LcID;
-                        draft.NegoDraftExtension.NegoBranch = lc.CreditApplicationDocumentary.通知行;
-                        draft.NegoDraftExtension.LcBranch = lc.CreditApplicationDocumentary.開狀行;
-                        if (lc.CreditApplicationDocumentary.BeneficiaryData.DraftType == (int)Naming.DraftType.WASIN)
+                        draft.NegoDraftExtension.NegoBranch = lc.Application?.AdvisingBankCode;
+                        draft.NegoDraftExtension.LcBranch = lc.Application.IssuingBankCode;
+                        if (lc.Application.Beneficiary.DraftType == (int)Naming.DraftType.WASIN)
                         {
                             draft.NegoDraftExtension.DraftType = (int)Naming.DraftType.WASIN;
                         }
-                        //draft.NegoDraftExtension.入戶帳號 = lc.CreditApplicationDocumentary.BeneficiaryData.Organization.BeneficiaryTransferInto
-                        //                                        .Where(b => b.Status == (int)Naming.BeneficiaryStatus.已核准)
-                        //                                        .FirstOrDefault()?.AccountNo;
                     }
                     else
                     {
-                        draft.LC_ID = nlc.LC_ID;
-                        draft.NegoDraftExtension.NegoBranch = nlc.AdvisingBank;
-                        draft.NegoDraftExtension.LcBranch = nlc.IssuingBank;
-                        var draftType = this.GetTable<BeneficiaryData>().Where(b => b.BeneID == nlc.BeneficiaryID)
+                        draft.NegoDraftExtension.NegoBranch = lc.NegoLC.AdvisingBank;
+                        draft.NegoDraftExtension.LcBranch = lc.NegoLC.IssuingBank;
+                        var draftType = this.GetTable<BeneficiaryData>().Where(b => b.OrganizationID == lc.NegoLC.BeneficiaryID)
                             .Select(b => b.DraftType).FirstOrDefault();
                         if (draftType == (int)Naming.DraftType.WASIN)
                         {
@@ -177,49 +172,21 @@ namespace ModelCore.NegoManagement
                     UpdateNegoDraft(draft, draftRow, negoData.Invoice);
                     draft.DraftContent = draftRow.GetXml();
 
-                    this.EntityList.InsertOnSubmit(draft);
+                    this.EntityList.Add(draft);
                     this.SubmitChanges();
                     draft.UpdateAppSeq(this);
 
-                    MessageNotification.CreateInboxMessage(draft.DraftID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
-                    MessageNotification.CreateMailMessage(this, draft.DraftID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
+                    //MessageNotification.CreateInboxMessage(draft.DocumentaryID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
+                    //MessageNotification.CreateMailMessage(this, draft.DocumentaryID, Naming.MessageTypeDefinition.MSG_NEGO_APP_READY, Naming.MessageReceipent.ForBank);
 
                 }
 
-                var organization = lc?.CreditApplicationDocumentary.BeneficiaryData.Organization ?? nlc.BeneficiaryData.Organization;
-                CommitNegoPrompt(organization?.OrganizationStatus?.BeneficiaryGroup?.BeneficiaryServiceGroup?.ConfirmUrl, draftRow.KeyID);
+                var organization = lc?.Application?.Beneficiary.Organization ?? lc.NegoLC?.Beneficiary?.Organization;
+                CommitNegoPrompt(organization?.OrganizationStatus?.Group?.Service?.ConfirmUrl, draftRow.KeyID);
 
             }
 
 
-        }
-
-        private void CommitNegoPrompt(String confirmUrl, string draftKey)
-        {
-            if (confirmUrl != null)
-            {
-                Task.Run(() => 
-                {
-                    using (WebClientEx client = new WebClientEx()
-                    {
-                        Timeout = Timeout.Infinite,
-                    })
-                    {
-                        if (!String.IsNullOrEmpty(Settings.Default.ProxyUrlToUXCDS))
-                        {
-                            client.Proxy = new WebProxy(Settings.Default.ProxyUrlToUXCDS, true);
-                        }
-                        client.Encoding = Encoding.UTF8;
-                        NameValueCollection values = new NameValueCollection
-                        {
-                            ["KeyID"] = ""
-                        };
-
-                        values["KeyID"] = draftKey;
-                        client.UploadValues(confirmUrl, values);
-                    }
-                });
-            }
         }
 
         public bool UpdateNegoDraft(NegoDraft draft, ModelCore.Schema.UXCDS.NegoDraft draftRow, ModelCore.Schema.UXCDS.BusinessInvoice[] invoiceDetails)
@@ -228,17 +195,16 @@ namespace ModelCore.NegoManagement
             int year = ((DateTime)draftRow.ShipmentDate).Year - 1911;
 
             draft.DraftNo = draftRow.DraftNo.ToString();
-            draft.NegoDraftExtension.NegotiateDate = draft.NegoDraftExtension.DueDate 
-                = draft.ImportDate = DateTime.Now;
+            draft.NegoDraftExtension.DueDate = draft.NegoDate = DateTime.Now;
             draft.ShipmentDate = draftRow.ShipmentDate;
             draft.Amount = draftRow.Amount;
-            draft.NegoDraftExtension.入戶帳號 = draftRow.DepositAccount;
+            draft.NegoDraftExtension.BeneficiaryAccountNo = draftRow.DepositAccount;
             draft.ItemName = draftRow.ItemName.ToString();
-                draft.ItemQuantity = draftRow.ItemQuantity;
-                draft.ItemSubtotal = draftRow.ItemSubtotal;
+            draft.ItemQuantity = draftRow.ItemQuantity;
+            draft.ItemSubtotal = draftRow.ItemSubtotal;
             if (draftRow.FrontSeal?.Content != null)
             {
-                if(draft.FrontSeal!=draftRow.FrontSeal.SealPath)
+                if (draft.FrontSeal != draftRow.FrontSeal.SealPath)
                 {
                     draft.FrontSeal = draftRow.FrontSeal.SealPath;
                     String sealPath = Path.Combine(AppSettings.Default.TempPath, draftRow.FrontSeal.SealPath);
@@ -264,6 +230,34 @@ namespace ModelCore.NegoManagement
             return true;
         }
 
+        private void CommitNegoPrompt(String confirmUrl, string draftKey)
+        {
+            if (confirmUrl != null)
+            {
+                Task.Run(() =>
+                         {
+                             using (WebClientEx client = new WebClientEx()
+                             {
+                                 Timeout = Timeout.Infinite,
+                             })
+                             {
+                                 if (!String.IsNullOrEmpty(Settings.Default.ProxyUrlToUXCDS))
+                                 {
+                                     client.Proxy = new WebProxy(Settings.Default.ProxyUrlToUXCDS, true);
+                                 }
+                                 client.Encoding = Encoding.UTF8;
+                                 NameValueCollection values = new NameValueCollection
+                                 {
+                                     ["KeyID"] = ""
+                                 };
+
+                                 values["KeyID"] = draftKey;
+                                 client.UploadValues(confirmUrl, values);
+                             }
+                         });
+            }
+        }
+
         private void UpdateNegoInvoice(NegoDraft draft, List<ModelCore.Schema.UXCDS.NegoInvoice> draftInvoice, ModelCore.Schema.UXCDS.BusinessInvoice[] invoiceDetails)
         {
             if (draftInvoice != null && draftInvoice.Count > 0)
@@ -284,7 +278,7 @@ namespace ModelCore.NegoManagement
                     };
 
                     invoice.InvoiceContent = invoiceDetails?.Where(v => v.InvoiceNo == invoiceRow.InvoiceNo)
-                                                .FirstOrDefault()?.DataContent;
+                                      .FirstOrDefault()?.DataContent;
                     if (!draft.InvoiceDate.HasValue || draft.InvoiceDate > invoice.InvoiceDate)
                     {
                         draft.InvoiceDate = invoice.InvoiceDate;
@@ -294,10 +288,10 @@ namespace ModelCore.NegoManagement
             }
         }
 
-        public bool CheckNegoLC(ModelCore.Schema.UXCDS.NegoLC lcData, out LetterOfCredit eLc, out NegoLC lc)
+        public bool CheckNegoLC(ModelCore.Schema.UXCDS.NegoLC lcData, out LetterOfCreditVersion eLc)
         {
             eLc = null;
-            lc = null;
+            NegoLC nlc = null;
 
             var applicantItem = lcData?.Applicant;
 
@@ -305,18 +299,17 @@ namespace ModelCore.NegoManagement
                 return false;
 
             lcData.LCNo = lcData.LCNo.GetEfficientString();
-            eLc = this.GetTable<LetterOfCredit>().Where(l => l.LcNo == lcData.LCNo).FirstOrDefault();
+            eLc = this.GetTable<LetterOfCreditVersion>().Where(l => l.Lc.LcNo == lcData.LCNo)
+                .OrderByDescending(l => l.VersionID)
+                .FirstOrDefault();
             if (eLc != null)
-            {
-                lc = null;
-                return true;
-            }
-            else if ((lc = this.GetTable<NegoLC>().Where(l => l.LCNo == lcData.LCNo).FirstOrDefault()) != null)
             {
                 return true;
             }
 
             String issuingBank = lcData.IssuingBank.Right(4);
+            String advisingBank = lcData.NotifyingBank?.Right(4);
+            String payableBank = lcData.AdvisingBank?.Right(4);
 
             var applicant = this.GetTable<Organization>().Where(o => o.ReceiptNo == applicantItem.ReceiptNo).FirstOrDefault();
             if (applicant == null)
@@ -345,7 +338,7 @@ namespace ModelCore.NegoManagement
                         Undertaker = applicant.UndertakerName
                     }
                 };
-                this.GetTable<CustomerOfBranch>().InsertOnSubmit(cust);
+                this.GetTable<CustomerOfBranch>().Add(cust);
                 this.SubmitChanges();
             }
 
@@ -373,31 +366,110 @@ namespace ModelCore.NegoManagement
                 this.SubmitChanges();
             }
 
-            lc = new NegoLC
+            // Create AttachableDocument
+            AttachableDocument attachableDoc = new AttachableDocument
             {
-                LCNo = (String)lcData.LCNo,
+                匯票付款申請書 = null,
+                匯票承兌申請書 = null,
+                統一發票 = null,
+                電子發票證明聯 = null,
+                其他 = null
+            };
+            this.GetTable<AttachableDocument>().Add(attachableDoc);
+            this.SubmitChanges();
+
+            // Create SpecificNotes
+            SpecificNotes specificNotes = new SpecificNotes
+            {
+                原留印鑑相符 = null,
+                受益人單獨蓋章 = null,
+                分批交貨 = null,
+                最後交貨日 = null,
+                接受發票早於開狀日 = null,
+                接受發票金額大於開狀金額 = null,
+                其他 = null,
+                押匯起始日 = null,
+                押匯發票起始日 = null,
+                接受發票人地址與受益人地址不符 = null,
+                接受發票電子訊息 = null,
+                貨品明細以發票為準 = null,
+                接受發票金額大於匯票金額 = null,
+                以發票收執聯或扣抵聯正本押匯 = null,
+                發票影本可接受 = null,
+                NonCSCTerms = null,
+                IsUsanceLcInterestPayByBuyer = null,
+                IsAcceptanceChargePayByBuyer = null,
+                SpecialMessageForCS = null,
+                IsCSCTerms = null,
+                CSCSalesDept = null
+            };
+            this.GetTable<SpecificNotes>().Add(specificNotes);
+            this.SubmitChanges();
+
+            // Get CurrencyID (assuming default or mapping needed)
+            var currencyType = this.GetTable<CurrencyType>().FirstOrDefault();
+            int currencyId = currencyType?.CurrencyID ?? 1; // Default to 1 if not found
+
+            // Create LcItems
+            LcItems lcItems = new LcItems
+            {
+                開狀金額 = lcData.Amount,
+                有效期限 = lcData.DateOfExpiry,
+                CurrencyTypeID = currencyId,
+                Goods = null, // Can be populated from lcData if available
+                定日付款 = lcData.DueDays ?? 0,
+                PaymentDate = null,
+                PaymentTerms = null
+            };
+            this.GetTable<LcItems>().Add(lcItems);
+            this.SubmitChanges();
+
+            // Create NegoLcVersion
+            var lc = new LetterOfCredit
+            {
+                LcNo = lcData.LCNo,
+                可用餘額 = lcData.AvailableAmount ?? lcData.Amount,
+                LcDate = lcData.DateOfIssue,
+                AppCountersign = false,
+                PrintNotice = null,
+                受益人匯票簽核認可 = null,
+                NotifyingBank = advisingBank
+            };
+            this.GetTable<LetterOfCredit>().Add(lc);
+            this.SubmitChanges();
+
+            // Create Source
+            eLc = new LetterOfCreditVersion
+            {
+                LcID = lc.LcID,
+                VersionNo = 0, // Initial version
+                LcItemsID = lcItems.ItemID,
+                SpecificNotesID = specificNotes.NoteID,
+                AttachableDocumentID = attachableDoc.AttachmentID,
+                AmendingLcInformationID = null,
+                NotifyingBank = advisingBank
+            };
+            this.GetTable<LetterOfCreditVersion>().Add(eLc);
+            this.SubmitChanges();
+
+            // Also create NegoLC for backward compatibility
+            nlc = new NegoLC
+            {
+                LcID = eLc.LcID,
                 CompanyID = applicant.CompanyID,
-                BeneficiaryID = bene.CompanyID,
-                DateOfIssue = (DateTime)lcData.DateOfIssue,
-                DateOfExpiry = (DateTime)lcData.DateOfExpiry,
-                Amount = lcData.Amount,
-                ApplicantReceiptNo = (String)lcData.ApplicantReceiptNo,
-                AdvisingBank = ((String)lcData.NotifyingBank).Right(4),
-                PayableBank = ((String)lcData.AdvisingBank).Right(4),
-                ShipmentNoAfter = lcData.ShipmentNoAfter,
-                LCType = lcData.LCType,
-                AvailableAmount = lcData.AvailableAmount ?? lcData.Amount,
-                DueDays = lcData.DueDays,
-                BeneficiaryReceiptNo = bene.ReceiptNo,
-                VersionID = cust.CurrentVersion,
-                BeneDetailID = beneData.CurrentVersion,
+                BeneficiaryID = beneData.OrganizationID,
                 ImportDate = DateTime.Now,
                 IssuingBank = issuingBank,
+                AdvisingBank = advisingBank,
+                PayableBank = payableBank,
+                LCType = lcData.LCType,
                 Status = 0,
-                DownloadFlag = 1
+                DownloadFlag = 1,
+                ApplicantDetailsID = cust.CustomerOfBranchVersionID,
+                BeneDetailsID = beneData.CustomerOfBranchVersionID
             };
 
-            this.GetTable<NegoLC>().InsertOnSubmit(lc);
+            this.GetTable<NegoLC>().Add(nlc);
             this.SubmitChanges();
 
             return true;
@@ -430,11 +502,10 @@ namespace ModelCore.NegoManagement
                 OrganizationStatus = new OrganizationStatus { },
             };
 
-            this.GetTable<Organization>().InsertOnSubmit(item);
+            this.GetTable<Organization>().Add(item);
             this.SubmitChanges();
             return item;
         }
-
 
     }
 }

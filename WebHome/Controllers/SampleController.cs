@@ -17,7 +17,7 @@ using WebHome.Properties;
 using ModelCore.Models.ViewModel;
 using ModelCore.Helper;
 using CommonLib.Utility;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using CommonLib.Core.Utility;
 using WebHome.Helper;
 using Newtonsoft.Json;
@@ -32,7 +32,7 @@ namespace WebHome.Controllers
         protected internal ModelSource? _dataSource;
 
         protected internal bool _dbInstance;
-        protected internal GenericManager<LcEntityDataContext>? models;
+        protected internal GenericManager<LcEntityDbContext>? models;
 
         public SampleController(IServiceProvider serviceProvider, ILoggerFactory loggerFactory) : base(serviceProvider)
         {
@@ -56,16 +56,16 @@ namespace WebHome.Controllers
 
         public ModelSource DataSource => _dataSource!;
 
-        protected LcEntityDataContext db => models!.DataContext;
+        protected LcEntityDbContext db => models!.DataContext;
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
 
-            models = HttpContext.Items["__DB_Instance"] as GenericManager<LcEntityDataContext>;
+            models = HttpContext.Items["__DB_Instance"] as GenericManager<LcEntityDbContext>;
             if (models == null)
             {
-                models = new GenericManager<LcEntityDataContext>();
+                models = new GenericManager<LcEntityDbContext>();
                 _dbInstance = true;
                 HttpContext.Items["__DB_Instance"] = models;
             }
@@ -118,7 +118,7 @@ namespace WebHome.Controllers
         //        ProcessStart = DateTime.Now,
         //        ResponsePath = System.IO.Path.Combine(CommonLib.Core.Utility.FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + ".xlsx"),
         //    };
-        //    models!.GetTable<ProcessRequest>().InsertOnSubmit(processItem);
+        //    models!.GetTable<ProcessRequest>().Add(processItem);
         //    models.SubmitChanges();
 
         //    SqlCommand sqlCmd = (SqlCommand)models.GetCommand(items);

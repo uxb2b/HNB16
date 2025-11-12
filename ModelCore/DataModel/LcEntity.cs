@@ -1,20 +1,52 @@
+using CommonLib.Core.DataWork;
+using CommonLib.DataAccess;
+using Microsoft.EntityFrameworkCore;
+using ModelCore.Properties;
 using System.Data.Linq.Mapping;
 
 namespace ModelCore.DataModel
 {
-    public partial class LcEntityDataContext
+    //public partial class LcEntityDbContext
+    //{
+    //    public LcEntityDbContext() :
+    //        base(ModelCore.Properties.Settings.Default.ConnectionString, mappingSource)
+    //    {
+    //        OnCreated();
+    //    }
+
+    //    partial void OnCreated()
+    //    {
+    //        this.CommandTimeout = 86400;
+    //    }
+    //}
+
+    public partial class LcEntityDbContext
     {
-        public LcEntityDataContext() :
-            base(ModelCore.Properties.Settings.Default.ConnectionString, mappingSource)
+        private readonly SqlLogger? _logWriter;
+        public LcEntityDbContext()
         {
-            OnCreated();
+            if (CommonLib.Core.Properties.AppSettings.Default.SqlLog)
+            {
+                _logWriter = new SqlLogger { IgnoreSelect = CommonLib.Core.Properties.AppSettings.Default.SqlLogIgnoreSelect };
+            }
         }
 
-        partial void OnCreated()
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.UseSqlServer(AppSettings.Default.ConnectionString)
+                .LogTo((sql) =>
+                {
+                    _logWriter?.WriteLine(sql);
+                })
+                .UseLazyLoadingProxies(); // << ¶}±Ò Lazy Loading Proxy
+
+        public override void Dispose()
         {
-            this.CommandTimeout = 86400;
+            base.Dispose();
+            _logWriter?.Dispose();
         }
+
     }
+
 
 
 }

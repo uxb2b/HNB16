@@ -27,7 +27,7 @@ namespace WebHome.Controllers.Base
             }
 
             var item = models!.GetTable<CreditApplicationDocumentary>()
-                .Where(c => c.AppID == tmp)
+                .Where(c => c.DocumentaryID == tmp)
                 .FirstOrDefault();
 
             if (viewModel.IgnoreEmpty != true)
@@ -55,7 +55,7 @@ namespace WebHome.Controllers.Base
             }
 
             var item = models!.GetTable<AmendingLcApplication>()
-                .Where(c => c.AmendingID == tmp)
+                .Where(c => c.DocumentaryID == tmp)
                 .FirstOrDefault();
 
             if (viewModel.IgnoreEmpty != true)
@@ -112,7 +112,7 @@ namespace WebHome.Controllers.Base
             }
 
             var item = models!.GetTable<CreditCancellation>()
-                .Where(c => c.CancellationID == tmp)
+                .Where(c => c.DocumentaryID == tmp)
                 .FirstOrDefault();
 
             if (viewModel.IgnoreEmpty != true)
@@ -148,14 +148,7 @@ namespace WebHome.Controllers.Base
             }
             else if (viewModel.Approval == true)
             {
-                if (item.CustomerCreditAlert.Any())
-                {
-                    viewModel.Memo = viewModel.Memo.GetEfficientString();
-                    if (viewModel.Memo == null)
-                    {
-                        ModelState.AddModelError("Memo", "未填寫客戶有信用貶弱之狀態續送原因!!");
-                    }
-                }
+
             }
         }
 
@@ -171,7 +164,7 @@ namespace WebHome.Controllers.Base
             }
 
             var item = models!.GetTable<NegoDraft>()
-                .Where(c => c.DraftID == tmp)
+                .Where(c => c.DocumentaryID == tmp)
                 .FirstOrDefault();
 
             if (viewModel.IgnoreEmpty != true)
@@ -201,7 +194,7 @@ namespace WebHome.Controllers.Base
 
             var item = models!.GetTable<NegoInvoice>()
                 .Where(c => c.InvoiceID == tmp!.InvoiceID)
-                .Where(c => c.DraftID == tmp!.DraftID)
+                .Where(c => c.NegoDraftID == tmp!.DraftID)
                 .FirstOrDefault();
 
             if (item != null)
@@ -211,7 +204,7 @@ namespace WebHome.Controllers.Base
             else
             {
                 draftItem = models.GetTable<NegoDraft>()
-                    .Where(c => c.DraftID == tmp!.DraftID)
+                    .Where(c => c.DocumentaryID == tmp!.DraftID)
                     .FirstOrDefault();
             }
 
@@ -228,61 +221,6 @@ namespace WebHome.Controllers.Base
             return View("", item);
         }
 
-        [Authorize]
-        public ActionResult LoadReimbursement(ReimbursementQueryViewModel viewModel)
-        {
-            viewModel.AntiXSS(ViewData);
-
-            var tmp = viewModel.ReimID;
-            if (viewModel.KeyID != null)
-            {
-                tmp = viewModel.DecryptKeyValue();
-            }
-
-            var item = models!.GetTable<Reimbursement>()
-                .Where(c => c.ReimID == tmp)
-                .FirstOrDefault();
-
-            if (viewModel.IgnoreEmpty != true)
-            {
-                if (item == null)
-                {
-                    viewModel.AlertTitle = "作業失敗";
-                    viewModel.AlertMessage = "「資料錯誤」。";
-                    return View("~/Views/Portal/ApplicationMessage.cshtml");
-                }
-            }
-
-            return View("", item);
-        }
-
-        [Authorize]
-        public ActionResult LoadNegoLoanRepayment(NegoLoanRepaymentQueryViewModel viewModel)
-        {
-            viewModel.AntiXSS(ViewData);
-
-            var tmp = viewModel.RepaymentID;
-            if (viewModel.KeyID != null)
-            {
-                tmp = viewModel.DecryptKeyValue();
-            }
-
-            var item = models!.GetTable<NegoLoanRepayment>()
-                .Where(c => c.RepaymentID == tmp)
-                .FirstOrDefault();
-
-            if (viewModel.IgnoreEmpty != true)
-            {
-                if (item == null)
-                {
-                    viewModel.AlertTitle = "作業失敗";
-                    viewModel.AlertMessage = "「資料錯誤」。";
-                    return View("~/Views/Portal/ApplicationMessage.cshtml");
-                }
-            }
-
-            return View("", item);
-        }
 
         [Authorize]
         public ActionResult LoadDraftAcceptance(DraftAcceptanceQueryViewModel viewModel)

@@ -343,7 +343,7 @@ namespace ModelCore.Service.FPG
                     {
                         if (!File.Exists(log.ContentPath))
                         {
-                            mgr.ExecuteCommand("delete NegoPromptRequestQueue where LogID = {0}", q.LogID);
+                            mgr.ExecuteCommand("delete NegoPromptRequestQueue where DataPortLogID = {0}", q.DataPortLogID);
                             continue;
                         }
 
@@ -419,14 +419,7 @@ namespace ModelCore.Service.FPG
             {
                 try
                 {
-                    if(item.FpgNegoRemittance.FpgNegoDraft.NegoDraft.NegoDraftExtension.DraftType == (int)Naming.DraftType.CHIMEI)
-                    {
-                        models.SendA1000(item);
-                    }
-                    else
-                    {
-                        models.SendP1002(item);
-                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -435,52 +428,6 @@ namespace ModelCore.Service.FPG
             }
         }
 
-        private static void doSendNegoRemittanceByB8500()
-        {
-            using (LcManager mgr = new LcManager())
-            {
-                var groups = mgr.GetTable<FpgNegoRemittance>().Where(f => f.Status == (int)Naming.RemittanceStatusDefinition.匯款資料準備中)
-                    .GroupBy(f => f.FpgNegoDraft.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.受益人);
-
-                var remittanceLog = mgr.GetTable<FpgNegoRemittanceLog>();
-
-                foreach (var g in groups)
-                {
-                    try
-                    {
-                        DataPortLog log = new DataPortLog
-                        {
-                            Catalog = (int)Naming.TransportCatalogDefinition.B8500FpgNegoDraft,
-                            Direction = (int)Naming.TransportDirection.Outbound
-                        };
-
-                        var bene = mgr.GetTable<Organization>().Where(o => o.CompanyID == g.Key).First();
-                        var items = g.ToList();
-
-                        log.ContentPath = mgr.CreateRemittanceDataFile(bene, items);
-                        int idx = 0;
-                        foreach (var item in items)
-                        {
-                            item.Status = (int)Naming.RemittanceStatusDefinition.匯款資料已送出;
-                            remittanceLog.InsertOnSubmit(new FpgNegoRemittanceLog
-                            {
-                                DataPortLog = log,
-                                DraftID = item.DraftID,
-                                SeqNo = ++idx
-                            });
-                        }
-
-                        mgr.SubmitChanges();
-                        mgr.SendB8500(bene, items, log);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelCore.Helper.Logger.Error(ex, ModelCore.Helper.Logger.LogLevel.Error);
-                    }
-                }
-            }
-        }
 
         private static void doCheckBR758()
         {
@@ -500,7 +447,7 @@ namespace ModelCore.Service.FPG
                 //CommonLib.Core.Utility.Logger.Debug($"Withdrawed Remittance PMTID: {PMTID}");
                 if (item != null)
                 {
-                    //CommonLib.Core.Utility.Logger.Debug($"Withdrawed Remittance found: {item.RemittanceID}");
+                    //CommonLib.Core.Utility.Logger.Debug($"Withdrawed Remittance found: {item.FpgNegoRemittanceLogID}");
                     item.Description = BR758Service.GetRejectReason(eaiBR758);
                     item.Status = (int)Naming.RemittanceStatusDefinition.匯款失敗;
                     item.FpgNegoRemittance.Status = (int)Naming.RemittanceStatusDefinition.匯款退回;
@@ -523,13 +470,13 @@ namespace ModelCore.Service.FPG
 
                 foreach (var item in items)
                 {
-                    processLog.InsertOnSubmit(new DataProcessLog
+                    processLog.Add(new DataProcessLog
                     {
-                        LogID = item.LogID,
+                        DataPortLogID = item.LogID,
                         ProcessDate = DateTime.Now
                     });
 
-                    queue.DeleteOnSubmit(item.ReceivedDataQueue);
+                    queue.Remove(item.ReceivedDataQueue);
                     mgr.SubmitChanges();
 
                     try
@@ -564,14 +511,14 @@ namespace ModelCore.Service.FPG
 
                 foreach (var item in items)
                 {
-                    processLog.InsertOnSubmit(new DataProcessLog
+                    processLog.Add(new DataProcessLog
                     {
-                        LogID = item.LogID,
+                        DataPortLogID = item.LogID,
                         ProcessDate = DateTime.Now
                     });
 
                     BeneficiaryServiceGroup.ServiceDefinition? serviceID = (BeneficiaryServiceGroup.ServiceDefinition?)item.ServiceDataQueue.ServiceID;
-                    queue.DeleteOnSubmit(item.ServiceDataQueue);
+                    queue.Remove(item.ServiceDataQueue);
                     mgr.SubmitChanges();
 
                     try
@@ -613,7 +560,7 @@ namespace ModelCore.Service.FPG
                         ModelCore.Schema.FPG.J2SP j2sp = item.LoadCommitment();
                         if (j2sp != null)
                         {
-                            j2sp.CommitToFPG(item.ResponseDataQueue.BeneficiaryServiceGroup?.ConfirmUrl);
+                            j2sp.CommitToFPG(item.ResponseDataQueue.Service?.ConfirmUrl);
                         }
                         else
                         {

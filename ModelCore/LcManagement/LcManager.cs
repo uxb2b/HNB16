@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ModelCore.DataModel;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using ModelCore.Locale;
 using ModelCore.Properties;
 
@@ -18,7 +18,7 @@ namespace ModelCore.LcManagement
 			//
 		}
 
-        public LcManager(GenericManager<LcEntityDataContext> mgr) : base(mgr) { }
+        public LcManager(GenericManager<LcEntityDbContext> mgr) : base(mgr) { }
 
         public IQueryable<LetterOfCredit> CheckReadyToCancelLc()
         {
@@ -26,8 +26,8 @@ namespace ModelCore.LcManagement
             var items = this.GetTable<LetterOfCreditVersion>()
                 .GroupBy(l => l.LcID)
                 .Select(g => g.OrderByDescending(l => l.VersionID).FirstOrDefault())
-                .Where(l => /*l.LcItem.有效期限 >= twoWeeksBefore &&*/ l.LcItem.有效期限 < twoWeeksBefore.AddDays(1))
-                .Select(l => l.LetterOfCredit)
+                .Where(l => /*l.LcItems.有效期限 >= twoWeeksBefore &&*/ l.LcItems.有效期限 < twoWeeksBefore.AddDays(1))
+                .Select(l => l.Lc)
                 .Where(l => l.可用餘額 > 0)
                 .Where(l => !l.CreditCancellation.Any());
 
@@ -51,7 +51,7 @@ namespace ModelCore.LcManagement
             };
 
             item.Documentary.DoApprove(Naming.DocumentLevel.主動餘額註銷_待登錄, Settings.Default.SystemID, null);
-            this.GetTable<CreditCancellation>().InsertOnSubmit(item);
+            this.GetTable<CreditCancellation>().Add(item);
             this.SubmitChanges();
             return item;
         }

@@ -5,7 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using ModelCore.DataModel;
 using ModelCore.Helper;
 using ModelCore.Locale;
@@ -15,8 +15,8 @@ namespace ModelCore.CommonManagement
 	/// <summary>
 	/// InboxManagerDALC 的摘要描述。
 	/// </summary>
-	public class CommonInboxManager : LcEntityManager<MessageType>
-	{
+	public class CommonInboxManager : ModelSource
+    {
 		public CommonInboxManager() : base()
 		{
 			//
@@ -24,7 +24,7 @@ namespace ModelCore.CommonManagement
 			//
 		}
 
-        public CommonInboxManager(GenericManager<LcEntityDataContext> mgr) : base(mgr) { }
+        public CommonInboxManager(GenericManager<LcEntityDbContext> mgr) : base(mgr) { }
 
         public String GetMailReceipentOfApplicant(int? docID)
         {
@@ -37,20 +37,18 @@ namespace ModelCore.CommonManagement
                     case (int)Naming.DocumentTypeDefinition.開狀申請書:
                         return item.CreditApplicationDocumentary.ApplicantDetails.ContactEmail;
                     case (int)Naming.DocumentTypeDefinition.修狀申請書:
-                        return item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ApplicantDetails.ContactEmail;
+                        return item.AmendingLcApplication.Source.Lc.Application.ApplicantDetails.ContactEmail;
                     case (int)Naming.DocumentTypeDefinition.信用狀註銷申請書:
-                        return item.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.ApplicantDetails.ContactEmail;
+                        return item.CreditCancellation.Lc.Application.ApplicantDetails.ContactEmail;
                     case (int)Naming.DocumentTypeDefinition.押匯申請書:
-                        if (item.NegoDraft.LC_ID.HasValue)
+                        if (item.NegoDraft.NegoLcVersion.Lc.ApplicationID.HasValue)
                         {
-                            return item.NegoDraft.NegoLC.ApplicantDetails.ContactEmail;
+                            return item.NegoDraft.NegoLcVersion.Lc.Application.ApplicantDetails.ContactEmail;
                         }
                         else
                         {
-                            return item.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ApplicantDetails.ContactEmail;
+                            return item.NegoDraft.NegoLcVersion.Lc.NegoLC.ApplicantDetails.ContactEmail;
                         }
-                    case (int)Naming.DocumentTypeDefinition.還款改貸申請書:
-                        return item.Reimbursement.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ApplicantDetails.ContactEmail;
 
                 }
             }
@@ -67,27 +65,24 @@ namespace ModelCore.CommonManagement
                 {
                     case (int)Naming.DocumentTypeDefinition.開狀申請書:
                         return String.Format("chb{0}@ms1.chb.com.tw,chb{1}@ms1.chb.com.tw",
-                            item.CreditApplicationDocumentary.開狀行, item.CreditApplicationDocumentary.通知行);
+                            item.CreditApplicationDocumentary.IssuingBankCode, item.CreditApplicationDocumentary.AdvisingBankCode);
                     case (int)Naming.DocumentTypeDefinition.修狀申請書:
                         return String.Format("chb{0}@ms1.chb.com.tw,chb{1}@ms1.chb.com.tw",
-                            item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.開狀行, item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行);
+                            item.AmendingLcApplication.Source.Lc.Application.IssuingBankCode, item.AmendingLcApplication.Source.Lc.Application.AdvisingBankCode);
                     case (int)Naming.DocumentTypeDefinition.信用狀註銷申請書:
                         return String.Format("chb{0}@ms1.chb.com.tw",
-                            item.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.開狀行);
+                            item.CreditCancellation.Lc.Application.IssuingBankCode);
                     case (int)Naming.DocumentTypeDefinition.押匯申請書:
-                        if (item.NegoDraft.LC_ID.HasValue)
+                        if (!item.NegoDraft.NegoLcVersion.Lc.ApplicationID.HasValue)
                         {
                             return String.Format("chb{0}@ms1.chb.com.tw,chb{1}@ms1.chb.com.tw",
-                                item.NegoDraft.NegoLC.IssuingBank, item.NegoDraft.NegoLC.AdvisingBank);
+                                item.NegoDraft.NegoLcVersion.Lc.NegoLC.IssuingBank, item.NegoDraft.NegoLcVersion.Lc.NegoLC.AdvisingBank);
                         }
                         else
                         {
                             return String.Format("chb{0}@ms1.chb.com.tw,chb{1}@ms1.chb.com.tw",
-                                item.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.開狀行, item.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行);
+                                item.NegoDraft.NegoLcVersion.Lc.Application.IssuingBankCode, item.NegoDraft.NegoLcVersion.Lc.Application.AdvisingBankCode);
                         }
-                    case (int)Naming.DocumentTypeDefinition.還款改貸申請書:
-                        return String.Format("chb{0}@ms1.chb.com.tw,chb{1}@ms1.chb.com.tw",
-                            item.Reimbursement.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.開狀行, item.Reimbursement.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行);
                 }
             }
             return null;
@@ -104,20 +99,18 @@ namespace ModelCore.CommonManagement
                     case (int)Naming.DocumentTypeDefinition.開狀申請書:
                         return item.CreditApplicationDocumentary.BeneDetails.ContactEmail;
                     case (int)Naming.DocumentTypeDefinition.修狀申請書:
-                        return item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneDetails.ContactEmail;
+                        return item.AmendingLcApplication.Source.Lc.Application.BeneDetails.ContactEmail;
                     case (int)Naming.DocumentTypeDefinition.信用狀註銷申請書:
-                        return item.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.BeneDetails.ContactEmail;
+                        return item.CreditCancellation.Lc.Application.BeneDetails.ContactEmail;
                     case (int)Naming.DocumentTypeDefinition.押匯申請書:
-                        if (item.NegoDraft.LC_ID.HasValue)
+                        if (!item.NegoDraft.NegoLcVersion.Lc.ApplicationID.HasValue)
                         {
-                            return item.NegoDraft.NegoLC.BeneDetails.ContactEmail;
+                            return item.NegoDraft.NegoLcVersion.Lc.NegoLC.BeneDetails.ContactEmail;
                         }
                         else
                         {
-                            return item.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneDetails.ContactEmail;
+                            return item.NegoDraft.NegoLcVersion.Lc.Application.BeneDetails.ContactEmail;
                         }
-                    case (int)Naming.DocumentTypeDefinition.還款改貸申請書:
-                        return item.Reimbursement.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneDetails.ContactEmail;
 
                 }
             }
@@ -142,39 +135,35 @@ namespace ModelCore.CommonManagement
                 {
                     case (int)Naming.DocumentTypeDefinition.開狀申請書:
                         receiptNo = item.CreditApplicationDocumentary.CustomerOfBranch.Organization.ReceiptNo;
-                        companyID = item.CreditApplicationDocumentary.申請人;
+                        companyID = item.CreditApplicationDocumentary.ApplicantID;
                         break;
                     case (int)Naming.DocumentTypeDefinition.修狀申請書:
-                        receiptNo =  item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.CustomerOfBranch.Organization.ReceiptNo;
-                        companyID = item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.申請人;
+                        receiptNo =  item.AmendingLcApplication.Source.Lc.Application.CustomerOfBranch.Organization.ReceiptNo;
+                        companyID = item.AmendingLcApplication.Source.Lc.Application.ApplicantID;
                         break;
                     case (int)Naming.DocumentTypeDefinition.信用狀註銷申請書:
-                        receiptNo = item.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.CustomerOfBranch.Organization.ReceiptNo;
-                        companyID = item.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.申請人;
+                        receiptNo = item.CreditCancellation.Lc.Application.CustomerOfBranch.Organization.ReceiptNo;
+                        companyID = item.CreditCancellation.Lc.Application.ApplicantID;
                         break;
                     case (int)Naming.DocumentTypeDefinition.押匯申請書:
-                        if (item.NegoDraft.LC_ID.HasValue)
+                        if (!item.NegoDraft.NegoLcVersion.Lc.ApplicationID.HasValue)
                         {
-                            receiptNo = item.NegoDraft.NegoLC.ApplicantReceiptNo;
-                            companyID = item.NegoDraft.NegoLC.CompanyID;
+                            receiptNo = item.NegoDraft.NegoLcVersion.Lc.NegoLC.CustomerOfBranch.Organization.ReceiptNo;
+                            companyID = item.NegoDraft.NegoLcVersion.Lc.NegoLC.CompanyID;
                         }
                         else
                         {
-                            receiptNo = item.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.CustomerOfBranch.Organization.ReceiptNo;
-                            companyID = item.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.申請人;
+                            receiptNo = item.NegoDraft.NegoLcVersion.Lc.Application.CustomerOfBranch.Organization.ReceiptNo;
+                            companyID = item.NegoDraft.NegoLcVersion.Lc.Application.ApplicantID;
                         }
-                        break;
-                    case (int)Naming.DocumentTypeDefinition.還款改貸申請書:
-                        receiptNo = item.Reimbursement.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.CustomerOfBranch.Organization.ReceiptNo;
-                        companyID = item.Reimbursement.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.申請人;
                         break;
 
                 }
 
                 var table = this.GetTable<CustomerInbox>();
-                table.InsertOnSubmit(new CustomerInbox
+                table.Add(new CustomerInbox
                 {
-                    DocID = docID.Value,
+                    DocumentaryID = docID.Value,
                     MsgDate = DateTime.Now,
                     ReceiptNo = receiptNo,
                     TypeID = (int)typeID,
@@ -196,40 +185,36 @@ namespace ModelCore.CommonManagement
                 switch (item.DocType)
                 {
                     case (int)Naming.DocumentTypeDefinition.開狀申請書:
-                        receiptNo = item.CreditApplicationDocumentary.BeneficiaryData.Organization.ReceiptNo;
-                        companyID = item.CreditApplicationDocumentary.受益人;
+                        receiptNo = item.CreditApplicationDocumentary.Beneficiary.Organization.ReceiptNo;
+                        companyID = item.CreditApplicationDocumentary.BeneficiaryID;
                         break;
                     case (int)Naming.DocumentTypeDefinition.修狀申請書:
-                        receiptNo = item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.ReceiptNo;
-                        companyID = item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.受益人;
+                        receiptNo = item.AmendingLcApplication.Source.Lc.Application.Beneficiary.Organization.ReceiptNo;
+                        companyID = item.AmendingLcApplication.Source.Lc.Application.BeneficiaryID;
                         break;
                     case (int)Naming.DocumentTypeDefinition.信用狀註銷申請書:
-                        receiptNo = item.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.ReceiptNo;
-                        companyID = item.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.受益人;
+                        receiptNo = item.CreditCancellation.Lc.Application.Beneficiary.Organization.ReceiptNo;
+                        companyID = item.CreditCancellation.Lc.Application.BeneficiaryID;
                         break;
                     case (int)Naming.DocumentTypeDefinition.押匯申請書:
-                        if (item.NegoDraft.LC_ID.HasValue)
+                        if (!item.NegoDraft.NegoLcVersion.Lc.ApplicationID.HasValue)
                         {
-                            receiptNo = item.NegoDraft.NegoLC.BeneficiaryReceiptNo;
-                            companyID = item.NegoDraft.NegoLC.BeneficiaryID;
+                            receiptNo = item.NegoDraft.NegoLcVersion.Lc.NegoLC.Beneficiary.Organization.ReceiptNo;
+                            companyID = item.NegoDraft.NegoLcVersion.Lc.NegoLC.BeneficiaryID;
                         }
                         else
                         {
-                            receiptNo = item.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.ReceiptNo;
-                            companyID = item.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.受益人;
+                            receiptNo = item.NegoDraft.NegoLcVersion.Lc.Application.Beneficiary.Organization.ReceiptNo;
+                            companyID = item.NegoDraft.NegoLcVersion.Lc.Application.BeneficiaryID;
                         }
-                        break;
-                    case (int)Naming.DocumentTypeDefinition.還款改貸申請書:
-                        receiptNo = item.Reimbursement.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.ReceiptNo;
-                        companyID = item.Reimbursement.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.受益人;
                         break;
 
                 }
 
                 var table = this.GetTable<CustomerInbox>();
-                table.InsertOnSubmit(new CustomerInbox
+                table.Add(new CustomerInbox
                 {
-                    DocID = docID.Value,
+                    DocumentaryID = docID.Value,
                     MsgDate = DateTime.Now,
                     ReceiptNo = receiptNo,
                     TypeID = (int)typeID,
@@ -243,7 +228,7 @@ namespace ModelCore.CommonManagement
         public void CreateInboxForBank(String content, String bankCode, Naming.MessageTypeDefinition tid)
         {
             var table = this.GetTable<BankInbox>();
-            table.InsertOnSubmit(new BankInbox
+            table.Add(new BankInbox
             {
                 BankCode = bankCode,
                 MsgDate = DateTime.Now,
@@ -263,26 +248,23 @@ namespace ModelCore.CommonManagement
              switch (item.DocType)
              {
                  case (int)Naming.DocumentTypeDefinition.開狀申請書:
-                     bankCode = item.CreditApplicationDocumentary.開狀行;
+                     bankCode = item.CreditApplicationDocumentary.IssuingBankCode;
                      break;
                  case (int)Naming.DocumentTypeDefinition.修狀申請書:
-                     bankCode = item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.開狀行;
+                     bankCode = item.AmendingLcApplication.Source.Lc.Application.IssuingBankCode;
                      break;
                  case (int)Naming.DocumentTypeDefinition.信用狀註銷申請書:
-                     bankCode = item.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.開狀行;
+                     bankCode = item.CreditCancellation.Lc.Application.IssuingBankCode;
                      break;
                  case (int)Naming.DocumentTypeDefinition.押匯申請書:
-                     if (item.NegoDraft.LC_ID.HasValue)
+                     if (!item.NegoDraft.NegoLcVersion.Lc.ApplicationID.HasValue)
                      {
-                         bankCode = item.NegoDraft.NegoLC.AdvisingBank;
+                         bankCode = item.NegoDraft.NegoLcVersion.Lc.NegoLC.AdvisingBank;
                      }
                      else
                      {
-                         bankCode = item.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
+                         bankCode = item.NegoDraft.NegoLcVersion.Lc.Application.AdvisingBankCode;
                      }
-                     break;
-                 case (int)Naming.DocumentTypeDefinition.還款改貸申請書:
-                     bankCode = item.Reimbursement.NegoDraft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
                      break;
 
              }
@@ -297,10 +279,10 @@ namespace ModelCore.CommonManagement
                     || item.CurrentLevel == (int)Naming.DocumentLevel.已退回_主管退回
                     || item.CurrentLevel == (int)Naming.DocumentLevel.銀行已拒絕)
                 {
-                    table.InsertOnSubmit(new BankInbox
+                    table.Add(new BankInbox
                     {
                         BankCode = bankCode,
-                        DocID = docID.Value,
+                        DocumentaryID = docID.Value,
                         MsgDate = DateTime.Now,
                         TypeID = (int)typeID
                     });
@@ -312,10 +294,10 @@ namespace ModelCore.CommonManagement
                     || item.CurrentLevel == (int)Naming.DocumentLevel.已退回_CRC主管退回)
                 {
                     var bank = this.GetTable<BankData>().Where(b => b.BankCode == bankCode).First();
-                    table.InsertOnSubmit(new BankInbox
+                    table.Add(new BankInbox
                     {
                         BankCode = bank.CRC_Branch,
-                        DocID = docID.Value,
+                        DocumentaryID = docID.Value,
                         MsgDate = DateTime.Now,
                         TypeID = (int)typeID
                     });
@@ -328,22 +310,22 @@ namespace ModelCore.CommonManagement
         public void CreateInboxOfLcForCustomer(LetterOfCredit item, Naming.MessageTypeDefinition typeID)
         {
             var table = this.GetTable<CustomerInbox>();
-            table.InsertOnSubmit(new CustomerInbox
+            table.Add(new CustomerInbox
             {
-                DocID = item.AppID.Value,
+                DocumentaryID = item.ApplicationID.Value,
                 MsgDate = DateTime.Now,
-                ReceiptNo = item.CreditApplicationDocumentary.CustomerOfBranch.Organization.ReceiptNo,
+                ReceiptNo = item.Application.CustomerOfBranch.Organization.ReceiptNo,
                 TypeID = (int)typeID,
-                CompanyID = item.CreditApplicationDocumentary.申請人
+                CompanyID = item.Application.ApplicantID
             });
 
-            table.InsertOnSubmit(new CustomerInbox
+            table.Add(new CustomerInbox
             {
-                DocID = item.AppID.Value,
+                DocumentaryID = item.ApplicationID.Value,
                 MsgDate = DateTime.Now,
-                ReceiptNo = item.CreditApplicationDocumentary.BeneficiaryData.Organization.ReceiptNo,
+                ReceiptNo = item.Application.Beneficiary.Organization.ReceiptNo,
                 TypeID = (int)typeID,
-                CompanyID = item.CreditApplicationDocumentary.受益人
+                CompanyID = item.Application.BeneficiaryID
             });
 
             this.SubmitChanges();

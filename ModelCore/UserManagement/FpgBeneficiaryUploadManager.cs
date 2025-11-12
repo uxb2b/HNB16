@@ -5,12 +5,12 @@ using System.Web;
 using ModelCore.UploadManagement;
 using ModelCore.DataModel;
 using CommonLib.Utility;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using ModelCore.Locale;
 
 namespace ModelCore.UserManagement
 {
-    public class FpgBeneficiaryUploadManager : XmlUploadManager<LcEntityDataContext, Organization>
+    public class FpgBeneficiaryUploadManager : XmlUploadManager<LcEntityDbContext, Organization>
     {
         public BeneficiaryServiceGroup.ServiceDefinition? ServiceGroup { get; set; } = BeneficiaryServiceGroup.ServiceDefinition.Fpg;
 
@@ -18,7 +18,7 @@ namespace ModelCore.UserManagement
         {
         }
 
-        public FpgBeneficiaryUploadManager(GenericManager<LcEntityDataContext> manager)
+        public FpgBeneficiaryUploadManager(GenericManager<LcEntityDbContext> manager)
             : base(manager)
         {
         }
@@ -94,7 +94,7 @@ namespace ModelCore.UserManagement
                     item.Entity.OrganizationStatus.FpgNegoBeneficiary = true;
                     //item.Entity.OrganizationStatus.GroupID = GroupID;
 
-                    this.EntityList.InsertOnSubmit(item.Entity);
+                    this.EntityList.Add(item.Entity);
                 }
                 else
                 {

@@ -35,7 +35,6 @@ namespace ModelCore.Models.ViewModel
             set => IncomingAccountField = value.SetAccountField();
         }
         public String[] IncomingAccountField { get; set; }
-        public PaymentNotification.AllocationType? AllocationType { get; set; }
         public long? GTXNO { get; set; }
         public decimal? ServiceCharge { get; set; }
         public decimal? ServiceChargeRate { get; set; }

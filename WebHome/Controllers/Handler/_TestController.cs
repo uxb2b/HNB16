@@ -25,7 +25,7 @@ using WebHome.Properties;
 using ModelCore.Helper;
 
 using CommonLib.Utility;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using Newtonsoft.Json;
 
 namespace WebHome.Controllers.Handler
@@ -82,6 +82,16 @@ namespace WebHome.Controllers.Handler
         public ActionResult AllSettings()
         {
             return Content(AppSettings.AllSettings?.ToString() ?? "{}", "application/json");
+        }
+
+        public ActionResult ResetKey()
+        {
+            AppResource.Instance.InitializeKey(true);
+            return Ok(JsonConvert.SerializeObject(new
+            {
+                Result = "Success",
+                Message = "系統金鑰已重置。",
+            }));
         }
 
     }

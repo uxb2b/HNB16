@@ -92,9 +92,7 @@ namespace ModelCore.Models.ViewModel
         public String GuarRcptNo_3 { get; set; }
         public String GuarRcptNo_4 { get; set; }
         public String AccountingSubject { get; set; }
-        public PaymentNotification.LoanType?[] LoanType { get; set; }
         public int? LoanTypeValue { get; set; }
-        public PaymentNotification.SecurityStatus?[] SecurityStatus { get; set; }
         public int? SecurityStatusValue { get; set; }
         public String OtherSecurityStatus { get; set; }
         public String AllowingDate
@@ -177,8 +175,7 @@ namespace ModelCore.Models.ViewModel
         {
             InsuranceExpiry_D = value;
         }
-        public PaymentNotification.AllocationType? AllocationType { get; set; }
-        public PaymentNotification.TransferenceType? TransferenceType { get; set; }
+
         public String PayableAccount
         {
             get => PayableAccountField.GetAccount();
@@ -204,7 +201,6 @@ namespace ModelCore.Models.ViewModel
             ScanningDate_D = value;
         }
         public String LoanAdditional { get; set; }
-        public PaymentNotification.CommissionStatus?[] CommissionStatus { get; set; }
         public int? CommissionStatusValue { get; set; }
         [JsonIgnore]
         public decimal? 保證手續費 { get; set; }
@@ -305,75 +301,6 @@ namespace ModelCore.Models.ViewModel
         public String[] LoanAccountField { get; set; }
     }
 
-    public class L1203ViewModel : QueryViewModel
-    {
-        static long __SEQ_NO;
-
-        static L1203ViewModel()
-        {
-            using (LcManager mgr = new LcManager())
-            {
-                __SEQ_NO = mgr.GetTable<OpeningApplicationDocumentary>().Count();
-            }
-        }
-
-        public L1203ViewModel()
-        {
-            GTXNO = System.Threading.Interlocked.Increment(ref __SEQ_NO);
-        }
-
-        public int? OpeningID { get; set; }
-        public int? AppID { get; set; }
-        public String OpeningDate
-        {
-            get => ValidityAgent.ConvertChineseDate(OpeningDate_D);
-            set => OpeningDate_D = value.FromChineseDateString();
-        }
-        [JsonIgnore]
-        public DateTime? OpeningDate_D
-        {
-            get;
-            private set;
-        }
-        public void SetOpeningDate(DateTime? value)
-        {
-            OpeningDate_D = value;
-        }
-
-        public String 信用狀種類
-        {
-            get => "1台幣一般";
-        }
-        public decimal? CurrencyRate { get; set; }
-        public decimal? CurrencyAmount { get; set; }
-        public int? CheckDueDays { get; set; }
-        public decimal? AcceptChargeRate { get; set; }
-        public decimal? PayAmount { get; set; }
-        public String CheckNo { get; set; }
-        public String PayingBranchNo
-        {
-            get => PayingBranchNoField.GetAccount();
-            set => PayingBranchNoField = value.SetAccountField();
-        }
-        public String[] PayingBranchNoField { get; set; }
-        public String ReceiptPersonAccount { get; set; }
-        public String LoanMasterNo { get; set; }
-        public String LoanPersonNo { get; set; }
-        public String BusinessType { get; set; }
-        public String GovLoanType { get; set; }
-        public String CreditType { get; set; }
-        public bool? GuaranteeYes { get; set; }
-        public String Payer
-        {
-            get => PayerField.GetAccount();
-            set => PayerField = value.SetAccountField();
-        }
-        public String[] PayerField { get; set; }
-        public long GTXNO { get; }
-        public bool? OddDay { get; set; }
-        public String GUNO { get; set; }
-
-    }
 
     public class AmendmentRegistrationViewModel : QueryViewModel
     {
@@ -943,7 +870,6 @@ namespace ModelCore.Models.ViewModel
         public String ApplicationType { get; set; } = "1：電子化";
         public decimal? AcceptanceRate { get; set; }
         public decimal? AcceptanceCommission { get; set; }
-        public PaymentNotification.TransferenceType? TransferenceType { get; set; }
         public decimal? NegoCharge { get; set; }
         public String CheckNo { get; set; }
         public String CheckBankNo { get; set; }

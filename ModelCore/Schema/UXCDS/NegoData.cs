@@ -15,9 +15,7 @@ namespace ModelCore.Schema.UXCDS
 
     public class NegoLC
     {
-        public System.Int32 LC_ID { get; set; }
         public System.String LCNo { get; set; }
-        public System.Int32 Status { get; set; }
         public System.DateTime ImportDate { get; set; }
         public System.String IssuingBank { get; set; }
         public System.DateTime DateOfIssue { get; set; }
@@ -39,7 +37,6 @@ namespace ModelCore.Schema.UXCDS
 
     public class NegoDraft
     {
-        public System.Int32 DraftID { get; set; }
         public System.String DraftNo { get; set; }
         public System.Int32 Status { get; set; }
         public System.DateTime ImportDate { get; set; }
@@ -51,10 +48,7 @@ namespace ModelCore.Schema.UXCDS
         public System.Decimal? ItemQuantity { get; set; }
         public System.Decimal? ItemSubtotal { get; set; }
         public System.String ApplicantAddr { get; set; }
-        public System.Int32 FrontSealID { get; set; }
-        public System.Int32 BackSealID { get; set; }
         public System.Int16 DownloadFlag { get; set; }
-        public System.Int32 LC_ID { get; set; }
         public System.DateTime InitialDate { get; set; }
         public List<NegoInvoice> NegoInvoice { get; set; }
         public OrganizationBackSeal BackSeal { get; set; }
@@ -69,7 +63,6 @@ namespace ModelCore.Schema.UXCDS
         public System.String Fax { get; set; }
         public System.String LogoURL { get; set; }
         public System.String CompanyName { get; set; }
-        public System.Int32 CompanyID { get; set; }
         public System.String ReceiptNo { get; set; }
         public System.String Phone { get; set; }
         public System.String ContactFax { get; set; }
@@ -92,24 +85,18 @@ namespace ModelCore.Schema.UXCDS
 
     public class OrganizationBackSeal
     {
-        public System.Int32 BackSealID { get; set; }
         public System.String SealPath { get; set; }
-        public System.Int32 CompanyID { get; set; }
         public System.String Content { get; set; }
     }
 
     public class OrganizationFrontSeal
     {
-        public System.Int32 FrontSealID { get; set; }
         public System.String SealPath { get; set; }
-        public System.Int32 CompanyID { get; set; }
         public System.String Content { get; set; }
     }
 
     public class NegoInvoice
     {
-        public System.Int32 InvoiceID { get; set; }
-        public System.Int32? DraftID { get; set; }
         public System.String InvoiceNo { get; set; }
         public System.String LadingNo { get; set; }
         public System.Decimal? InvoiceAmount { get; set; }
@@ -119,13 +106,10 @@ namespace ModelCore.Schema.UXCDS
         public System.String TaxNo { get; set; }
         public System.String ContractQuarter { get; set; }
         public System.Boolean? FileReady { get; set; }
-        public System.Int32? ContentID { get; set; }
     }
 
     public class BusinessInvoice
     {
-        public System.Int32 InvoiceID { get; set; }
-        public System.Int32 SellerID { get; set; }
         public System.String InvoiceNo { get; set; }
         public System.Int32 Year { get; set; }
         public System.Int32 PeriodNo { get; set; }

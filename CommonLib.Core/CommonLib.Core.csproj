@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="DataWork\SQLHelper.bak.cs" />
     <Compile Remove="Properties\Settings.cs" />
     <Compile Remove="Security\UseCrypto\RSAPKCS1SHA256SignatureDescription.cs" />
   </ItemGroup>

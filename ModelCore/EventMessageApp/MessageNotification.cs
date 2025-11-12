@@ -1,4 +1,4 @@
-﻿using CommonLib.DataAccess;
+﻿using CommonLib.Core.DataWork;
 using ModelCore.CommonManagement;
 using ModelCore.DataModel;
 using ModelCore.Helper;
@@ -81,15 +81,14 @@ namespace ModelCore.EventMessageApp
         public static Action<Exception> ExceptionAlert { get; set; }
         public static Action<String> ExceptionMessageAlert { get; set; }
 
-        public static void CreateMailMessage(this GenericManager<LcEntityDataContext> mgr, int? docID, Naming.MessageTypeDefinition typeID, Naming.MessageReceipent receipent)
+        public static void CreateMailMessage(this GenericManager<LcEntityDbContext> mgr, int? docID, Naming.MessageTypeDefinition typeID, Naming.MessageReceipent receipent)
         {
             mgr.CreateMailMessage(docID, typeID, receipent, null);
         }
 
-        public static void CreateMailMessage(this GenericManager<LcEntityDataContext> mgr, int? docID, Naming.MessageTypeDefinition typeID, Naming.MessageReceipent? receipent = null, String email = null)
+        public static void CreateMailMessage(this GenericManager<LcEntityDbContext> mgr, int? docID, Naming.MessageTypeDefinition typeID, Naming.MessageReceipent? receipent = null, String email = null)
         {
             String mailTo = null;
-            ModelCore.DataModel.MessageType msgType = null;
             String subject;
             String attachmentContent = null;
 
@@ -97,13 +96,9 @@ namespace ModelCore.EventMessageApp
             {
                 using (CommonInboxManager inboxMgr = new CommonInboxManager(mgr))
                 {
-                    msgType = inboxMgr.GetTable<ModelCore.DataModel.MessageType>().Where(m => m.TypeID == (int?)typeID).FirstOrDefault();
-                    if (msgType == null)
-                        subject = "國內電子信用狀訊息通知";
-                    else
-                        subject = msgType.Subject;
+                    subject = "國內電子信用狀訊息通知";
 
-                    NegoDraft item = inboxMgr.GetTable<NegoDraft>().Where(d => d.DraftID == docID).FirstOrDefault();
+                    NegoDraft item = inboxMgr.GetTable<NegoDraft>().Where(d => d.DocumentaryID == docID).FirstOrDefault();
                     if (item != null && item.ForFpgService())
                     {
                         attachmentContent = item.DraftContent;
@@ -145,7 +140,7 @@ namespace ModelCore.EventMessageApp
                     String url = $"{AppSettings.Default.MailMessageUrl}?msgDocID={docID}&typeID={(int)typeID}";
                     try
                     {
-                        using (GenericManager<LcEntityDataContext> models = new GenericManager<LcEntityDataContext>())
+                        using (GenericManager<LcEntityDbContext> models = new GenericManager<LcEntityDbContext>())
                         {
                             var docItem = models.GetTable<Documentary>().Where(d => d.DocID == docID).FirstOrDefault();
 

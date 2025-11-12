@@ -1,5 +1,5 @@
 ﻿using CommonLib.Core.Utility;
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using CommonLib.Utility;
 using Microsoft.AspNetCore.Mvc;
 using ModelCore.BankManagement;
@@ -18,7 +18,7 @@ namespace WebHome.Helper
 {
     public static class DataProcessExtensions
     {
-        public static void TransferLevel(this UserProfile profile, Documentary docItem, Naming.DocumentLevel docLevel, GenericManager<LcEntityDataContext>? models = null)
+        public static void TransferLevel(this UserProfile profile, Documentary docItem, Naming.DocumentLevel docLevel, GenericManager<LcEntityDbContext>? models = null)
         {
             BusinessManager manager = new BusinessManager(models)
             {
@@ -120,50 +120,6 @@ namespace WebHome.Helper
                 }
 
             }
-            else if (docItem.DocType == (int)Naming.DocumentTypeDefinition.還款改貸申請書)
-            {
-                if (manager.ApproveReimbursement(docItem.DocID, profile.PID, docLevel))
-                {
-                    switch (docLevel)
-                    {
-                        case Naming.DocumentLevel.待經辦審核:
-                            docItem.DocID.CreateInboxMessage(Naming.MessageTypeDefinition.MSG_REIM_APP_READY, Naming.MessageReceipent.ForBank);
-                            manager.CreateMailMessage(docItem.DocID, Naming.MessageTypeDefinition.MSG_REIM_APP_READY, Naming.MessageReceipent.ForBank);
-                            break;
-                        case Naming.DocumentLevel.企業主管核放中:
-                            docItem.DocID.CreateInboxMessage(Naming.MessageTypeDefinition.MSG_REIM_APP_APPLY, Naming.MessageReceipent.ForApplicant);
-                            manager.CreateMailMessage(docItem.DocID, Naming.MessageTypeDefinition.MSG_REIM_APP_APPLY, Naming.MessageReceipent.ForApplicant);
-                            break;
-                        case Naming.DocumentLevel.企業主管退回_審核:
-                        case Naming.DocumentLevel.企業主管退回_放行:
-                            docItem.DocID.CreateInboxMessage(Naming.MessageTypeDefinition.MSG_REIM_APP_CANCELLED, Naming.MessageReceipent.ForApplicant);
-                            manager.CreateMailMessage(docItem.DocID, Naming.MessageTypeDefinition.MSG_REIM_APP_CANCELLED, Naming.MessageReceipent.ForApplicant);
-                            break;
-                    }
-                }
-            }
-            else if (docItem.DocType == (int)Naming.DocumentTypeDefinition.改貸還款)
-            {
-                if (manager.ApproveNegoLoanRepayment(docItem.DocID, profile.PID, docLevel))
-                {
-                    //switch (docLevel)
-                    //{
-                    //    case Naming.DocumentLevel.待經辦審核:
-                    //        docItem.DocID.CreateInboxMessage(Naming.MessageTypeDefinition.MSG_REIM_APP_READY, Naming.MessageReceipent.ForBank);
-                    //        manager.CreateMailMessage(docItem.DocID, Naming.MessageTypeDefinition.MSG_REIM_APP_READY, Naming.MessageReceipent.ForBank);
-                    //        break;
-                    //    case Naming.DocumentLevel.企業主管核放中:
-                    //        docItem.DocID.CreateInboxMessage(Naming.MessageTypeDefinition.MSG_REIM_APP_APPLY, Naming.MessageReceipent.ForApplicant);
-                    //        manager.CreateMailMessage(docItem.DocID, Naming.MessageTypeDefinition.MSG_REIM_APP_APPLY, Naming.MessageReceipent.ForApplicant);
-                    //        break;
-                    //    case Naming.DocumentLevel.企業主管退回_審核:
-                    //    case Naming.DocumentLevel.企業主管退回_放行:
-                    //        docItem.DocID.CreateInboxMessage(Naming.MessageTypeDefinition.MSG_REIM_APP_CANCELLED, Naming.MessageReceipent.ForApplicant);
-                    //        manager.CreateMailMessage(docItem.DocID, Naming.MessageTypeDefinition.MSG_REIM_APP_CANCELLED, Naming.MessageReceipent.ForApplicant);
-                    //        break;
-                    //}
-                }
-            }
         }
 
         public static void PrepareViewModel(this LcApplicationViewModel viewModel, CreditApplicationDocumentary item, AmendingLcApplication? amendment = null, LetterOfCredit? lc = null)
@@ -173,7 +129,7 @@ namespace WebHome.Helper
 
             if (item.FpgLcItem != null)
             {
-                viewModel.ServiceType = (Naming.DraftType?)item.BeneficiaryData.DraftType;
+                viewModel.ServiceType = (Naming.DraftType?)item.Beneficiary.DraftType;
             }
             else if (item.ForService())
             {
@@ -181,11 +137,11 @@ namespace WebHome.Helper
             }
 
             var currentVersion = lc?.CurrentVersion;
-            var lcItem = amendment?.LcItem ?? currentVersion?.LcItem ?? item.LcItem;
-            var snItem = amendment?.SpecificNote ?? currentVersion?.SpecificNote ?? item.SpecificNote;
+            var lcItem = amendment?.LcItems ?? currentVersion?.LcItems ?? item.LcItems;
+            var snItem = amendment?.SpecificNotes ?? currentVersion?.SpecificNotes ?? item.SpecificNotes;
             var attachableItem = amendment?.AttachableDocument ?? currentVersion?.AttachableDocument ?? item.AttachableDocument;
 
-            void getGoodsDetails()
+            void getGoodsDetail()
             {
                 List<GoodsDetail> goods = new List<GoodsDetail>();
                 var legacyGoods = lcItem.Goods.GetEfficientString();
@@ -197,9 +153,9 @@ namespace WebHome.Helper
                     });
                 }
 
-                if (lcItem.GoodsDetails != null && lcItem.GoodsDetails.Count > 0)
+                if (lcItem.GoodsDetail != null && lcItem.GoodsDetail.Count > 0)
                 {
-                    goods.AddRange(lcItem.GoodsDetails.ToArray());
+                    goods.AddRange(lcItem.GoodsDetail.ToArray());
                 }
 
                 viewModel.Amount = goods.Select(g => g.Amount).ToArray();
@@ -211,23 +167,22 @@ namespace WebHome.Helper
 
             }
 
-            viewModel.Applicant = item.申請人;
-            viewModel.Beneficiary = item.受益人;
-            viewModel.IssuingBank = item.開狀行;
-            viewModel.IssuingBankName = $"{item.開狀行} {item.CustomerOfBranch.BankData.BranchName}";
+            viewModel.Applicant = item.ApplicantID;
+            viewModel.Beneficiary = item.BeneficiaryID;
+            viewModel.IssuingBank = item.IssuingBankCode;
+            viewModel.IssuingBankName = $"{item.IssuingBankCode} {item.CustomerOfBranch.BankCodeNavigation.BranchName}";
 
-            viewModel.AdvisingBank = item.通知行;
-            viewModel.AdvisingBankName = item.AdvisingBank.BranchName;
-            viewModel.AdvisingBankAddr = item.AdvisingBank.Address;
+            viewModel.AdvisingBank = item.AdvisingBankCode;
+            viewModel.AdvisingBankName = item.AdvisingBankCodeNavigation.BranchName;
+            viewModel.AdvisingBankAddr = item.AdvisingBankCodeNavigation.Address;
 
 
-            viewModel.AtSight = item.見票即付;
-            viewModel.UsanceDay = item.定日付款;
-            viewModel.BalanceMode = item.沖銷保證金方式;
-            viewModel.VersionID = item.CustomerOfBranch.CurrentVersion;
-            viewModel.BeneDetailID = item.BeneficiaryData.CurrentVersion;
+            viewModel.AtSight = item.AtSight;
+            viewModel.UsanceDay = item.UsanceDays;
+            viewModel.VersionID = item.CustomerOfBranch.CustomerOfBranchVersionID;
+            viewModel.BeneDetailID = item.Beneficiary.CustomerOfBranchVersionID;
 
-            if (item.見票即付)
+            if (item.AtSight)
             {
                 viewModel.AttachPayingAcceptance = attachableItem.匯票付款申請書;
             }
@@ -241,9 +196,9 @@ namespace WebHome.Helper
 
             viewModel.LcAmt = lcItem.開狀金額;
             viewModel.SetLcExpiry(lcItem.有效期限);
-            viewModel.Currency = lcItem.幣別;
+            viewModel.Currency = lcItem.CurrencyTypeID;
             //viewModel.Goods = lcItem.Goods;
-            getGoodsDetails();
+            getGoodsDetail();
             viewModel.UsanceDay = lcItem.定日付款;
             viewModel.SetPaymentDate(lcItem.PaymentDate);
 
@@ -268,96 +223,6 @@ namespace WebHome.Helper
             }
         }
 
-        public static void PrepareViewModel(this PaymentNotificationQueryViewModel viewModel, PaymentNotification item)
-        {
-            viewModel.CreditAmt = item.實際送保金額;
-            viewModel.IndividualCredit = item.個人金融授信;
-            viewModel.IndustryCredit = item.企業金融授信;
-            viewModel.CustomerID = item.CustomerID;
-            viewModel.GuarRcptNo_1 = item.保證人統編_1;
-            viewModel.GuarRcptNo_2 = item.保證人統編_2;
-            viewModel.GuarRcptNo_3 = item.保證人統編_3;
-            viewModel.GuarRcptNo_4 = item.保證人統編_4;
-            viewModel.SecurityStatusValue = item.擔保品放貸文件徵提;
-            viewModel.PayableAccount = item.扣款帳號;
-            viewModel.CommissionStatusValue = item.費用收取;
-            viewModel.保證手續費 = item.保證手續費;
-            viewModel.IssuingFee = item.開改狀手續費;
-            viewModel.AcceptanceCommission = item.承兌手續費;
-            viewModel.ReceivableCommission = item.應收帳款墊款息;
-            viewModel.AccountFee = item.帳戶管理費;
-            viewModel.Security = item.保證金;
-            viewModel.InitialFee = item.開辦費;
-            viewModel.FundingFee = item.移送基金保證手續費;
-            viewModel.LoanAccount = item.借戶帳號;
-            viewModel.BorrowedAmount = item.借戶本金;
-            viewModel.BorrowedInterest = item.借戶利息;
-            viewModel.Renew = item.借新還舊.HasValue
-                                ? item.借新還舊 == true
-                                : item.信用狀改貸.HasValue
-                                    ? !(item.信用狀改貸 == true)
-                                    : (bool?)null;
-            viewModel.LoanTypeValue = item.貸款種類;
-            viewModel.SetAllowingDate(item.批准日期);
-            viewModel.CreditNo = item.額度號碼;
-            viewModel.LoanMonth = item.貸放期限月;
-            viewModel.LoanDay = item.貸放期限天;
-            viewModel.LoanAmt = item.貸放金額;
-            viewModel.ServiceChargeRate = item.手續費率;
-            viewModel.TranCertNo = item.交易憑證號碼;
-            viewModel.UsageType = item.用途別;
-            viewModel.SetInitLoanDate(item.初放貸放日);
-            viewModel.PayingType = item.還本方式;
-            viewModel.InterestType = item.利率型態;
-            viewModel.ContractInterestType = item.訂約利率型態;
-            viewModel.SetAdjustRateDate(item.下次利率調整日);
-            viewModel.AllowanceDays = item.本筆寬限期;
-            viewModel.CreditPercentage = item.信保成數;
-            viewModel.CreditType = item.信保種類;
-            viewModel.AllocationType = item.AllocationType();
-            viewModel.TransferenceType = item.TransferenceType();
-            viewModel.AccountNo = item.銷帳編號;
-            viewModel.BusinessType = item.融資業務分類;
-            viewModel.GovLoanType = item.政府專案補助貸款分類;
-            viewModel.SetScanningDate(item.掃描日期);
-            viewModel.LoanAdditional = item.貸放明細其他;
-            viewModel.BadRecord = item.票據使用不良紀錄 == true;
-            viewModel.DraftWithoutPayoff = item.押匯未清償 == true;
-            viewModel.PrincipalOverdue = item.授信戶本金逾期 == true;
-            viewModel.BackInterest = item.積欠利息 == true;
-            viewModel.CreditCardOverdue = item.信用卡帳款逾期 == true;
-            viewModel.AccountAlert = item.列管為警示戶 == true;
-            viewModel.CreditAlert = item.信用貶落管控指標 == true;
-            viewModel.Details = item.聯絡事項;
-            viewModel.OtherSecurityStatus = item.擔保品放貸文件徵提其他;
-            viewModel.Stakeholder = item.利害關係人 == true;
-            viewModel.BankRelation = item.銀行法關係人 == true;
-            viewModel.BankRelationContent = item.銀行法關係內容;
-            viewModel.RetiredGuarantor = item.保證人辭卸解任;
-            viewModel.AMLCheck = item.交易對手AML查詢;    // == true;
-            viewModel.DocumentCheck = item.憑交易文件撥貸 == true;
-            viewModel.ThreatCheck = item.資恐檢核表 == true;
-            viewModel.SINo = item.聯貸流水號;
-            viewModel.SILFG = item.聯貸流水號.HasValue;
-            viewModel.SetLoanDue(item.貸放期限);
-            viewModel.SetLoanExpiry(item.貸放到期日);
-            viewModel.AccountType = item.帳戶性質;
-            viewModel.AccountingSubject = item.會計科目;
-            viewModel.IncomingAccount = item.入戶帳號;
-            viewModel.SetInsuranceExpiry(item.送保到期日);
-
-        }
-
-        public static void PrepareViewModel(this L1203ViewModel viewModel, OpeningApplicationDocumentary item)
-        {
-            viewModel.SetOpeningDate(item.開狀日期);
-            viewModel.CheckDueDays = item.匯票期限;
-            viewModel.LoanMasterNo = item.貸放主管編號;
-            viewModel.Payer = item.付款人;
-            viewModel.OddDay = item.零星天數計收 == true;
-            viewModel.CurrencyAmount = item.記帳金額;
-            viewModel.GUNO = item.交易憑證編號;
-        }
 
         public static void PrepareViewModel(this AmendmentRegistrationViewModel viewModel, AmendingLcRegistry item)
         {
@@ -368,65 +233,13 @@ namespace WebHome.Helper
             viewModel.GUNO = item.交易憑證編號;
         }
 
-        public static void PrepareViewModel(this CancellationRegistrationViewModel viewModel, CancellationRegistry item)
-        {
-            viewModel.CancellationReason = item.沖銷原因;
-            viewModel.IncLcAmt = item.沖銷信用狀金額;
-            viewModel.ExchangeRate = item.匯率;
-            viewModel.Security = item.沖銷存入保證金金額;
-            viewModel.AllocationType = item.撥款方式.ToAllocationType();
-            viewModel.IncomingAccount = item.入戶帳號;
-            viewModel.ServiceCharge = item.手續費;
-        }
 
-        public static void PrepareViewModel(this NegoDraftRegistrationViewModel viewModel, NegoDraftRegistry item)
-        {
-            viewModel.CancellationReason = item.沖銷原因;
-            viewModel.IncLcAmt = item.沖銷信用狀金額;
-            viewModel.ExchangeRate = item.匯率;
-            viewModel.Security = item.沖銷存入保證金金額;
-            viewModel.AllocationType = item.撥款方式.ToAllocationType();
-            viewModel.IncomingAccount = item.撥款帳號科目;
-            viewModel.ServiceCharge = item.押匯手續費金額;
-            viewModel.ServiceChargeRate = item.押匯手續費率;
-
-            viewModel.BranchNo = item.支號;
-            viewModel.InterestRateOfBank = item.掛牌利率;
-            viewModel.InterestType = item.利率型態;
-            viewModel.IncInterestRate = item.加減碼;
-            viewModel.InterestAttribute = item.利率別;
-            viewModel.GTXNO = item.GTXNO;
-            viewModel.AcceptanceRate = item.承兌手續費率;
-            viewModel.AcceptanceCommission = item.承兌手續費金額;
-            viewModel.TransferenceType = item.現轉別.ToTransferenceType();
-            viewModel.NegoCharge = item.票繳金額;
-            viewModel.CheckNo = item.支票號碼;
-            viewModel.UsageType = item.用途別;
-            viewModel.BusinessType = item.融資業務分類;
-            viewModel.GovLoanType = item.政府專案補助貸款分類;
-            viewModel.Guarantee = item.十足擔保記號;
-            viewModel.CreditPercentage = item.信保成數;
-            viewModel.CreditType = item.信保種類;
-            viewModel.ApplicationType = item.申請種類;
-        }
 
         public static void PrepareViewModel(this LcCancellationQueryViewModel viewModel, CreditCancellation item)
         {
 
         }
 
-        public static void PrepareViewModel(this AcceptanceRegistrationQueryViewModel viewModel, L4700 item)
-        {
-            viewModel.AllocationType = item.撥款方式.ToAllocationType();
-            viewModel.IncomingAccount = item.入戶帳號;
-            viewModel.SetAdvanceDate(item.墊款日);
-            viewModel.InterestKind = item.利率種類;
-            viewModel.AdvanceRate = item.墊款利率;
-            viewModel.InterestAttribute = item.利率別;
-            viewModel.IncInterestRate = item.加減碼;
-            viewModel.InterestType = item.利率型態;
-            viewModel.InterestRateOfBank = item.承作利率;
-        }
 
         public static readonly String[] __AcceptedFileFormat = new string[]
         {
@@ -492,7 +305,7 @@ namespace WebHome.Helper
             {
                 var cust = models.GetTable<CustomerOfBranch>()
                             .Where(b => b.BankCode == viewModel.IssuingBank
-                                && b.CompanyID == viewModel.Applicant)
+                                && b.OrganizationID == viewModel.Applicant)
                             .FirstOrDefault();
                 if (cust == null)
                 {
@@ -505,7 +318,7 @@ namespace WebHome.Helper
 
                 if (advising == null)
                 {
-                    ModelState.AddModelError("AdvisingBank", "通知銀行不存在");
+                    ModelState.AddModelError("AdvisingBankCodeNavigation", "通知銀行不存在");
                 }
                 else
                 {
@@ -514,7 +327,7 @@ namespace WebHome.Helper
                             .FirstOrDefault();
                     if (DisabledBranch != null)
                     {
-                        ModelState.AddModelError("AdvisingBank", "通知行已不存在，請再重新選取!");
+                        ModelState.AddModelError("AdvisingBankCodeNavigation", "通知行已不存在，請再重新選取!");
                     }
                 }
 
@@ -561,7 +374,7 @@ namespace WebHome.Helper
                 viewModel.AdvisingBank = viewModel.AdvisingBank.GetEfficientString();
                 if (viewModel.AdvisingBank == null)
                 {
-                    ModelState.AddModelError("AdvisingBank", "請選擇通知銀行");
+                    ModelState.AddModelError("AdvisingBankCodeNavigation", "請選擇通知銀行");
                 }
 
                 if (!viewModel.LcExpiry_D.HasValue)
@@ -621,29 +434,11 @@ namespace WebHome.Helper
                     }
                     else if (viewModel.UsanceDay > 180)
                     {
-                        if (!cust!.UsanceLimitedDays.HasValue)
-                        {
-                            ModelState.AddModelError("UsanceDay", "定日付款天數不可大於180天");
-                        }
-                        else if (viewModel.UsanceDay > cust.UsanceLimitedDays)
-                        {
-                            ModelState.AddModelError("UsanceDay", String.Format("定日付款天數不可大於{0}天", cust.UsanceLimitedDays));
-                        }
+                        ModelState.AddModelError("UsanceDay", "定日付款天數不可大於180天");
                     }
                     else if (viewModel.PaymentDate_D.HasValue && viewModel.PaymentDate_D < DateTime.Today)
                     {
                         ModelState.AddModelError("PaymentDate", "指定到期日不能小於今天");
-                    }
-                    else if (viewModel.PaymentDate_D.HasValue && viewModel.PaymentDate_D.Value.Subtract(DateTime.Today).Days > 180)
-                    {
-                        if (!cust!.UsanceLimitedDays.HasValue)
-                        {
-                            ModelState.AddModelError("PaymentDate", "指定到期日天數不可大於180天");
-                        }
-                        else if (viewModel.PaymentDate_D.Value.Subtract(DateTime.Today).Days > cust.UsanceLimitedDays.Value)
-                        {
-                            ModelState.AddModelError("PaymentDate", String.Format("指定到期日天數不可大於{0}天", cust.UsanceLimitedDays));
-                        }
                     }
                 }
 
@@ -821,18 +616,18 @@ namespace WebHome.Helper
                         DocType = (int)Naming.DocumentTypeDefinition.開狀申請書,
                         SysDocID = "CDS",
                     },
-                    LcItem = new LcItem
+                    LcItems = new LcItems
                     {
                         有效期限 = DateTime.Today
                     },
-                    SpecificNote = new SpecificNote
+                    SpecificNotes = new SpecificNotes
                     {
                         最後交貨日 = DateTime.Today,
                         分批交貨 = true
                     },
                     AttachableDocument = new AttachableDocument { },
                     ApplicationDate = now,
-                    見票即付 = true,
+                    AtSight = true,
                     OverTheCounter = overTheCounter,
                 };
 
@@ -841,7 +636,7 @@ namespace WebHome.Helper
                     item.FpgLcItem = new FpgLcItem { };
                 }
 
-                models.GetTable<CreditApplicationDocumentary>().InsertOnSubmit(item);
+                models.GetTable<CreditApplicationDocumentary>().Add(item);
 
                 item.Documentary.DocumentaryLevel.Add(new DocumentaryLevel
                 {
@@ -893,20 +688,19 @@ namespace WebHome.Helper
 
             item.Documentary.DesiredDate = viewModel.DesiredDate_D;
 
-            item.付款行 = viewModel.IssuingBank;
-            item.開狀行 = viewModel.IssuingBank;
-            item.申請人 = viewModel.Applicant!.Value;
-            item.受益人 = viewModel.Beneficiary!.Value;
-            item.通知行 = viewModel.AdvisingBank;
-            item.見票即付 = viewModel.AtSight == true;
-            item.定日付款 = viewModel.AtSight == true ? 0 : viewModel.UsanceDay!.Value;
-            item.沖銷保證金方式 = viewModel.BalanceMode;
+            item.PayableBankCode = viewModel.IssuingBank;
+            item.IssuingBankCode = viewModel.IssuingBank;
+            item.ApplicantID = viewModel.Applicant!.Value;
+            item.BeneficiaryID = viewModel.Beneficiary!.Value;
+            item.AdvisingBankCode = viewModel.AdvisingBank;
+            item.AtSight = viewModel.AtSight == true;
+            item.UsanceDays = viewModel.AtSight == true ? 0 : viewModel.UsanceDay!.Value;
             item.Instrunction = "非本行制式特別指示之申請原因及依據：";
 
             var bene = models.GetTable<BeneficiaryData>()
-                .Where(b => b.BeneID == item.受益人).First();
-            item.VersionID = bene.CurrentVersion;
-            item.BeneDetailID = bene.CurrentVersion;
+                .Where(b => b.OrganizationID == item.BeneficiaryID).First();
+            item.ApplicantDetailsID = bene.CustomerOfBranchVersionID;
+            item.BeneDetailsID = bene.CustomerOfBranchVersionID;
 
             if (viewModel.AtSight == true)
             {
@@ -925,29 +719,29 @@ namespace WebHome.Helper
                 ? viewModel.AttachAdditional
                 : null;
 
-            item.LcItem.開狀金額 = viewModel.LcAmt!.Value;
-            item.LcItem.有效期限 = viewModel.LcExpiry_D;
-            item.LcItem.幣別 = viewModel.Currency!.Value;
-            item.LcItem.Goods = viewModel.Goods;
+            item.LcItems.開狀金額 = viewModel.LcAmt!.Value;
+            item.LcItems.有效期限 = viewModel.LcExpiry_D;
+            item.LcItems.CurrencyTypeID = viewModel.Currency!.Value;
+            item.LcItems.Goods = viewModel.Goods;
 
-            item.LcItem.定日付款 = viewModel.AtSight == true ? 0 : viewModel.UsanceDay!.Value;
-            item.LcItem.PaymentDate = viewModel.PaymentDate_D;
+            item.LcItems.定日付款 = viewModel.AtSight == true ? 0 : viewModel.UsanceDay!.Value;
+            item.LcItems.PaymentDate = viewModel.PaymentDate_D;
 
-            //item.SpecificNote.原留印鑑相符 = Seal == true;
-            //item.SpecificNote.受益人單獨蓋章 = BeneSeal == true;
-            item.SpecificNote.原留印鑑相符 = bene.AppCountersign ?? true;
-            item.SpecificNote.受益人單獨蓋章 = !item.SpecificNote.原留印鑑相符.Value;
+            //item.SpecificNotes.原留印鑑相符 = Seal == true;
+            //item.SpecificNotes.受益人單獨蓋章 = BeneSeal == true;
+            item.SpecificNotes.原留印鑑相符 = bene.AppCountersign ?? true;
+            item.SpecificNotes.受益人單獨蓋章 = !item.SpecificNotes.原留印鑑相符.Value;
 
-            item.SpecificNote.分批交貨 = viewModel.Partial == true;
-            item.SpecificNote.最後交貨日 = viewModel.NoAfterThan_D;
-            item.SpecificNote.其他 = viewModel.ckSNAdditional == true ? viewModel.SNAdditional : null;
-            item.SpecificNote.接受發票電子訊息 = viewModel.AcceptEInvoice;
+            item.SpecificNotes.分批交貨 = viewModel.Partial == true;
+            item.SpecificNotes.最後交貨日 = viewModel.NoAfterThan_D;
+            item.SpecificNotes.其他 = viewModel.ckSNAdditional == true ? viewModel.SNAdditional : null;
+            item.SpecificNotes.接受發票電子訊息 = viewModel.AcceptEInvoice;
 
             int sno = 1;
-            if (item.LcItem.GoodsDetails.Count > 0)
+            if (item.LcItems.GoodsDetail.Count > 0)
             {
-                sno = item.LcItem.GoodsDetails.Max(g => g.sno) + 1;
-                models.ExecuteCommand("delete GoodsDetail where ItemID = {0}", item.LcItem.ItemID);
+                sno = item.LcItems.GoodsDetail.Max(g => g.Sno) + 1;
+                models.ExecuteCommand("delete GoodsDetail where LcItemsID = {0}", item.LcItems.ItemID);
             }
 
             if (viewModel.ProductName != null && viewModel.ProductName.Length > 0)
@@ -962,9 +756,9 @@ namespace WebHome.Helper
                         Quantity = viewModel.Quantity[idx],
                         Remark = viewModel.Remark[idx],
                         UnitPrice = viewModel.UnitPrice[idx],
-                        sno = idx + sno,
+                        Sno = idx + sno,
                     };
-                    item.LcItem.GoodsDetails.Add(detail);
+                    item.LcItems.GoodsDetail.Add(detail);
                 }
             }
 
@@ -980,25 +774,25 @@ namespace WebHome.Helper
                 item.FpgLcItem.ContactName = viewModel.ContactName;
                 item.FpgLcItem.ContactPhone = viewModel.ContactPhone;
                 var status = models.GetTable<FpgBeneficiaryStatus>()
-                    .Where(b => b.BankCode == item.通知行 && b.ApplicantID == item.申請人 && b.BeneID == item.受益人).FirstOrDefault();
+                    .Where(b => b.BeneID == item.BeneficiaryID).FirstOrDefault();
                 if (status != null)
                     item.FpgLcItem.押匯允差比例 = status.押匯允差比例;
 
                 item.FpgLcItem.GroupID = bene!.Organization!.OrganizationStatus!.GroupID!.Value;
 
-                item.SpecificNote.接受發票人地址與受益人地址不符 = viewModel.InvoiceAddr == true;
-                item.SpecificNote.貨品明細以發票為準 = viewModel.InvoiceProductDetail == true;
-                item.SpecificNote.接受發票電子訊息 = true;  // viewModel.AcceptEInvoice == true;
-                item.SpecificNote.接受發票金額大於匯票金額 = true;  // viewModel.LargerInvDraft == true;
+                item.SpecificNotes.接受發票人地址與受益人地址不符 = viewModel.InvoiceAddr == true;
+                item.SpecificNotes.貨品明細以發票為準 = viewModel.InvoiceProductDetail == true;
+                item.SpecificNotes.接受發票電子訊息 = true;  // viewModel.AcceptEInvoice == true;
+                item.SpecificNotes.接受發票金額大於匯票金額 = true;  // viewModel.LargerInvDraft == true;
 
-                item.SpecificNote.原留印鑑相符 = false;
-                item.SpecificNote.受益人單獨蓋章 = viewModel.BeneSeal == true;
-                item.SpecificNote.分批交貨 = viewModel.Partial == true;
-                item.SpecificNote.最後交貨日 = viewModel.NoAfterThan_D;
-                item.SpecificNote.押匯發票起始日 = viewModel.InvoiceDateStart_D;
-                item.SpecificNote.押匯起始日 = viewModel.DraftDateStart_D;
-                item.SpecificNote.接受發票早於開狀日 = viewModel.EarlyInvDate == true;
-                item.SpecificNote.接受發票金額大於開狀金額 = true;  // viewModel.LargerInvAmt == true;
+                item.SpecificNotes.原留印鑑相符 = false;
+                item.SpecificNotes.受益人單獨蓋章 = viewModel.BeneSeal == true;
+                item.SpecificNotes.分批交貨 = viewModel.Partial == true;
+                item.SpecificNotes.最後交貨日 = viewModel.NoAfterThan_D;
+                item.SpecificNotes.押匯發票起始日 = viewModel.InvoiceDateStart_D;
+                item.SpecificNotes.押匯起始日 = viewModel.DraftDateStart_D;
+                item.SpecificNotes.接受發票早於開狀日 = viewModel.EarlyInvDate == true;
+                item.SpecificNotes.接受發票金額大於開狀金額 = true;  // viewModel.LargerInvAmt == true;
 
                 if (item.FpgLcItem.DepartID == null)
                 {
@@ -1014,7 +808,7 @@ namespace WebHome.Helper
                             GroupID = item.FpgLcItem.GroupID,
                             Department = String.Empty,
                         };
-                        models.GetTable<GroupDepartment>().InsertOnSubmit(defaultDepartment);
+                        models.GetTable<GroupDepartment>().Add(defaultDepartment);
                     }
 
                     item.FpgLcItem.GroupDepartment = defaultDepartment;
@@ -1028,11 +822,11 @@ namespace WebHome.Helper
 
         public static void PrepareViewModel(this NegoDraftQueryViewModel viewModel, NegoDraft item)
         {
-            viewModel.LcID = item.LcID;
+            viewModel.LcID = item.NegoLcVersionID;
             viewModel.DraftNo = item.DraftNo;
             viewModel.DraftAmount = item.Amount;
             viewModel.SetNegotiateDate(item.ShipmentDate);
-            viewModel.AccountNo = item.NegoDraftExtension.入戶帳號;
+            viewModel.AccountNo = item.NegoDraftExtension.BeneficiaryAccountNo;
             viewModel.NegoBranch = item.NegoDraftExtension.NegoBranch;
             viewModel.ItemName = item.ItemName;
             viewModel.ItemQuantity = item.ItemQuantity;
@@ -1042,70 +836,28 @@ namespace WebHome.Helper
 
         public static void PrepareViewModel(this NegoInvoiceQueryViewModel viewModel, NegoInvoice item)
         {
-            viewModel.DraftID = item.DraftID;
+            viewModel.DraftID = item.NegoDraftID;
             viewModel.InvoiceNo = item.InvoiceNo;
             viewModel.SetInvoiceDate(item.InvoiceDate);
             viewModel.InvoiceAmount = item.InvoiceAmount;
-            viewModel.NegoAmount = item.NegoDraft.NegoAffair.Where(i => i.InvoiceID == item.InvoiceID).FirstOrDefault()?.NegoAmount;
-        }
-
-        public static void PrepareViewModel(this ReimbursementQueryViewModel viewModel, Reimbursement item)
-        {
-            viewModel.DraftID = item.DraftID;
-            viewModel.HasLoan = item.NegoLoan != null;
-        }
-
-        public static void PrepareViewModel(this NegoLoanRepaymentQueryViewModel viewModel, NegoLoanRepayment item)
-        {
-            viewModel.LoanID = item.LoanID;
-            viewModel.RepaymentAmount = item.RepaymentAmount;
-            viewModel.RepaymentDate = item.RepaymentDate;
-            viewModel.InterestAmount = item.InterestAmount;
+            viewModel.NegoAmount = item.NegoDraft.NegoAffair.Where(i => i.NegoInvoiceID == item.InvoiceID).FirstOrDefault()?.NegoAmount;
         }
 
 
         public static void PrepareViewModel(this CustomerOfBranchViewModel viewModel, CustomerOfBranch item)
         {
             viewModel.BankCode = item.BankCode;
-            viewModel.CompanyID = item.CompanyID;
+            viewModel.CompanyID = item.OrganizationID;
             viewModel.PayableAccount = item.PayableAccount;
             viewModel.Addr = item.Addr;
             viewModel.Phone = item.Phone;
             viewModel.ContactEmail = item.ContactEmail;
             viewModel.Undertaker = item.Undertaker;
             viewModel.CompanyName = item.CompanyName;
-            viewModel.CurrentVersion = item.CurrentVersion;
+            viewModel.CurrentVersion = item.CustomerOfBranchVersionID;
             viewModel.CurrentLevel = item.CurrentLevel;
             viewModel.PostponeMonths = item.PostponeMonths;
-            viewModel.UsancelimitedDays = item.UsanceLimitedDays;
             viewModel.ReceiptNo = item.Organization.ReceiptNo;
-            if (item.CustomerOfBranchExtension != null)
-            {
-                var extension = item.CustomerOfBranchExtension;
-
-                viewModel.ReimAccount = extension.約定還款帳號;
-                viewModel.InterestRateLowerBound = extension.InterestRateLowerBound;
-                viewModel.SetInterestRateLowerBoundExpiration(extension.InterestRateLowerBoundExpiration);
-                viewModel.UseNegoLoan = extension.UseNegoLoan;
-                viewModel.UseCreditInsurance = extension.UseCreditInsurance;
-                viewModel.LoanCreditNo = extension.LoanCreditNo;
-                viewModel.InsuranceCreditNo = extension.InsuranceCreditNo;
-                viewModel.LoanPeriod = extension.LoanPeriod;
-                viewModel.StartLoanAccordingTo = (CustomerOfBranchExtension.StartLoanBy?)extension.StartLoanAccordingTo;
-                viewModel.SetChristeningDueDate(extension.ChristeningDueDate);
-                viewModel.SetInsuranceExpiry(extension.InsuranceExpiry);
-                viewModel.InsuredCreditAmount = extension.InsuredCreditAmount;
-                viewModel.CreditPercentage = extension.CreditPercentage;
-                viewModel.CreditType = extension.CreditType;
-                viewModel.AuthorizeToRepay = extension.AuthorizeToRepay;
-                viewModel.InterestRepayingType = (CustomerOfBranchExtension.InterestRepayment?)extension.InterestRepayingType;
-                viewModel.InterestRepayingDay = extension.InterestRepayingDay;
-                viewModel.AdjustInterestRate = extension.AdjustInterestRate;
-                viewModel.InterestKind = extension.InterestKind;
-                viewModel.InterestAttribute = extension.InterestAttribute;
-                viewModel.InterestType = extension.InterestType;
-
-            }
         }
 
         public static bool ValidateProcess(this ApplicationProcessViewModel viewModel, SampleController controller, bool checkRemark = true, bool checkReason = true)

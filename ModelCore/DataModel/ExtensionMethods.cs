@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-using CommonLib.DataAccess;
+using CommonLib.Core.DataWork;
 using ModelCore.Locale;
 using CommonLib.Utility;
 
@@ -16,7 +16,7 @@ namespace ModelCore.DataModel
     {
         public static BankData GetIssuingBranch(this CreditApplicationDocumentary item)
         {
-            return item.CustomerOfBranch.BankData;
+            return item.CustomerOfBranch.BankCodeNavigation;
         }
 
         public static LetterOfCredit GetLetterOfCredit(this CreditApplicationDocumentary item)
@@ -31,46 +31,39 @@ namespace ModelCore.DataModel
 
         public static DateTime UsanceDate(this NegoDraft draft)
         {
-            return draft.LcID.HasValue
-                ? draft.LetterOfCreditVersion.LcItem.PaymentDate.HasValue
-                    ? draft.LetterOfCreditVersion.LcItem.PaymentDate.Value : draft.ImportDate.AddDays(draft.LetterOfCreditVersion.LcItem.定日付款)
-                    : draft.ImportDate.AddDays(draft.NegoLC.DueDays.HasValue ? draft.NegoLC.DueDays.Value : 0);
+            return draft.NegoLcVersion.LcItems.PaymentDate ?? draft.NegoDate.AddDays(draft.NegoLcVersion.LcItems.定日付款);
 
-            //return draft.LcID.HasValue ? draft.ShipmentDate.Value.AddDays(draft.LetterOfCredit.LcItem.定日付款)
-            //    : draft.ShipmentDate.Value.AddDays(draft.NegoLC.DueDays.Value);
         }
 
         public static bool AtSight(this NegoDraft draft)
         {
-            return draft.LcID.HasValue
-                ? draft.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.見票即付
-                : draft.NegoLC.DueDays == 0;
+            return draft.NegoLcVersion.LcItems.定日付款 == 0;
 
         }
 
-        public static void GetLcAmendmentItems(this AmendingLcApplication item, out LcItem newItem, out LcItem oldItem,
+        public static void GetLcAmendmentItems(this AmendingLcApplication item, out LcItems newItem, out LcItems oldItem,
             out AttachableDocument newAttach, out AttachableDocument oldAttach,
-            out SpecificNote newSN, out SpecificNote oldSN,
+            out SpecificNotes newSN, out SpecificNotes oldSN,
             out String newNotifyingBank, out String oldNotifyingBank)
         {
 
-            newItem = item.LcItem;
+            newItem = item.LcItems;
             newAttach = item.AttachableDocument;
-            newSN = item.SpecificNote;
-            newNotifyingBank = item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.通知行;
+            newSN = item.SpecificNotes;
+            newNotifyingBank = item.Source.Lc.Application.AdvisingBankCode;
 
-            oldAttach = item.LetterOfCreditVersion.AttachableDocument;
-            oldItem = item.LetterOfCreditVersion.LcItem;
-            oldSN = item.LetterOfCreditVersion.SpecificNote;
-            oldNotifyingBank = item.LetterOfCreditVersion.NotifyingBank;
+            oldAttach = item.Source.AttachableDocument;
+            oldItem = item.Source.LcItems;
+            oldSN = item.Source.SpecificNotes;
+            oldNotifyingBank = item.Source.NotifyingBank;
         }
 
         public static List<LcAmendatory> GetLcAmendmentDetails(this AmendingLcApplication item)
         {
             List<LcAmendatory> items = new List<LcAmendatory>();
-            LcItem newItem, oldItem;
+            LcItems newItem, oldItem;
             AttachableDocument newAttach, oldAttach;
-            SpecificNote newSN, oldSN;
+            SpecificNotes newSN, oldSN;
 
             item.GetLcAmendmentItems(out newItem, out oldItem, out newAttach, out oldAttach, out newSN, out oldSN,out String newNotifyingBank,out String oldNotifyingBank);
 
@@ -78,8 +71,8 @@ namespace ModelCore.DataModel
             {
                 items.Add(new LcAmendatory
                 {
-                    Amendatory = "通知行：" + newNotifyingBank,
-                    Original = "通知行：" + oldNotifyingBank
+                    Amendatory = "AdvisingBankCode：" + newNotifyingBank,
+                    Original = "AdvisingBankCode：" + oldNotifyingBank
                 });
             }
 
@@ -158,9 +151,10 @@ namespace ModelCore.DataModel
                                 , idx++, newItem.Goods, null, null, null, null, null))
                         .Append("<br/>");
             }
-            for (int i = 0; i < newItem.GoodsDetails.Count; i++)
+            var details = newItem.GoodsDetail.ToList();
+            for (int i = 0; i < details.Count; i++)
             {
-                var g = newItem.GoodsDetails[i];
+                var g = details[i];
                 srcGoods.Append(String.Format("{0}. 品名:{1} 規格:{2} 單價:{3} 數量:{4} 金額:{5} 備註:{6}"
                             , idx++, g.ProductName, g.ProductSize, g.UnitPrice, g.Quantity, g.Amount, g.Remark))
                         .Append("<br/>");
@@ -174,9 +168,10 @@ namespace ModelCore.DataModel
                                 , idx++, oldItem.Goods, null, null, null, null, null))
                         .Append("<br/>");
             }
-            for (int i = 0; i < oldItem.GoodsDetails.Count; i++)
+            details = oldItem.GoodsDetail.ToList();
+            for (int i = 0; i < details.Count; i++)
             {
-                var g = oldItem.GoodsDetails[i];
+                var g = details[i];
                 destGoods.Append(String.Format("{0}. 品名:{1} 規格:{2} 單價:{3} 數量:{4} 金額:{5} 備註:{6}"
                             , idx++, g.ProductName, g.ProductSize, g.UnitPrice, g.Quantity, g.Amount, g.Remark))
                         .Append("<br/>");
@@ -426,7 +421,7 @@ namespace ModelCore.DataModel
             return items;
         }
 
-        public static String BuildGoodsDetails(this LcItem item,String newLine = "\r\n")
+        public static String BuildGoodsDetails(this LcItems item,String newLine = "\r\n")
         {
             StringBuilder srcGoods = new StringBuilder("貨物名稱：");
             int idx = 1;
@@ -436,9 +431,10 @@ namespace ModelCore.DataModel
                                 , idx++, item.Goods, null, null, null, null, null))
                         .Append(newLine);
             }
-            for (int i = 0; i < item.GoodsDetails.Count; i++)
+            var details = item.GoodsDetail.ToList();
+            for (int i = 0; i < details.Count; i++)
             {
-                var g = item.GoodsDetails[i];
+                var g = details[i];
                 srcGoods.Append(String.Format("{0}. 品名:{1} 規格:{2} 單價:{3} 數量:{4} 金額:{5} 備註:{6}"
                             , idx++, g.ProductName, g.ProductSize, g.UnitPrice, g.Quantity, g.Amount, g.Remark))
                         .Append("\r\n");
@@ -448,9 +444,9 @@ namespace ModelCore.DataModel
         }
 
 
-        public static bool CheckL3700Items(this AmendingLcApplication item, out LcItem newItem, out LcItem oldItem,
+        public static bool CheckL3700Items(this AmendingLcApplication item, out LcItems newItem, out LcItems oldItem,
             out AttachableDocument newAttach, out AttachableDocument oldAttach,
-            out SpecificNote newSN, out SpecificNote oldSN, out String description, out int itemNo, out String newNB, out String oldNB)
+            out SpecificNotes newSN, out SpecificNotes oldSN, out String description, out int itemNo, out String newNB, out String oldNB)
         {
             itemNo = 5;
             description = null;
@@ -498,12 +494,12 @@ namespace ModelCore.DataModel
 
         }
 
-        public static bool CheckL4500Items(this LcItem newItem, LcItem oldItem)
+        public static bool CheckL4500Items(this LcItems newItem, LcItems oldItem)
         {
             return newItem.開狀金額 < oldItem.開狀金額;
         }
 
-        public static StringBuilder BuildGoodsContent(this LcItem item,String format,String delimiter, StringBuilder content = null)
+        public static StringBuilder BuildGoodsContent(this LcItems item,String format,String delimiter, StringBuilder content = null)
         {
             if (content == null)
                 content = new StringBuilder();
@@ -519,9 +515,10 @@ namespace ModelCore.DataModel
                 if (delimiter != null)
                     content.Append(delimiter);
             }
-            for (int i = 0; i < item.GoodsDetails.Count; i++)
+            var details = item.GoodsDetail.ToList();
+            for (int i = 0; i < details.Count; i++)
             {
-                var g = item.GoodsDetails[i];
+                var g = details[i];
                 content.Append(String.Format(format
                             , idx++, g.ProductName, g.ProductSize, g.UnitPrice, g.Quantity, g.Amount, g.Remark));
                 if (delimiter != null)
@@ -530,8 +527,8 @@ namespace ModelCore.DataModel
             return content;
         }
 
-        public static bool CheckL5300Items(this LcItem newItem, LcItem oldItem,
-            SpecificNote newSN, SpecificNote oldSN, String newNotifyingBank, String oldNotifyingBank)
+        public static bool CheckL5300Items(this LcItems newItem, LcItems oldItem,
+            SpecificNotes newSN, SpecificNotes oldSN, String newNotifyingBank, String oldNotifyingBank)
         {
             return newItem.BuildGoodsContent("{0}{1}{2}{3}{4}{5}{6}", null).ToString()
                 != oldItem.BuildGoodsContent("{0}{1}{2}{3}{4}{5}{6}", null).ToString()
@@ -588,14 +585,14 @@ namespace ModelCore.DataModel
             item.CurrentLevel = (int)denyLevel;
         }
 
-        public static String GetGoodsDescription(this LcItem item,int length = 80)
+        public static String GetGoodsDescription(this LcItems item,int length = 80)
         {
             StringBuilder goodsDesc = new StringBuilder();
             goodsDesc.Append(item.Goods);
-            if (item.GoodsDetails.Count > 0)
+            if (item.GoodsDetail.Count > 0)
             {
                 goodsDesc.Append(String.Join("\r\n",
-                    item.GoodsDetails.OrderBy(g => g.sno).Select(g =>
+                    item.GoodsDetail.OrderBy(g => g.Sno).Select(g =>
                         String.Concat($"品名:{g.ProductName}",
                             String.IsNullOrEmpty(g.ProductSize) ? "" : $"規格:{g.ProductSize}",
                             String.IsNullOrEmpty(g.UnitPrice) ? "" : $"單價:{g.UnitPrice}",
@@ -606,7 +603,7 @@ namespace ModelCore.DataModel
             return goodsDesc.ToString().GetEfficientStringMaxSize(0, length);
         }
 
-        public static bool ForFpgService(this GenericManager<LcEntityDataContext> mgr, int docID, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
+        public static bool ForFpgService(this GenericManager<LcEntityDbContext> mgr, int docID, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
             var item = mgr.GetTable<Documentary>().Where(d => d.DocID == docID).FirstOrDefault();
             if (item != null)
@@ -623,11 +620,11 @@ namespace ModelCore.DataModel
                 case Naming.DocumentTypeDefinition.開狀申請書:
                     return item.CreditApplicationDocumentary.ForFpgService(serviceID);
                 case Naming.DocumentTypeDefinition.修狀申請書:
-                    return item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ForFpgService(serviceID);
+                    return item.AmendingLcApplication.Source.Lc.Application.ForFpgService(serviceID);
                 case Naming.DocumentTypeDefinition.押匯申請書:
                     return item.NegoDraft.ForFpgService(serviceID);
                 case Naming.DocumentTypeDefinition.信用狀註銷申請書:
-                    return item.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.ForFpgService(serviceID);
+                    return item.CreditCancellation.Lc.Application.ForFpgService(serviceID);
             }
             return false;
         }
@@ -639,11 +636,11 @@ namespace ModelCore.DataModel
                 case Naming.DocumentTypeDefinition.開狀申請書:
                     return item.CreditApplicationDocumentary.ForService(serviceID);
                 case Naming.DocumentTypeDefinition.修狀申請書:
-                    return item.AmendingLcApplication.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ForService(serviceID);
+                    return item.AmendingLcApplication.Source.Lc.Application.ForService(serviceID);
                 case Naming.DocumentTypeDefinition.押匯申請書:
                     return item.NegoDraft.ForFpgService(serviceID);
                 case Naming.DocumentTypeDefinition.信用狀註銷申請書:
-                    return item.CreditCancellation.LetterOfCredit.CreditApplicationDocumentary.ForService(serviceID);
+                    return item.CreditCancellation.Lc.Application.ForService(serviceID);
             }
             return false;
         }
@@ -651,18 +648,18 @@ namespace ModelCore.DataModel
 
         public static bool ForFpgService(this CreditApplicationDocumentary item, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
-            return item.FpgLcItem != null && (!serviceID.HasValue || item.BeneficiaryData.Organization.OrganizationStatus.BeneficiaryGroup.ServiceID == (int)serviceID);
+            return item.FpgLcItem != null && (!serviceID.HasValue || item.Beneficiary.Organization.OrganizationStatus.Group.ServiceID == (int)serviceID);
         }
 
         public static bool ForService(this CreditApplicationDocumentary item, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
-            return item.BeneficiaryData.Organization.ForService(serviceID);
+            return item.Beneficiary.Organization.ForService(serviceID);
         }
 
         public static bool ForService(this Organization item, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
-            return item.OrganizationStatus?.BeneficiaryGroup?.ServiceID.HasValue == true 
-                        && (!serviceID.HasValue || item.OrganizationStatus.BeneficiaryGroup.ServiceID == (int)serviceID);
+            return item.OrganizationStatus?.Group?.ServiceID.HasValue == true 
+                        && (!serviceID.HasValue || item.OrganizationStatus.Group.ServiceID == (int)serviceID);
         }
 
 
@@ -680,31 +677,31 @@ namespace ModelCore.DataModel
         public static bool ForFpgService(this Organization item, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
             return item.OrganizationStatus != null && item.OrganizationStatus.FpgNegoBeneficiary == true
-                        && (!serviceID.HasValue || item.OrganizationStatus.BeneficiaryGroup.ServiceID==(int)serviceID);
+                        && (!serviceID.HasValue || item.OrganizationStatus.Group.ServiceID==(int)serviceID);
         }
 
 
         public static bool ForFpgService(this NegoDraft item, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
-            return item.LcID.HasValue && item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.ForFpgService(serviceID);
+            return item.NegoLcVersion.Lc.ApplicationID.HasValue && item.NegoLcVersion.Lc.Application.ForFpgService(serviceID);
         }
 
         public static bool ForService(this NegoDraft item, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
-            return item.LcID.HasValue
-                ? item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.ForService(serviceID)
-                : item.NegoLC.BeneficiaryData.Organization.ForService(serviceID);
+            return item.NegoLcVersion.Lc.ApplicationID.HasValue
+                ? item.NegoLcVersion.Lc.Application.Beneficiary.Organization.ForService(serviceID)
+                : item.NegoLcVersion.Lc.NegoLC.Beneficiary.Organization.ForService(serviceID);
         }
 
         public static bool ForFpgService(this AmendingLcApplication item, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
-            return item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.FpgLcItem != null
-                        && (!serviceID.HasValue || item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.OrganizationStatus.BeneficiaryGroup.ServiceID == (int)serviceID);
+            return item.Source.Lc.Application.FpgLcItem != null
+                        && (!serviceID.HasValue || item.Source.Lc.Application.Beneficiary.Organization.OrganizationStatus.Group.ServiceID == (int)serviceID);
         }
 
         public static bool ForService(this AmendingLcApplication item, BeneficiaryServiceGroup.ServiceDefinition? serviceID = null)
         {
-            return item.LetterOfCreditVersion.LetterOfCredit.CreditApplicationDocumentary.BeneficiaryData.Organization.ForService(serviceID);
+            return item.Source.Lc.Application.Beneficiary.Organization.ForService(serviceID);
         }
 
 
@@ -778,16 +775,16 @@ namespace ModelCore.DataModel
 
     }
 
-    public partial class LcEntityManager<TEntity> : GenericManager<LcEntityDataContext, TEntity>
+    public partial class LcEntityManager<TEntity> : GenericManager<LcEntityDbContext, TEntity>
         where TEntity : class,new()
     {
         public LcEntityManager() : base() { }
-        public LcEntityManager(GenericManager<LcEntityDataContext> manager) : base(manager) { }
+        public LcEntityManager(GenericManager<LcEntityDbContext> manager) : base(manager) { }
 
         //public void AbortTransaction(int docID, String approver)
         //{
 
-        //    var item = this.GetTable<Documentary>().Where(d => d.DocID == docID).FirstOrDefault();
+        //    var item = this.GetTable<Documentary>().Where(d => d.DocumentaryID == docID).FirstOrDefault();
 
         //    if (item != null)
         //    {
@@ -809,11 +806,11 @@ namespace ModelCore.DataModel
         //    }
         //}
 
-        public LcEntityDataContext Context
+        public LcEntityDbContext Context
         {
             get
             {
-                return (LcEntityDataContext)this._db;
+                return (LcEntityDbContext)this._db;
             }
         }
     }
